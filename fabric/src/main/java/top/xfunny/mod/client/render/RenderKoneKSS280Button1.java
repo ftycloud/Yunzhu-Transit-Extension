@@ -185,7 +185,7 @@ public class RenderKoneKSS280Button1 extends BlockEntityRenderer<KoneKSS280Butto
                 liftFloorDisplayView.setTextureId("kone-kss-280-lcd-segment");//字体贴图id，不能与其他显示屏的重复
                 liftFloorDisplayView.setWidth(1.3F / 16);//显示屏宽度
                 liftFloorDisplayView.setHeight(1.7F / 16);//显示屏高度
-                liftFloorDisplayView.setMargin(-0.5F/16, -0.6F/16, 0.1F/16, 0);
+                liftFloorDisplayView.setMargin(-0.625F/16, -0.6F/16, 0.1F/16, 0);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);//文字对齐方式，center为居中对齐，left为左对齐，right为右对齐
 
                 //添加箭头

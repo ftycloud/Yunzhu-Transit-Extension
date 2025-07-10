@@ -5,7 +5,6 @@
 	"textures": {
 		"0": "yte:block/hitachi_vib221",
 		"1": "yte:block/black",
-		"2": "yte:block/white",
 		"particle": "yte:block/hitachi_vib221"
 	},
 	"elements": [
@@ -124,15 +123,6 @@
 				"west": {"uv": [0, 0, 0, 0.06737], "texture": "#missing"},
 				"up": {"uv": [0, 0, 0.15289, 0], "texture": "#missing"},
 				"down": {"uv": [0, 0, 0.15289, 0], "texture": "#missing"}
-			}
-		},
-		{
-			"from": [7.325, 8.625, 0.485],
-			"to": [8.675, 10.875, 0.485],
-			"light_emission": 15,
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 9.75, 0.5]},
-			"faces": {
-				"south": {"uv": [0, 0, 16, 16], "texture": "#2"}
 			}
 		}
 	],
