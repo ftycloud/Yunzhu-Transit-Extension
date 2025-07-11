@@ -25,7 +25,10 @@ public class BlockEntityTypes {
     public static final BlockEntityTypeRegistryObject<HitachiVIB221ButtonDotMatrix.BlockEntity> HITACHI_VIB221_BUTTON_DOT_MATRIX;
     public static final BlockEntityTypeRegistryObject<HitachiVIB820Button.BlockEntity> HITACHI_VIB820_BUTTON;
     public static final BlockEntityTypeRegistryObject<HitachiVIB820ButtonLCD.BlockEntity> HITACHI_VIB820_BUTTON_LCD;
+    public static final BlockEntityTypeRegistryObject<HitachiVIB820proButton.BlockEntity> HITACHI_VIB820PRO_BUTTON;
     public static final BlockEntityTypeRegistryObject<HitachiVIB668Button.BlockEntity> HITACHI_VIB668_BUTTON;
+    public static final BlockEntityTypeRegistryObject<HitachiVIB658Button.BlockEntity> HITACHI_VIB658_BUTTON;
+    public static final BlockEntityTypeRegistryObject<HitachiVIB663Button.BlockEntity> HITACHI_VIB663_BUTTON;
 
     public static final BlockEntityTypeRegistryObject<KoneKDS330Button1.BlockEntity> KONE_KDS330_BUTTON_1;
     public static final BlockEntityTypeRegistryObject<KoneKDS330Button1WithoutScreen.BlockEntity> KONE_KDS330_BUTTON_1_WITHOUT_SCREEN;
@@ -266,7 +269,10 @@ public class BlockEntityTypes {
         HITACHI_VIB221_BUTTON_DOT_MATRIX = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_vib221_button_1_dot_matrix"), HitachiVIB221ButtonDotMatrix.BlockEntity::new, Blocks.HITACHI_VIB221_BUTTON_DOT_MATRIX::get);
         HITACHI_VIB820_BUTTON = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_vib820_button_1"), HitachiVIB820Button.BlockEntity::new, Blocks.HITACHI_VIB820_BUTTON::get);
         HITACHI_VIB820_BUTTON_LCD = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_vib820_button_1_lcd"), HitachiVIB820ButtonLCD.BlockEntity::new, Blocks.HITACHI_VIB820_BUTTON_LCD::get);
+        HITACHI_VIB820PRO_BUTTON = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_vib820pro_button_1"), HitachiVIB820proButton.BlockEntity::new, Blocks.HITACHI_VIB820PRO_BUTTON::get);
         HITACHI_VIB668_BUTTON = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_vib668_button_1"), HitachiVIB668Button.BlockEntity::new, Blocks.HITACHI_VIB668_BUTTON::get);
+        HITACHI_VIB658_BUTTON = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_vib658_button_1"), HitachiVIB658Button.BlockEntity::new, Blocks.HITACHI_VIB658_BUTTON::get);
+        HITACHI_VIB663_BUTTON = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_vib663_button_1"), HitachiVIB663Button.BlockEntity::new, Blocks.HITACHI_VIB663_BUTTON::get);
         HITACHI_B85_BUTTON_1 = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_b85_button_1"), HitachiB85Button1.BlockEntity::new, Blocks.HITACHI_B85_BUTTON_1::get);
         HITACHI_B85_BUTTON_1_WITHOUT_SCREEN = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_b85_button_1_without_screen"), HitachiB85Button1WithoutScreen.BlockEntity::new, Blocks.HITACHI_B85_BUTTON_1_WITHOUT_SCREEN::get);
         HITACHI_B85_BUTTON_2 = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_b85_button_2"), HitachiB85Button2.BlockEntity::new, Blocks.HITACHI_B85_BUTTON_2::get);

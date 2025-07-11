@@ -28,7 +28,7 @@ import top.xfunny.mod.util.ReverseRendering;
 
 import java.util.Comparator;
 
-public class RenderHitachiIVIB322Button extends BlockEntityRenderer<HitachiVIB322Button.BlockEntity> implements DirectionHelper, IGui, IBlock {
+public class RenderHitachiVIB322Button extends BlockEntityRenderer<HitachiVIB322Button.BlockEntity> implements DirectionHelper, IGui, IBlock {
 
     private static final int HOVER_COLOR = 0xAAFFFFFF;
     private static final int PRESSED_COLOR = 0xFFFFFFFF;
@@ -39,7 +39,7 @@ public class RenderHitachiIVIB322Button extends BlockEntityRenderer<HitachiVIB32
     private static final Identifier BUTTON_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mo_down.png");
     private static final Identifier LIGHT_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mo_down_light.png");
     private static final BooleanProperty UNLOCKED = BooleanProperty.of("unlocked");
-    public RenderHitachiIVIB322Button(Argument dispatcher) {
+    public RenderHitachiVIB322Button(Argument dispatcher) {
         super(dispatcher);
     }
 

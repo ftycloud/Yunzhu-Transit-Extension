@@ -3,9 +3,8 @@
 	"credit": "Made with Blockbench",
 	"texture_size": [225, 950],
 	"textures": {
-		"0": "yte:block/hitachi_vib221",
-		"1": "yte:block/black",
-		"particle": "yte:block/hitachi_vib221"
+		"0": "yte:block/steel_1",
+		"particle": "yte:block/steel_1"
 	},
 	"elements": [
 		{
@@ -57,7 +56,7 @@
 			"rotation": {"angle": -22.5, "axis": "x", "origin": [-0.125, 2.125, -2.375]},
 			"faces": {
 				"east": {"uv": [12.44444, 15.15789, 16, 16], "rotation": 270, "texture": "#0"},
-				"west": {"uv": [0, 0, 3.55556, 0.84211], "texture": "#0"},
+				"west": {"uv": [0, 15.15789, 3.55556, 16], "texture": "#0"},
 				"down": {"uv": [3.55556, 15.15789, 12.44444, 16], "texture": "#0"}
 			}
 		},
@@ -68,7 +67,7 @@
 			"faces": {
 				"east": {"uv": [12.44444, 15.15789, 16, 16], "texture": "#0"},
 				"south": {"uv": [3.55556, 15.15789, 12.44444, 16], "texture": "#0"},
-				"west": {"uv": [0, 0, 3.55556, 0.84211], "rotation": 270, "texture": "#0"}
+				"west": {"uv": [0, 15.15789, 3.55556, 16], "texture": "#0"}
 			}
 		},
 		{
@@ -78,7 +77,7 @@
 			"faces": {
 				"east": {"uv": [12.44444, 15.15789, 16, 16], "rotation": 270, "texture": "#0"},
 				"south": {"uv": [3.55556, 15.15789, 12.44444, 16], "texture": "#0"},
-				"west": {"uv": [0, 0, 3.55556, 0.84211], "texture": "#0"}
+				"west": {"uv": [0, 15.15789, 3.55556, 16], "texture": "#0"}
 			}
 		},
 		{
@@ -101,18 +100,6 @@
 				"east": {"uv": [12.44444, 15.15789, 16, 16], "texture": "#0"},
 				"west": {"uv": [0, 15.15789, 3.55556, 16], "rotation": 270, "texture": "#0"},
 				"down": {"uv": [3.55556, 15.15789, 12.44444, 16], "texture": "#0"}
-			}
-		},
-		{
-			"from": [6.175, 7.75, 0.475],
-			"to": [9.825, 11.75, 0.475],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 9.75, 0.475]},
-			"faces": {
-				"east": {"uv": [0, 0, 0, 0.06737], "texture": "#missing"},
-				"south": {"uv": [0, 0, 16, 16], "texture": "#1"},
-				"west": {"uv": [0, 0, 0, 0.06737], "texture": "#missing"},
-				"up": {"uv": [0, 0, 0.15289, 0], "texture": "#missing"},
-				"down": {"uv": [0, 0, 0.15289, 0], "texture": "#missing"}
 			}
 		}
 	],
