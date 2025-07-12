@@ -203,7 +203,7 @@ public class RenderKoneKDS330Button1 extends BlockEntityRenderer<KoneKDS330Butto
                 liftFloorDisplayView.setTextureId("kone-kds-330-lcd-segment");//字体贴图id，不能与其他显示屏的重复
                 liftFloorDisplayView.setWidth(1.8F / 16);//显示屏宽度
                 liftFloorDisplayView.setHeight(1.7F / 16);//显示屏高度
-                liftFloorDisplayView.setMargin(-1F/16, 0, -1F/16, 0);
+                liftFloorDisplayView.setMargin(-0.25F/16, 0, 0.4F/16, 0);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);//文字对齐方式，center为居中对齐，left为左对齐，right为右对齐
 
                 //添加箭头

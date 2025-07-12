@@ -193,10 +193,10 @@ public class RenderHitachiVIB221Button extends BlockEntityRenderer<HitachiVIB221
                         0xFFFF4800);
 
                 liftFloorDisplayView.setTextureId("hitachi-led-seg");
-                liftFloorDisplayView.setWidth((float) 1.6 / 16);
+                liftFloorDisplayView.setWidth((float) 1.4 / 16);
                 liftFloorDisplayView.setHeight((float) 1.7 / 16);
 
-                liftFloorDisplayView.setMargin(0, 0, 0.55F / 16, 0);
+                liftFloorDisplayView.setMargin(0, 0, 0.35F / 16, 0);
 
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
 

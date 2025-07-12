@@ -4,7 +4,7 @@
 	"parent": "block/block",
 	"textures": {
 		"5": "yte:block/mitsubishi_nexway_screen_3",
-		"particle": "yte:block/base10"
+		"particle": "yte:block/mitsubishi_nexway_screen_3"
 	},
 	"elements": [
 		{

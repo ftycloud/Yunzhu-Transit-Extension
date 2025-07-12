@@ -4,11 +4,11 @@
 	"parent": "block/block",
 	"textures": {
 		"5": "yte:block/mitsubishi_nexway_screen_3",
-		"particle": "yte:block/base10"
+		"particle": "yte:block/mitsubishi_nexway_screen_3"
 	},
 	"elements": [
 		{
-			"from": [8.75, 9.5, 0],
+			"from": [8.25, 9.5, 0],
 			"to": [16, 13, 0.1],
 			"rotation": {"angle": 0, "axis": "y", "origin": [9.5, 8.5, -0.25]},
 			"faces": {
