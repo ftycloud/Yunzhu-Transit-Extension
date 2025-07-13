@@ -48,7 +48,7 @@ public class FontList {
 //            loadFont("hitachi-led-seg", "font/hitachi_led_segmented.ttf");
             loadFont("hitachi-led-seg", "font/hitachi_led_segmented_fix.ttf");
             loadFont("hitachi-led-dot_matrix", "font/hitachi-dot-matrix-regular.ttf");
-            loadFont("hitachi-led-dot_matrix_small","font/hitachi-dot-matrix-small.ttf");
+            loadFont("hitachi-led-dot_matrix_small", "font/hitachi-dot-matrix-small.ttf");
             loadFont("hitachi-lcd-seg", "font/hitachi-lcd-segmented.ttf");
             loadFont("hitachi-japan-lcd", "font/hitachi-japan-lcd.ttf");
             loadFont("hitachi-hip43", "font/hitachi-hip43-lcd.ttf");

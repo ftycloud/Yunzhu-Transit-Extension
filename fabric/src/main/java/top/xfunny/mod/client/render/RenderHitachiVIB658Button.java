@@ -39,6 +39,7 @@ public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658
     private static final Identifier BUTTON_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mo_down.png");
     private static final Identifier LIGHT_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mo_down_light.png");
     private static final BooleanProperty UNLOCKED = BooleanProperty.of("unlocked");
+
     public RenderHitachiVIB658Button(Argument dispatcher) {
         super(dispatcher);
     }
@@ -215,7 +216,6 @@ public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658
                 } else {
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.ASPECT_FILL);
                 }
-
 
 
                 final LiftArrowView liftArrowView = new LiftArrowView();

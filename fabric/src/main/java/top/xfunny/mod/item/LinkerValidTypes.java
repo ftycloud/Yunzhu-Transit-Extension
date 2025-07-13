@@ -70,7 +70,7 @@ public class LinkerValidTypes {
             KoneMScreen1Even.class,
             MitsubishiGPSButton1.class,
             MitsubishiGPSButton1WithoutScreen.class,
-            MitsubishiButtonShunHingPlaza.class,
+            MitsubishiButtonShunHingSquare.class,
             MitsubishiRyodenScreen1Even.class,
             MitsubishiRyodenScreen1Odd.class,
             MitsubishiNexWayButton1.class,
