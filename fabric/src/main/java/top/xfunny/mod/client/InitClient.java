@@ -52,7 +52,7 @@ public final class InitClient {
 
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.MITSUBISHI_GPS_BUTTON_1, RenderMitsubishiGPSButton1::new);
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.MITSUBISHI_GPS_BUTTON_1_WITHOUT_SCREEN, RenderMitsubishiGPSButton1WithoutScreen::new);
-        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.MITSUBISHI_BUTTON_SHUN_HING_PLAZA, RenderMitsubishiButtonShunHingPlaza::new);
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.MITSUBISHI_BUTTON_SHUN_HING_SQUARE, RenderMitsubishiButtonShunHingSquare::new);
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.MITSUBISHI_RYODEN_SCREEN_1_EVEN, dispatcher -> new top.xfunny.mod.client.render.RenderMitsubishiRyodenScreen1<>(dispatcher, false));
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.MITSUBISHI_RYODEN_SCREEN_1_ODD, dispatcher -> new top.xfunny.mod.client.render.RenderMitsubishiRyodenScreen1<>(dispatcher, true));
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.MITSUBISHI_NEXWAY_BUTTON_1, RenderMitsubishiNexWayButton1::new);
@@ -128,6 +128,26 @@ public final class InitClient {
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_BUTTON_1_BLACK, RenderSchindlerLineaButton1Black::new);
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_BUTTON_2_WHITE, RenderSchindlerLineaButton2White::new);
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_BUTTON_2_BLACK, RenderSchindlerLineaButton2Black::new);
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_BUTTON_1_BLACK_WITHOUT_SCREEN, RenderSchindlerLineaButton1BlackWithoutScreen::new);
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_BUTTON_1_WHITE_WITHOUT_SCREEN, RenderSchindlerLineaButton1WhiteWithoutScreen::new);
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_BUTTON_2_BLACK_WITHOUT_SCREEN, RenderSchindlerLineaButton2BlackWithoutScreen::new);
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_BUTTON_2_WHITE_WITHOUT_SCREEN, RenderSchindlerLineaButton2WhiteWithoutScreen::new);
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_1_WHITE_HORIZONTAL_ODD, dispatcher -> new RenderSchindlerLineaScreen1WhiteHorizontal<>(dispatcher, true));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_1_WHITE_HORIZONTAL_EVEN, dispatcher -> new RenderSchindlerLineaScreen1WhiteHorizontal<>(dispatcher, false));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_1_WHITE_VERTICAL_ODD, dispatcher -> new RenderSchindlerLineaScreen1WhiteVertical<>(dispatcher, true));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_1_WHITE_VERTICAL_EVEN, dispatcher -> new RenderSchindlerLineaScreen1WhiteVertical<>(dispatcher, false));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_1_BLACK_HORIZONTAL_ODD, dispatcher -> new RenderSchindlerLineaScreen1BlackHorizontal<>(dispatcher, true));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_1_BLACK_HORIZONTAL_EVEN, dispatcher -> new RenderSchindlerLineaScreen1BlackHorizontal<>(dispatcher, false));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_1_BLACK_VERTICAL_ODD, dispatcher -> new RenderSchindlerLineaScreen1BlackVertical<>(dispatcher, true));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_1_BLACK_VERTICAL_EVEN, dispatcher -> new RenderSchindlerLineaScreen1BlackVertical<>(dispatcher, false));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_2_WHITE_HORIZONTAL_ODD, dispatcher -> new RenderSchindlerLineaScreen2WhiteHorizontal<>(dispatcher, true));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_2_WHITE_HORIZONTAL_EVEN, dispatcher -> new RenderSchindlerLineaScreen2WhiteHorizontal<>(dispatcher, false));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_2_WHITE_VERTICAL_ODD, dispatcher -> new RenderSchindlerLineaScreen2WhiteVertical<>(dispatcher, true));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_2_WHITE_VERTICAL_EVEN, dispatcher -> new RenderSchindlerLineaScreen2WhiteVertical<>(dispatcher, false));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_2_BLACK_HORIZONTAL_ODD, dispatcher -> new RenderSchindlerLineaScreen2BlackHorizontal<>(dispatcher, true));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_2_BLACK_HORIZONTAL_EVEN, dispatcher -> new RenderSchindlerLineaScreen2BlackHorizontal<>(dispatcher, false));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_2_BLACK_VERTICAL_ODD, dispatcher -> new RenderSchindlerLineaScreen2BlackVertical<>(dispatcher, true));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_LINEA_SCREEN_2_BLACK_VERTICAL_EVEN, dispatcher -> new RenderSchindlerLineaScreen2BlackVertical<>(dispatcher, false));
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_Z_LINE_3_KEYPAD_1, dispatcher -> new top.xfunny.mod.client.render.RenderSchindlerZLine3Keypad1(dispatcher, true));
 
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_VIB320_BUTTON, RenderHitachiVIB320Button::new);

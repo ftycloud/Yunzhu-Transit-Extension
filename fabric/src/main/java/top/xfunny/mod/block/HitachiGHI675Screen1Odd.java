@@ -21,7 +21,7 @@ public class HitachiGHI675Screen1Odd extends LiftPanelBase {
     @Nonnull
     @Override
     public VoxelShape getOutlineShape2(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return IBlock.getVoxelShapeByDirection(3.65, 10.75, 0, 13.35, 12.25, 0.1, IBlock.getStatePropertySafe(state, FACING));
+        return IBlock.getVoxelShapeByDirection(3.65, 10.75, 0, 12.35, 13.25, 0.1, IBlock.getStatePropertySafe(state, FACING));
     }
 
     @Nonnull

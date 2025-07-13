@@ -89,7 +89,7 @@ public class RenderHitachiGHI675Screen<T extends LiftPanelBase.BlockEntityBase> 
                         5.5F,
                         0xFFFF4800);
                 liftFloorDisplayView.setTextureId("hitachi_ghi675_screen");
-                liftFloorDisplayView.setWidth(2.6F / 16);
+                liftFloorDisplayView.setWidth(2.32F / 16);
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
                 liftFloorDisplayView.setLetterSpacing(0);
