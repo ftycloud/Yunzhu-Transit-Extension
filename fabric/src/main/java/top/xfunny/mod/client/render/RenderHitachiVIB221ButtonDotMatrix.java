@@ -39,9 +39,11 @@ public class RenderHitachiVIB221ButtonDotMatrix extends BlockEntityRenderer<Hita
     private static final Identifier BUTTON_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mo_down.png");
     private static final Identifier LIGHT_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mo_down_light.png");
     private static final BooleanProperty UNLOCKED = BooleanProperty.of("unlocked");
+
     public RenderHitachiVIB221ButtonDotMatrix(Argument dispatcher) {
         super(dispatcher);
     }
+
     @Override
     public void render(HitachiVIB221ButtonDotMatrix.BlockEntity blockEntity, float tickDelta, GraphicsHolder graphicsHolder1, int light, int overlay) {
         final World world = blockEntity.getWorld2();

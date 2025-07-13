@@ -14,7 +14,6 @@ import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
-import top.xfunny.mod.block.HitachiGHD820proScreen1Even;
 import top.xfunny.mod.block.HitachiGHI675Screen1Even;
 import top.xfunny.mod.block.base.LiftPanelBase;
 import top.xfunny.mod.client.resource.FontList;
@@ -95,7 +94,7 @@ public class RenderHitachiGHI675Screen<T extends LiftPanelBase.BlockEntityBase> 
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
                 liftFloorDisplayView.setLetterSpacing(0);
                 liftFloorDisplayView.setDisplayLength(2, 0);
-                liftFloorDisplayView.setMargin(2.4F / 16, 1.225F / 16, 0.1F/16, 0);
+                liftFloorDisplayView.setMargin(2.4F / 16, 1.225F / 16, 0.1F / 16, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
                 if (liftFloorDisplayView.getTextLength() >= 3) {
                     liftFloorDisplayView.setBasicsAttributes(world,
@@ -113,7 +112,7 @@ public class RenderHitachiGHI675Screen<T extends LiftPanelBase.BlockEntityBase> 
                 liftArrowView_left.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.AUTO);
                 liftArrowView_left.setTexture(new Identifier(Init.MOD_ID, "textures/block/hitachi_bxsclc6_arrow.png"));
                 liftArrowView_left.setAnimationScrolling(false, 0.05F);
-                liftArrowView_left.setDimension(0.9F / 16,384,512);
+                liftArrowView_left.setDimension(0.9F / 16, 384, 512);
                 liftArrowView_left.setMargin(-3.75F / 16, 2F / 16, 0, 0);
                 liftArrowView_left.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
                 liftArrowView_left.setColor(0xFFFFFFFF);

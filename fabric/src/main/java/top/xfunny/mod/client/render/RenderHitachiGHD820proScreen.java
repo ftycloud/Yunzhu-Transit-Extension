@@ -94,14 +94,14 @@ public class RenderHitachiGHD820proScreen<T extends LiftPanelBase.BlockEntityBas
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
                 liftFloorDisplayView.setLetterSpacing(0);
                 liftFloorDisplayView.setDisplayLength(2, 0);
-                liftFloorDisplayView.setMargin(2F / 16, 1.325F / 16, 0.1F/16, 0);
+                liftFloorDisplayView.setMargin(2F / 16, 1.325F / 16, 0.1F / 16, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
 
                 final LiftArrowView liftArrowView_left = new LiftArrowView();
                 liftArrowView_left.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.AUTO);
                 liftArrowView_left.setTexture(new Identifier(Init.MOD_ID, "textures/block/hitachi_cip71_arrow_white.png"));
                 liftArrowView_left.setAnimationScrolling(false, 0.05F);
-                liftArrowView_left.setDimension(1.125F / 16,384,512);
+                liftArrowView_left.setDimension(1.125F / 16, 384, 512);
                 liftArrowView_left.setMargin(-3.75F / 16, 3.1F / 16, 0, 0);
                 liftArrowView_left.setGravity(Gravity.CENTER_VERTICAL);
                 liftArrowView_left.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
