@@ -9,25 +9,27 @@ import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectImmutableList;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.*;
 import org.mtr.mod.InitClient;
-import org.mtr.mod.block.BlockRailwaySign;
-import org.mtr.mod.block.BlockRouteSignBase;
 import org.mtr.mod.client.CustomResourceLoader;
 import org.mtr.mod.client.IDrawing;
 import org.mtr.mod.client.MinecraftClientData;
 import org.mtr.mod.data.IGui;
 import org.mtr.mod.generated.lang.TranslationProvider;
+import org.mtr.mod.packet.PacketUpdateRailwaySignConfig;
 import org.mtr.mod.render.RenderRailwaySign;
 import org.mtr.mod.resource.SignResource;
 import org.mtr.mod.screen.*;
-import top.xfunny.mod.packet.PacketUpdatePATRS01RailwaySignConfig;
+import top.xfunny.mod.block.PATRS01RailwaySign;
 
 import javax.annotation.Nullable;
 
 public class PATRS01RailwaySignScreen extends ScreenExtension implements IGui {
 
-    private static final int SIGN_SIZE = 32;
-    private static final int SIGN_BUTTON_SIZE = 16;
-    private static final int BUTTON_Y_START = SIGN_SIZE + SQUARE_SIZE + SQUARE_SIZE / 2;
+    private int editingIndex;
+    private int page;
+    private int totalPages;
+    private int columns;
+    private int rows;
+
     private final BlockPos signPos;
     private final boolean isRailwaySign;
     private final int length;
@@ -38,16 +40,16 @@ public class PATRS01RailwaySignScreen extends ScreenExtension implements IGui {
     private final ObjectArraySet<DashboardListItem> routesForList;
     private final ObjectArraySet<DashboardListItem> stationsForList;
     private final ObjectArrayList<String> allSignIds = new ObjectArrayList<>();
+
     private final ButtonWidgetExtension[] buttonsEdit;
     private final ButtonWidgetExtension[] buttonsSelection;
     private final ButtonWidgetExtension buttonClear;
     private final TexturedButtonWidgetExtension buttonPrevPage;
     private final TexturedButtonWidgetExtension buttonNextPage;
-    private int editingIndex;
-    private int page;
-    private int totalPages;
-    private int columns;
-    private int rows;
+
+    private static final int SIGN_SIZE = 32;
+    private static final int SIGN_BUTTON_SIZE = 16;
+    private static final int BUTTON_Y_START = SIGN_SIZE + SQUARE_SIZE + SQUARE_SIZE / 2;
 
     public PATRS01RailwaySignScreen(BlockPos signPos) {
         super();
@@ -86,21 +88,18 @@ public class PATRS01RailwaySignScreen extends ScreenExtension implements IGui {
 
         if (world != null) {
             final BlockEntity entity = world.getBlockEntity(signPos);
-            if (entity != null && entity.data instanceof BlockRailwaySign.BlockEntity) {
-                signIds = ((BlockRailwaySign.BlockEntity) entity.data).getSignIds();
-                selectedIds = ((BlockRailwaySign.BlockEntity) entity.data).getSelectedIds();
+            if (entity != null && entity.data instanceof PATRS01RailwaySign.BlockEntity) {
+                signIds = ((PATRS01RailwaySign.BlockEntity) entity.data).getSignIds();
+                selectedIds = ((PATRS01RailwaySign.BlockEntity) entity.data).getSelectedIds();
                 isRailwaySign = true;
             } else {
                 signIds = new String[0];
                 selectedIds = new LongAVLTreeSet();
                 isRailwaySign = false;
-                if (entity != null && entity.data instanceof BlockRouteSignBase.BlockEntityBase) {
-                    selectedIds.add(((BlockRouteSignBase.BlockEntityBase) entity.data).getPlatformId());
-                }
             }
             final Block block = world.getBlockState(signPos).getBlock();
-            if (block.data instanceof BlockRailwaySign) {
-                length = ((BlockRailwaySign) block.data).length;
+            if (block.data instanceof PATRS01RailwaySign) {
+                length = ((PATRS01RailwaySign) block.data).length;
             } else {
                 length = 0;
             }
@@ -214,7 +213,7 @@ public class PATRS01RailwaySignScreen extends ScreenExtension implements IGui {
 
     @Override
     public void onClose2() {
-        InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketUpdatePATRS01RailwaySignConfig(signPos, selectedIds, signIds));
+        InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketUpdateRailwaySignConfig(signPos, selectedIds, signIds));
         super.onClose2();
     }
 

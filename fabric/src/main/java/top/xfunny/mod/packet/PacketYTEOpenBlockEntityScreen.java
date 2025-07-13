@@ -4,17 +4,16 @@ import org.mtr.mapping.holder.BlockPos;
 import org.mtr.mapping.registry.PacketHandler;
 import org.mtr.mapping.tool.PacketBufferReceiver;
 import org.mtr.mapping.tool.PacketBufferSender;
-import top.xfunny.mod.client.client_packet.ClientPacketHelper;
 
-public final class PacketOpenBlockEntityScreen extends PacketHandler {
+public final class PacketYTEOpenBlockEntityScreen extends PacketHandler {
 
     private final BlockPos blockPos;
 
-    public PacketOpenBlockEntityScreen(PacketBufferReceiver packetBufferReceiver) {
+    public PacketYTEOpenBlockEntityScreen(PacketBufferReceiver packetBufferReceiver) {
         blockPos = BlockPos.fromLong(packetBufferReceiver.readLong());
     }
 
-    public PacketOpenBlockEntityScreen(BlockPos blockPos) {
+    public PacketYTEOpenBlockEntityScreen(BlockPos blockPos) {
         this.blockPos = blockPos;
     }
 
@@ -26,6 +25,6 @@ public final class PacketOpenBlockEntityScreen extends PacketHandler {
     @Override
     public void runClient() {
         System.out.println("PacketOpenBlockEntityScreen");
-        ClientPacketHelper.openBlockEntityScreen(blockPos);
+        YTEClientPacketHelper.openBlockEntityScreen(blockPos);
     }
 }

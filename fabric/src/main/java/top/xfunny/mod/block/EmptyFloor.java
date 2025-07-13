@@ -10,7 +10,7 @@ import org.mtr.mod.generated.lang.TranslationProvider;
 import org.mtr.mod.packet.PacketDeleteData;
 import top.xfunny.mod.BlockEntityTypes;
 import top.xfunny.mod.Init;
-import top.xfunny.mod.packet.PacketOpenBlockEntityScreen;
+import top.xfunny.mod.packet.PacketYTEOpenBlockEntityScreen;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,7 +29,7 @@ public class EmptyFloor extends BlockLiftTrackBase implements BlockWithEntity {
             final org.mtr.mapping.holder.BlockEntity entity = world.getBlockEntity(pos);
             if (entity != null && entity.data instanceof BlockEntity) {
                 ((BlockEntity) entity.data).markDirty2();
-                Init.REGISTRY.sendPacketToClient(ServerPlayerEntity.cast(player), new PacketOpenBlockEntityScreen(pos));
+                Init.REGISTRY.sendPacketToClient(ServerPlayerEntity.cast(player), new PacketYTEOpenBlockEntityScreen(pos));
             }
         });
     }

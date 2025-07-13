@@ -13,7 +13,6 @@ import org.mtr.mapping.mapper.BlockEntityRenderer;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mod.Init;
 import org.mtr.mod.InitClient;
-import org.mtr.mod.block.BlockRailwaySign;
 import org.mtr.mod.block.BlockStationNameBase;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.client.CustomResourceLoader;
@@ -47,7 +46,7 @@ public class RenderPATRS01RailwaySign<T extends PATRS01RailwaySign.BlockEntity> 
             return;
         }
 
-        final float signSize = (sign.getSmall() ? BlockRailwaySign.SMALL_SIGN_PERCENTAGE : 1) * size;
+        final float signSize = (sign.getSmall() ? PATRS01RailwaySign.SMALL_SIGN_PERCENTAGE : 1) * size;
         final float margin = (size - signSize) / 2;
 
         final boolean hasCustomText = sign.hasCustomText;
@@ -177,7 +176,7 @@ public class RenderPATRS01RailwaySign<T extends PATRS01RailwaySign.BlockEntity> 
             drawTexture.drawTexture(sign.getTexture(), x + margin, y + margin, signSize, flipTexture);
 
             if (hasCustomText) {
-                final float fixedMargin = size * (1 - BlockRailwaySign.SMALL_SIGN_PERCENTAGE) / 2;
+                final float fixedMargin = size * (1 - PATRS01RailwaySign.SMALL_SIGN_PERCENTAGE) / 2;
                 final boolean isSmall = sign.getSmall();
                 final float maxWidth = Math.max(0, (flipCustomText ? maxWidthLeft : maxWidthRight) * size - fixedMargin * (isSmall ? 1 : 2));
                 final float start = flipCustomText ? x - (isSmall ? 0 : fixedMargin) : x + size + (isSmall ? 0 : fixedMargin);
@@ -202,7 +201,7 @@ public class RenderPATRS01RailwaySign<T extends PATRS01RailwaySign.BlockEntity> 
     }
 
     private static void renderCustomText(String signText, StoredMatrixTransformations storedMatrixTransformations, Direction facing, float size, float start, boolean flipCustomText, float maxWidth, int backgroundColor) {
-        final DynamicTextureCache.DynamicResource dynamicResource = DynamicTextureCache.instance.getSignText(signText, flipCustomText ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT, (1 - BlockRailwaySign.SMALL_SIGN_PERCENTAGE) / 2, backgroundColor, ARGB_WHITE);
+        final DynamicTextureCache.DynamicResource dynamicResource = DynamicTextureCache.instance.getSignText(signText, flipCustomText ? HorizontalAlignment.RIGHT : HorizontalAlignment.LEFT, (1 - PATRS01RailwaySign.SMALL_SIGN_PERCENTAGE) / 2, backgroundColor, ARGB_WHITE);
         final float width = Math.min(size * dynamicResource.width / dynamicResource.height, maxWidth);
         MainRenderer.scheduleRender(dynamicResource.identifier, true, QueuedRenderLayer.LIGHT_TRANSLUCENT, (graphicsHolderNew, offset) -> {
             storedMatrixTransformations.transform(graphicsHolderNew, offset);
@@ -212,7 +211,7 @@ public class RenderPATRS01RailwaySign<T extends PATRS01RailwaySign.BlockEntity> 
     }
 
     public static SignResource getSign(@Nullable String signId) {
-        // TODO load existing signs from BlockRailwaySign.SignType using the resource pack format
+        // TODO load existing signs from PATRS01RailwaySign.SignType using the resource pack format
         if (signId == null) {
             return null;
         } else {
@@ -247,10 +246,10 @@ public class RenderPATRS01RailwaySign<T extends PATRS01RailwaySign.BlockEntity> 
 
         final BlockPos pos = entity.getPos2();
         final BlockState state = world.getBlockState(pos);
-        if (!(state.getBlock().data instanceof BlockRailwaySign)) {
+        if (!(state.getBlock().data instanceof PATRS01RailwaySign)) {
             return;
         }
-        final BlockRailwaySign block = (BlockRailwaySign) state.getBlock().data;
+        final PATRS01RailwaySign block = (PATRS01RailwaySign) state.getBlock().data;
         if (entity.getSignIds().length != block.length) {
             return;
         }

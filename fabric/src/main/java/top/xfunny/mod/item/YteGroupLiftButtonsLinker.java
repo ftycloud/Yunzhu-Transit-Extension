@@ -78,6 +78,21 @@ public class YteGroupLiftButtonsLinker extends ItemBlockClickingBase implements 
                     floorCount++;
                 }
 
+            } else if (posStart != null && (world.getBlockState(posStart).getBlock().data instanceof BlockLiftTrackBase)&&(world.getBlockState(posEnd).getBlock().data instanceof BlockLiftTrackBase)){
+                connect(world, posStart, posEnd, isConnector);
+                connect(world, posEnd, posStart, isConnector);
+                Object[] pos = pathFinder.findPath(context, posStart, posEnd);
+                posStart = (BlockPos) pos[0];
+                posEnd = (BlockPos) pos[1];
+//todo
+                if (world.getBlockState(posEnd).getBlock().data instanceof LiftButtonsBase ||
+                        world.getBlockState(posEnd).getBlock().data instanceof LiftDestinationDispatchTerminalBase ||
+                        world.getBlockState(posEnd).getBlock().data instanceof LiftPanelBase ||
+                        world.getBlockState(posEnd).getBlock().data instanceof BlockLiftButtons ||
+                        world.getBlockState(posEnd).getBlock().data instanceof BlockLiftPanelBase
+                ) {
+                    floorCount++;
+                }
             } else {
                 if (playerEntity != null) {
                     playerEntity.sendMessage(isConnector ? Text.cast(TextHelper.translatable("message.linker_status_failed")) : Text.cast(TextHelper.translatable("message.linker_status_failed_remove")), true);

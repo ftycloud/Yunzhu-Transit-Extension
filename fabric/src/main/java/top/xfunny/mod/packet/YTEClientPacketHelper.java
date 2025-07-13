@@ -9,15 +9,12 @@ import top.xfunny.mod.client.screen.PATRS01RailwaySignScreen;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-/**
- * Since packets are registered serverside, they will fail if any client classes are used (e.g. screens).
- */
 public final class YTEClientPacketHelper {
 
     public static void openBlockEntityScreen(BlockPos blockPos) {
         getBlockEntity(blockPos, blockEntity -> {
             if (blockEntity.data instanceof PATRS01RailwaySign.BlockEntity) {
-                openScreen(new PATRS01RailwaySignScreen(blockPos), screenExtension -> screenExtension instanceof RailwaySignScreen);
+                openScreen(new PATRS01RailwaySignScreen(blockPos), screenExtension -> screenExtension instanceof PATRS01RailwaySignScreen);
             }
         });
     }

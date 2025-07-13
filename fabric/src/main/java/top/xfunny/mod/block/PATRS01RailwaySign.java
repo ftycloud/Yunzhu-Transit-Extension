@@ -7,11 +7,12 @@ import org.mtr.mapping.mapper.BlockExtension;
 import org.mtr.mapping.mapper.BlockWithEntity;
 import org.mtr.mapping.mapper.DirectionHelper;
 import org.mtr.mapping.tool.HolderBase;
-import org.mtr.mod.Init;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.generated.lang.TranslationProvider;
 import org.mtr.mod.packet.PacketOpenBlockEntityScreen;
 import top.xfunny.mod.BlockEntityTypes;
+import top.xfunny.mod.Init;
+import top.xfunny.mod.packet.PacketYTEOpenBlockEntityScreen;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -42,7 +43,7 @@ public class PATRS01RailwaySign extends BlockExtension implements IBlock, Direct
             if (hitSide == facing || hitSide == facing.getOpposite()) {
                 final BlockPos checkPos = findEndWithDirection(world, pos, hitSide.getOpposite(), false);
                 if (checkPos != null) {
-                    Init.REGISTRY.sendPacketToClient(ServerPlayerEntity.cast(player), new PacketOpenBlockEntityScreen(checkPos));
+                    Init.REGISTRY.sendPacketToClient(ServerPlayerEntity.cast(player), new PacketYTEOpenBlockEntityScreen(checkPos));
                 }
             }
         });
