@@ -352,7 +352,8 @@ public abstract class LiftDestinationDispatchTerminalBase extends BlockExtension
                     final Vector position = lift.getPosition((floorPosition1, floorPosition2) -> ItemLiftRefresher.findPath(new World(world.data), floorPosition1, floorPosition2));
                     Position liftPos = new Position((long) position.x, (long) position.y, (long) position.z);
 
-                    if (lift.getDoorValue() == 0 && lift.getFloorIndex(liftPos) != lift.getFloorIndex(Init.blockPosToPosition(confirmTrackPosition[0]))) {
+                    //避免重复开门
+                    if (lift.getDoorValue() != 0 && lift.getFloorIndex(liftPos) != lift.getFloorIndex(Init.blockPosToPosition(confirmTrackPosition[0]))) {
                         final PressLift pressLift = new PressLift();
                         pressLift.add(Init.blockPosToPosition(confirmTrackPosition[0]), data.liftDirection);
                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketPressLiftButton(pressLift));
