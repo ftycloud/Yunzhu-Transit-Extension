@@ -14,7 +14,7 @@ import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
-import top.xfunny.mod.block.MitsubishiButtonShunHingPlaza;
+import top.xfunny.mod.block.MitsubishiButtonShunHingSquare;
 import top.xfunny.mod.block.base.LiftButtonsBase;
 import top.xfunny.mod.client.view.*;
 import top.xfunny.mod.client.view.view_group.FrameLayout;
@@ -23,20 +23,20 @@ import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
 import top.xfunny.mod.keymapping.DefaultButtonsKeyMapping;
 
-public class RenderMitsubishiButtonShunHingPlaza extends BlockEntityRenderer<MitsubishiButtonShunHingPlaza.BlockEntity> implements DirectionHelper, IGui, IBlock {
+public class RenderMitsubishiButtonShunHingSquare extends BlockEntityRenderer<MitsubishiButtonShunHingSquare.BlockEntity> implements DirectionHelper, IGui, IBlock {
 
     private static final int HOVER_COLOR = 0xFFFFCC66;
     private static final int PRESSED_COLOR = 0xFFFF8800;
-    private final Identifier BUTTON_TEXTURE_UP = new Identifier(Init.MOD_ID, "textures/block/mitsubishi_button_shun_hing_plaza.png");
-    private final Identifier BUTTON_TEXTURE_DOWN = new Identifier(Init.MOD_ID, "textures/block/mitsubishi_button_shun_hing_plaza.png");
-    private final Identifier BUTTON_LIGHT_TEXTURE = new Identifier(Init.MOD_ID, "textures/block/mitsubishi_button_shun_hing_plaza_light.png");
+    private final Identifier BUTTON_TEXTURE_UP = new Identifier(Init.MOD_ID, "textures/block/mitsubishi_button_shun_hing_square.png");
+    private final Identifier BUTTON_TEXTURE_DOWN = new Identifier(Init.MOD_ID, "textures/block/mitsubishi_button_shun_hing_square.png");
+    private final Identifier BUTTON_LIGHT_TEXTURE = new Identifier(Init.MOD_ID, "textures/block/mitsubishi_button_shun_hing_square_light.png");
 
-    public RenderMitsubishiButtonShunHingPlaza(Argument dispatcher) {
+    public RenderMitsubishiButtonShunHingSquare(Argument dispatcher) {
         super(dispatcher);
     }
 
     @Override
-    public void render(MitsubishiButtonShunHingPlaza.BlockEntity blockEntity, float tickDelta, GraphicsHolder graphicsHolder1, int light, int overlay) {
+    public void render(MitsubishiButtonShunHingSquare.BlockEntity blockEntity, float tickDelta, GraphicsHolder graphicsHolder1, int light, int overlay) {
         final World world = blockEntity.getWorld2();
         if (world == null) {
             return;
@@ -135,7 +135,7 @@ public class RenderMitsubishiButtonShunHingPlaza extends BlockEntityRenderer<Mit
         blockEntity.forEachTrackPosition(trackPosition -> {
             line.RenderLine(holdingLinker, trackPosition);
 
-            MitsubishiButtonShunHingPlaza.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
+            MitsubishiButtonShunHingSquare.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
                 sortedPositionsAndLifts.add(new ObjectObjectImmutablePair<>(trackPosition, lift));
                 final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
                 instructionDirections.forEach(liftDirection -> {

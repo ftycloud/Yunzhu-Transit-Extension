@@ -52,7 +52,7 @@ public class BlockEntityTypes {
 
     public static final BlockEntityTypeRegistryObject<MitsubishiGPSButton1.BlockEntity> MITSUBISHI_GPS_BUTTON_1;
     public static final BlockEntityTypeRegistryObject<MitsubishiGPSButton1WithoutScreen.BlockEntity> MITSUBISHI_GPS_BUTTON_1_WITHOUT_SCREEN;
-    public static final BlockEntityTypeRegistryObject<MitsubishiButtonShunHingPlaza.BlockEntity> MITSUBISHI_BUTTON_SHUN_HING_PLAZA;
+    public static final BlockEntityTypeRegistryObject<MitsubishiButtonShunHingSquare.BlockEntity> MITSUBISHI_BUTTON_SHUN_HING_SQUARE;
     public static final BlockEntityTypeRegistryObject<MitsubishiRyodenScreen1Even.BlockEntity> MITSUBISHI_RYODEN_SCREEN_1_EVEN;
     public static final BlockEntityTypeRegistryObject<MitsubishiRyodenScreen1Odd.BlockEntity> MITSUBISHI_RYODEN_SCREEN_1_ODD;
     public static final BlockEntityTypeRegistryObject<MitsubishiNexWayButton1.BlockEntity> MITSUBISHI_NEXWAY_BUTTON_1;
@@ -193,7 +193,7 @@ public class BlockEntityTypes {
         KONE_M_SCREEN_1_EVEN = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "kone_m_screen_1_even"), KoneMScreen1Even.BlockEntity::new, Blocks.KONE_M_SCREEN_1_EVEN::get);
         MITSUBISHI_GPS_BUTTON_1 = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "mitsubishi_gps_button_1"), MitsubishiGPSButton1.BlockEntity::new, Blocks.MITSUBISHI_GPS_BUTTON_1::get);
         MITSUBISHI_GPS_BUTTON_1_WITHOUT_SCREEN = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "mitsubishi_gps_button_1_without_screen"), MitsubishiGPSButton1WithoutScreen.BlockEntity::new, Blocks.MITSUBISHI_GPS_BUTTON_1_WITHOUT_SCREEN::get);
-        MITSUBISHI_BUTTON_SHUN_HING_PLAZA = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "mitsubishi_button_shun_hing_plaza"), MitsubishiButtonShunHingPlaza.BlockEntity::new, Blocks.MITSUBISHI_BUTTON_SHUN_HING_PLAZA::get);
+        MITSUBISHI_BUTTON_SHUN_HING_SQUARE = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "mitsubishi_button_shun_hing_plaza"), MitsubishiButtonShunHingSquare.BlockEntity::new, Blocks.MITSUBISHI_BUTTON_SHUN_HING_SQUARE::get);
         MITSUBISHI_RYODEN_SCREEN_1_EVEN = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "mitsubishi_ryoden_screen_1_even"), MitsubishiRyodenScreen1Even.BlockEntity::new, Blocks.MITSUBISHI_RYODEN_SCREEN_1_EVEN::get);
         MITSUBISHI_RYODEN_SCREEN_1_ODD = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "mitsubishi_ryoden_screen_1_odd"), MitsubishiRyodenScreen1Odd.BlockEntity::new, Blocks.MITSUBISHI_RYODEN_SCREEN_1_ODD::get);
         MITSUBISHI_NEXWAY_BUTTON_1 = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "mitsubishi_nexway_button_1"), MitsubishiNexWayButton1.BlockEntity::new, Blocks.MITSUBISHI_NEXWAY_BUTTON_1::get);

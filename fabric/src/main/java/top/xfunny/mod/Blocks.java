@@ -53,7 +53,7 @@ public class Blocks {
 
     public static final BlockRegistryObject MITSUBISHI_GPS_BUTTON_1;
     public static final BlockRegistryObject MITSUBISHI_GPS_BUTTON_1_WITHOUT_SCREEN;
-    public static final BlockRegistryObject MITSUBISHI_BUTTON_SHUN_HING_PLAZA;
+    public static final BlockRegistryObject MITSUBISHI_BUTTON_SHUN_HING_SQUARE;
     public static final BlockRegistryObject MITSUBISHI_RYODEN_SCREEN_1_EVEN;
     public static final BlockRegistryObject MITSUBISHI_RYODEN_SCREEN_1_ODD;
     public static final BlockRegistryObject MITSUBISHI_NEXWAY_BUTTON_1;
@@ -206,7 +206,7 @@ public class Blocks {
 
         MITSUBISHI_GPS_BUTTON_1 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_gps_button_1"), () -> new Block(new MitsubishiGPSButton1()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_GPS_BUTTON_1_WITHOUT_SCREEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_gps_button_1_without_screen"), () -> new Block(new MitsubishiGPSButton1WithoutScreen()), CreativeModeTabs.YTE_LIFT_FIXTURES);
-        MITSUBISHI_BUTTON_SHUN_HING_PLAZA = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_button_shun_hing_plaza"), () -> new Block(new MitsubishiButtonShunHingPlaza()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        MITSUBISHI_BUTTON_SHUN_HING_SQUARE = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_button_shun_hing_plaza"), () -> new Block(new MitsubishiButtonShunHingSquare()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_RYODEN_SCREEN_1_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_ryoden_screen_1_odd"), () -> new Block(new MitsubishiRyodenScreen1Odd()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_RYODEN_SCREEN_1_EVEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_ryoden_screen_1_even"), () -> new Block(new MitsubishiRyodenScreen1Even()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_NEXWAY_BUTTON_1 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_nexway_button_1"), () -> new Block(new MitsubishiNexWayButton1()), CreativeModeTabs.YTE_LIFT_FIXTURES);

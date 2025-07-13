@@ -10,8 +10,8 @@ import top.xfunny.mod.block.base.LiftButtonsBase;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class MitsubishiButtonShunHingPlaza extends LiftButtonsBase {
-    public MitsubishiButtonShunHingPlaza() {
+public class MitsubishiButtonShunHingSquare extends LiftButtonsBase {
+    public MitsubishiButtonShunHingSquare() {
         super(true, true);
     }
 
@@ -24,7 +24,7 @@ public class MitsubishiButtonShunHingPlaza extends LiftButtonsBase {
     @Nonnull
     @Override
     public BlockEntityExtension createBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new MitsubishiButtonShunHingPlaza.BlockEntity(blockPos, blockState);
+        return new MitsubishiButtonShunHingSquare.BlockEntity(blockPos, blockState);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class MitsubishiButtonShunHingPlaza extends LiftButtonsBase {
 
     public static class BlockEntity extends BlockEntityBase {
         public BlockEntity(BlockPos pos, BlockState state) {
-            super(BlockEntityTypes.MITSUBISHI_BUTTON_SHUN_HING_PLAZA.get(), pos, state);
+            super(BlockEntityTypes.MITSUBISHI_BUTTON_SHUN_HING_SQUARE.get(), pos, state);
         }
     }
 }
