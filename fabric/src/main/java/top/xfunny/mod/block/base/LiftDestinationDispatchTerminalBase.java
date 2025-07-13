@@ -331,19 +331,22 @@ public abstract class LiftDestinationDispatchTerminalBase extends BlockExtension
                 BlockPos currentTrackPosition = trackPositionAndChar2.left();
                 char currentChar = trackPositionAndChar2.right();
 
-                hasButtonsClient(currentTrackPosition, (floor, lift) -> {
-                    final Vector position = lift.getPosition((floorPosition1, floorPosition2) -> ItemLiftRefresher.findPath(new World(world.data), floorPosition1, floorPosition2));
-                    BlockPos liftPos = new BlockPos((int) position.x, (int) position.y, (int) position.z);
+                if(currentTrackPosition != null){
+                    hasButtonsClient(currentTrackPosition, (floor, lift) -> {
+                        final Vector position = lift.getPosition((floorPosition1, floorPosition2) -> ItemLiftRefresher.findPath(new World(world.data), floorPosition1, floorPosition2));
+                        BlockPos liftPos = new BlockPos((int) position.x, (int) position.y, (int) position.z);
 
-                    int distance = currentTrackPosition.getManhattanDistance(Vector3i.cast(liftPos));
-                    if (distance < minDistance[0]) {
-                        minDistance[0] = distance;
-                        minChar[0] = currentChar;
-                        liftIdentifier = currentChar;
-                        confirmTrackPosition[0] = currentTrackPosition;
-                        destinationPosition[0] = locateFloor(world, lift, destination);
-                    }
-                });
+                        int distance = currentTrackPosition.getManhattanDistance(Vector3i.cast(liftPos));
+
+                        if (distance < minDistance[0]) {
+                            minDistance[0] = distance;
+                            minChar[0] = currentChar;
+                            liftIdentifier = currentChar;
+                            confirmTrackPosition[0] = currentTrackPosition;
+                            destinationPosition[0] = locateFloor(world, lift, destination);
+                        }
+                    });
+                }
             });
 
             //step5:呼叫电梯
