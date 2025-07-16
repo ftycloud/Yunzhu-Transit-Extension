@@ -12,6 +12,6 @@ public class PATTicketBarrier extends BlockTicketBarrier {
     @Override
     public VoxelShape getOutlineShape2(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         Direction facing = IBlock.getStatePropertySafe(state, FACING);
-        return IBlock.getVoxelShapeByDirection(12, 0, 0, 16, 16, 16, facing);
+        return IBlock.getVoxelShapeByDirection(12, 0, 0, 16, 15.9, 16, facing);
     }
 }

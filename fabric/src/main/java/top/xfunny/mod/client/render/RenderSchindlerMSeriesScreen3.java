@@ -240,16 +240,15 @@ public class RenderSchindlerMSeriesScreen3<T extends LiftButtonsBase.BlockEntity
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
-                        FontList.instance.getFont("acmeled"),//字体
+                        FontList.instance.getFont("schindler_m_series_segment"),//字体
                         5,//字号
                         0xFFFF0000);//字体颜色
                 liftFloorDisplayView.setDisplayLength(2, 0);//true开启滚动，开启滚动时的字数条件(>)，滚动速度
                 liftFloorDisplayView.setTextureId("schindler_m_series_screen_3_display");//字体贴图id，不能与其他显示屏的重复
-                liftFloorDisplayView.setLetterSpacing(10);
                 liftFloorDisplayView.setWidth(2F / 16);//显示屏宽度
                 liftFloorDisplayView.setHeight(2F / 16);//显示屏高度
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);//文字对齐方式，center为居中对齐，left为左对齐，right为右对齐
-                liftFloorDisplayView.setGravity(Gravity.CENTER);
+                liftFloorDisplayView.setMargin(0.4F/16,0,0,-1.5F/16);
 
                 screenLayout.addChild(background);
                 screenLayout.addChild(liftFloorDisplayView);

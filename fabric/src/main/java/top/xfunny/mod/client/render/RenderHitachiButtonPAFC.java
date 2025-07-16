@@ -198,7 +198,7 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
                         4.5F,
                         0xFFFF4800);
                 liftFloorDisplayView.setTextureId("hitachi_button_pafc");
-                liftFloorDisplayView.setWidth(1.36F / 16);
+                liftFloorDisplayView.setWidth(1.16F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
 
                 liftFloorDisplayView.setMargin(0.01F, 0.7F / 16, 0, 0);
