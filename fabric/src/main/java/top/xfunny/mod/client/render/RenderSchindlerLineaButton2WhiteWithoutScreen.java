@@ -75,7 +75,7 @@ public class RenderSchindlerLineaButton2WhiteWithoutScreen extends BlockEntityRe
         buttonLayout.setBasicsAttributes(world, blockEntity.getPos2());
         buttonLayout.setWidth(LayoutSize.MATCH_PARENT);
         buttonLayout.setHeight(LayoutSize.MATCH_PARENT);
-        buttonLayout.setMargin(0, 0.7F / 16, 0, 0);
+        buttonLayout.setMargin(0, 0.9F / 16, 0, 0);
 
         final LinearLayout buttonContainer = new LinearLayout(true);
         buttonContainer.setBasicsAttributes(world, blockPos);

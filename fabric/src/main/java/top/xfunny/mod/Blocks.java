@@ -50,6 +50,8 @@ public class Blocks {
     public static final BlockRegistryObject OTIS_SERIES_3_LANTERN_1_ARROW_ODD;
     public static final BlockRegistryObject OTIS_SERIES_3_LANTERN_1_ARROW_EVEN;
     public static final BlockRegistryObject OTIS_SPEC_60_BUTTON_1;
+    public static final BlockRegistryObject OTIS_SPEC_90_BUTTON_1_BLACK;
+    public static final BlockRegistryObject OTIS_SPEC_90_BUTTON_1_WHITE;
 
     public static final BlockRegistryObject MITSUBISHI_GPS_BUTTON_1;
     public static final BlockRegistryObject MITSUBISHI_GPS_BUTTON_1_WITHOUT_SCREEN;
@@ -153,6 +155,8 @@ public class Blocks {
     public static final BlockRegistryObject HITACHI_VIB820_BUTTON;
     public static final BlockRegistryObject HITACHI_VIB820_BUTTON_LCD;
     public static final BlockRegistryObject HITACHI_VIB68_BUTTON;
+    public static final BlockRegistryObject HITACHI_VIB191_BUTTON;
+    public static final BlockRegistryObject HITACHI_VIB192_BUTTON;
     public static final BlockRegistryObject HITACHI_HB820_BUTTON;
     public static final BlockRegistryObject HITACHI_HSB820_BUTTON;
     public static final BlockRegistryObject HITACHI_VIB820PRO_BUTTON;
@@ -282,6 +286,8 @@ public class Blocks {
         OTIS_SERIES_3_LANTERN_1_ARROW_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "otis_series_3_lantern_1_arrow_odd"), () -> new Block(new OtisSeries3Lantern1ArrowOdd()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         OTIS_SERIES_3_LANTERN_1_ARROW_EVEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "otis_series_3_lantern_1_arrow_even"), () -> new Block(new OtisSeries3Lantern1ArrowEven()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         OTIS_SPEC_60_BUTTON_1 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "otis_spec_60_button_1"), () -> new Block(new OtisSPEC60Button1()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        OTIS_SPEC_90_BUTTON_1_BLACK = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "otis_spec_90_button_1_black"), () -> new Block(new OtisSPEC90Button1Black()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        OTIS_SPEC_90_BUTTON_1_WHITE = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "otis_spec_90_button_1_white"), () -> new Block(new OtisSPEC90Button1White()), CreativeModeTabs.YTE_LIFT_FIXTURES);
 
         SCHINDLER_D_SERIES_D2BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_d_series_d2button"), () -> new Block(new SchindlerDSeriesD2Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         SCHINDLER_D_SERIES_SCREEN_1_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_d_series_screen_1_odd"), () -> new Block(new SchindlerDSeriesScreen1Odd()), CreativeModeTabs.YTE_LIFT_FIXTURES);
@@ -340,6 +346,8 @@ public class Blocks {
         HITACHI_VIB820_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib820_button_1"), () -> new Block(new HitachiVIB820Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB820_BUTTON_LCD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib820_button_1_lcd"), () -> new Block(new HitachiVIB820ButtonLCD()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB68_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib68_button_1"), () -> new Block(new HitachiVIB68Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB191_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib191_button_1"), () -> new Block(new HitachiVIB191Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB192_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib192_button_1"), () -> new Block(new HitachiVIB192Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_HB820_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_hb820_button_1"), () -> new Block(new HitachiHB820Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_HSB820_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_hsb820_button_1"), () -> new Block(new HitachiHSB820Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_GHL820_LANTERN_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_ghl820_lantern_1_odd"), () -> new Block(new HitachiGHL820Lantern1Odd()), CreativeModeTabs.YTE_LIFT_FIXTURES);
