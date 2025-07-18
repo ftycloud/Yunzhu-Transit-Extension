@@ -198,12 +198,14 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
                         4.5F,
                         0xFFFF4800);
                 liftFloorDisplayView.setTextureId("hitachi_button_pafc");
-                liftFloorDisplayView.setWidth(1.16F / 16);
+                liftFloorDisplayView.setWidth(1.12F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
 
-                liftFloorDisplayView.setMargin(0.01F, 0.7F / 16, 0, 0);
+                liftFloorDisplayView.setMargin(0.006F, 0.7F / 16, 0, 0);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
+
+
                 if (liftFloorDisplayView.getTextLength() >= 3) {
                     liftFloorDisplayView.setBasicsAttributes(world,
                             blockPos,
@@ -211,12 +213,11 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
                             FontList.instance.getFont("hitachi-led-dot_matrix_small"),
                             4.5F,
                             0xFFFF4800);
+                    liftFloorDisplayView.setMargin(0.01F, 0.7F / 16, 0, 0);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);
                 } else {
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.ASPECT_FILL);
                 }
-
-
                 final LiftArrowView liftArrowView = new LiftArrowView();
                 liftArrowView.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.AUTO);
                 liftArrowView.setTexture(ARROW_TEXTURE);
