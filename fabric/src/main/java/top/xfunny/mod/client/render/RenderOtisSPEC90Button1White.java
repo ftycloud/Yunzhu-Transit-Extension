@@ -13,30 +13,35 @@ import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.PlayerHelper;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
+import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
-import top.xfunny.mod.block.SchindlerLineaButton2BlackWithoutScreen;
-import top.xfunny.mod.block.SchindlerLineaButton2BlackWithoutScreen;
+import top.xfunny.mod.block.OtisSPEC90Button1White;
 import top.xfunny.mod.block.base.LiftButtonsBase;
+import top.xfunny.mod.client.resource.FontList;
 import top.xfunny.mod.client.view.*;
 import top.xfunny.mod.client.view.view_group.FrameLayout;
 import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
 import top.xfunny.mod.keymapping.DefaultButtonsKeyMapping;
+import top.xfunny.mod.util.ReverseRendering;
 
-public class RenderSchindlerLineaButton2BlackWithoutScreen extends BlockEntityRenderer<SchindlerLineaButton2BlackWithoutScreen.BlockEntity> implements DirectionHelper, IGui, IBlock {
+import java.util.Comparator;
 
-    private static final int HOVER_COLOR = 0xFF990000;
-    private static final int PRESSED_COLOR = 0xFFFF0000;
-    private static final Identifier BUTTON_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/schindler_linea_button_1.png");
-    private static final Identifier BUTTON_LIGHT_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/schindler_linea_button_1_light.png");
+public class RenderOtisSPEC90Button1White extends BlockEntityRenderer<OtisSPEC90Button1White.BlockEntity> implements DirectionHelper, IGui, IBlock {
 
-    public RenderSchindlerLineaButton2BlackWithoutScreen(Argument dispatcher) {
+    private static final int HOVER_COLOR = 0xAAFF4400;
+    private static final int PRESSED_COLOR = 0xFFFF4400;
+    private static final Identifier ARROW_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/otis_spec_90_arrow_1.png");
+    private static final Identifier BUTTON_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/otis_ak11_button_1_white.png");
+    private static final Identifier BUTTON_LIGHT_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/otis_ak11_button_1_light.png");
+
+    public RenderOtisSPEC90Button1White(Argument dispatcher) {
         super(dispatcher);
     }
 
     @Override
-    public void render(SchindlerLineaButton2BlackWithoutScreen.BlockEntity blockEntity, float tickDelta, GraphicsHolder graphicsHolder1, int light, int overlay) {
+    public void render(OtisSPEC90Button1White.BlockEntity blockEntity, float tickDelta, GraphicsHolder graphicsHolder1, int light, int overlay) {
         final World world = blockEntity.getWorld2();
         if (world == null) {
             return;
@@ -59,24 +64,30 @@ public class RenderSchindlerLineaButton2BlackWithoutScreen extends BlockEntityRe
         StoredMatrixTransformations storedMatrixTransformations1 = storedMatrixTransformations.copy();
         storedMatrixTransformations1.add(graphicsHolder -> {
             graphicsHolder.rotateYDegrees(-facing.asRotation());
-            graphicsHolder.translate(0, 0, 7.675F / 16 - SMALL_OFFSET);
+            graphicsHolder.translate(0, 0, 7.775F / 16 - SMALL_OFFSET);
         });
 
 
         final LinearLayout parentLayout = new LinearLayout(true);
-        parentLayout.setBasicsAttributes(world, blockEntity.getPos2());
+        parentLayout.setBasicsAttributes(world, blockPos);
         parentLayout.setStoredMatrixTransformations(storedMatrixTransformations1);
-        parentLayout.setParentDimensions(1.75F / 16, 5F / 16);
-        parentLayout.setPosition(-0.0546875F, 0);
+        parentLayout.setParentDimensions(4F / 16, 12F / 16);
+        parentLayout.setPosition(-0.125F, 0.0625F);
         parentLayout.setWidth(LayoutSize.MATCH_PARENT);
         parentLayout.setHeight(LayoutSize.MATCH_PARENT);
 
+        final LinearLayout screenLayout = new LinearLayout(false);
+        screenLayout.setBasicsAttributes(world, blockPos);
+        screenLayout.setWidth(LayoutSize.WRAP_CONTENT);
+        screenLayout.setHeight(LayoutSize.WRAP_CONTENT);
+        screenLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+        screenLayout.setMargin(0, 0.7F / 16, 0, 0);
 
         final FrameLayout buttonLayout = new FrameLayout();
-        buttonLayout.setBasicsAttributes(world, blockEntity.getPos2());
+        buttonLayout.setBasicsAttributes(world, blockPos);
         buttonLayout.setWidth(LayoutSize.MATCH_PARENT);
         buttonLayout.setHeight(LayoutSize.MATCH_PARENT);
-        buttonLayout.setMargin(0, 0.9F / 16, 0, 0);
+        buttonLayout.setMargin(0, 0.45F / 16, 0, 0);
 
         final LinearLayout buttonContainer = new LinearLayout(true);
         buttonContainer.setBasicsAttributes(world, blockPos);
@@ -101,7 +112,7 @@ public class RenderSchindlerLineaButton2BlackWithoutScreen extends BlockEntityRe
         ImageView buttonUp = new ImageView();
         buttonUp.setBasicsAttributes(world, blockPos);
         buttonUp.setTexture(BUTTON_TEXTURE);
-        buttonUp.setDimension(0.8F / 16);
+        buttonUp.setDimension(0.7F / 16);
         buttonUp.setGravity(Gravity.CENTER);
         buttonUp.setLight(light);
 
@@ -109,17 +120,17 @@ public class RenderSchindlerLineaButton2BlackWithoutScreen extends BlockEntityRe
         buttonUpLight.setId("up");
         buttonUpLight.setBasicsAttributes(world, blockPos, keyMapping);
         buttonUpLight.setTexture(BUTTON_LIGHT_TEXTURE);
-        buttonUpLight.setDimension(0.8F / 16);
+        buttonUpLight.setDimension(0.7F / 16);
         buttonUpLight.setGravity(Gravity.CENTER);
         buttonUpLight.setLight(light);
-        buttonUpLight.setDefaultColor(0xFF444444,true);
+        buttonUpLight.setDefaultColor(0xFF333333);
         buttonUpLight.setHoverColor(HOVER_COLOR);
         buttonUpLight.setPressedColor(PRESSED_COLOR);
 
         ImageView buttonDown = new ImageView();
         buttonDown.setBasicsAttributes(world, blockPos);
         buttonDown.setTexture(BUTTON_TEXTURE);
-        buttonDown.setDimension(0.9F / 16);
+        buttonDown.setDimension(0.7F / 16);
         buttonDown.setGravity(Gravity.CENTER);
         buttonDown.setLight(light);
         buttonDown.setFlip(false, true);
@@ -128,16 +139,16 @@ public class RenderSchindlerLineaButton2BlackWithoutScreen extends BlockEntityRe
         buttonDownLight.setId("down");
         buttonDownLight.setBasicsAttributes(world, blockPos, keyMapping);
         buttonDownLight.setTexture(BUTTON_LIGHT_TEXTURE);
-        buttonDownLight.setDimension(0.8F / 16);
+        buttonDownLight.setDimension(0.7F / 16);
         buttonDownLight.setGravity(Gravity.CENTER);
         buttonDownLight.setLight(light);
-        buttonDownLight.setDefaultColor(0xFF444444,true);
+        buttonDownLight.setDefaultColor(0xFF333333);
         buttonDownLight.setHoverColor(HOVER_COLOR);
         buttonDownLight.setPressedColor(PRESSED_COLOR);
 
 
         final LineComponent line = new LineComponent();
-        line.setBasicsAttributes(world, blockEntity.getPos2());
+        line.setBasicsAttributes(world, blockPos);
 
 
         final ObjectArrayList<ObjectObjectImmutablePair<BlockPos, Lift>> sortedPositionsAndLifts = new ObjectArrayList<>();
@@ -148,7 +159,7 @@ public class RenderSchindlerLineaButton2BlackWithoutScreen extends BlockEntityRe
             line.RenderLine(holdingLinker, trackPosition);
 
 
-            SchindlerLineaButton2BlackWithoutScreen.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
+            OtisSPEC90Button1White.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
                 sortedPositionsAndLifts.add(new ObjectObjectImmutablePair<>(trackPosition, lift));
                 final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
                 instructionDirections.forEach(liftDirection -> {
@@ -164,6 +175,77 @@ public class RenderSchindlerLineaButton2BlackWithoutScreen extends BlockEntityRe
             });
         });
 
+
+        sortedPositionsAndLifts.sort(Comparator.comparingInt(sortedPositionAndLift -> blockPos.getManhattanDistance(new Vector3i(sortedPositionAndLift.left().data))));
+
+        if (!sortedPositionsAndLifts.isEmpty()) {
+
+            final int count = Math.min(2, sortedPositionsAndLifts.size());
+            final boolean reverseRendering = count > 1 && ReverseRendering.reverseRendering(facing.rotateYCounterclockwise(), sortedPositionsAndLifts.get(0).left(), sortedPositionsAndLifts.get(1).left());
+
+
+            for (int i = 0; i < count; i++) {
+
+                final LiftFloorDisplayView liftFloorDisplayView = new LiftFloorDisplayView();
+                liftFloorDisplayView.setBasicsAttributes(world,
+                        blockPos,
+                        sortedPositionsAndLifts.get(i).right(),
+                        FontList.instance.getFont("otis-segmented"),
+                        4,
+                        0xFFC94552);
+                liftFloorDisplayView.setDisplayLength(2, 0);
+                liftFloorDisplayView.setTextureId("otis_spec_90_button_1_display");
+                liftFloorDisplayView.setWidth(1.5F / 16);
+                liftFloorDisplayView.setLetterSpacing(10);
+                liftFloorDisplayView.setHeight(1.7F / 16);
+                liftFloorDisplayView.setMargin(-0.4F / 16, -0.325F / 16, 0.2F / 16, 0);
+
+                liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
+
+                final LinearLayout arrowLayout = new LinearLayout(false);
+                arrowLayout.setBasicsAttributes(world, blockPos);
+                arrowLayout.setWidth(LayoutSize.WRAP_CONTENT);
+                arrowLayout.setHeight(LayoutSize.WRAP_CONTENT);
+                arrowLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                final LiftArrowView liftArrowViewUP = new LiftArrowView();
+                liftArrowViewUP.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.UP);
+                liftArrowViewUP.setTexture(ARROW_TEXTURE);
+                liftArrowViewUP.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
+                liftArrowViewUP.setDimension(0.3F / 16,107,128);
+                liftArrowViewUP.setMargin(0.075F/16, 3.77F / 16, 0, 0);
+                liftArrowViewUP.setAnimationBliking(true, 1F);
+                liftArrowViewUP.setColor(0xFFC94552);
+
+                final LiftArrowView liftArrowViewDown = new LiftArrowView();
+                liftArrowViewDown.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.DOWN);
+                liftArrowViewDown.setTexture(ARROW_TEXTURE);
+                liftArrowViewDown.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
+                liftArrowViewDown.setDimension(0.3F / 16,107,128);
+                liftArrowViewDown.setMargin(0.075F/16, 3.77F / 16, 0, 0);
+                liftArrowViewDown.setAnimationBliking(true, 1F);
+                liftArrowViewDown.setColor(0xFFC94552);
+
+                arrowLayout.addChild(liftArrowViewDown);
+                arrowLayout.addChild(liftArrowViewUP);
+
+                final LinearLayout numberLayout = new LinearLayout(true);
+                numberLayout.setBasicsAttributes(world, blockPos);
+                numberLayout.setWidth(LayoutSize.WRAP_CONTENT);
+                numberLayout.setHeight(LayoutSize.WRAP_CONTENT);
+
+                numberLayout.addChild(arrowLayout);
+                numberLayout.addChild(liftFloorDisplayView);
+
+                if (reverseRendering) {
+                    screenLayout.addChild(numberLayout);
+                    screenLayout.reverseChildren();
+                } else {
+                    screenLayout.addChild(numberLayout);
+                }
+            }
+        }
+
         upButtonGroup.addChild(buttonUp);
         upButtonGroup.addChild(buttonUpLight);
         downButtonGroup.addChild(buttonDown);
@@ -174,13 +256,14 @@ public class RenderSchindlerLineaButton2BlackWithoutScreen extends BlockEntityRe
         }
 
         if (buttonDescriptor.hasDownButton()) {
-            if (buttonDescriptor.hasUpButton()) {
-                downButtonGroup.setMargin(0, 0.2F / 16, 0, 0);
+             if (buttonDescriptor.hasUpButton())  {
+                downButtonGroup.setMargin(0, 0.8F / 16, 0, 0);
             }
             buttonContainer.addChild(downButtonGroup);
         }
 
         buttonLayout.addChild(buttonContainer);
+        parentLayout.addChild(screenLayout);
         parentLayout.addChild(buttonLayout);
 
         parentLayout.render();

@@ -42,11 +42,12 @@ public class FontList {
             loadFont("hitachi_modern", "font/hitachi_modern.ttf");
             loadFont("kone-lcd-segment", "font/kone-lcd-segment.ttf");
             loadFont("otis_series_3", "font/otis_series_3.ttf");
+            loadFont("otis-segmented", "font/otis-segmented.ttf");
             loadFont("wqy-microhei", "font/wqy-microhei.ttc");
             loadFont("thyssenkrupp_lcd", "font/new-thyssenkrupp.ttf");
             loadFont("kone-kss", "font/kone-kss-800-signalization.ttf");
 //            loadFont("hitachi-led-seg", "font/hitachi_led_segmented.ttf");
-            loadFont("hitachi-led-seg", "font/hitachi_led_segmented_fix.ttf");
+            loadFont("hitachi-led-seg", "font/hitachi-led-segmented.ttf");
             loadFont("hitachi-led-dot_matrix", "font/hitachi-dot-matrix-regular.ttf");
             loadFont("hitachi-led-dot_matrix_small", "font/hitachi-dot-matrix-small.ttf");
             loadFont("hitachi-lcd-seg", "font/hitachi-lcd-segmented.ttf");
