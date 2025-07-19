@@ -196,7 +196,7 @@ public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
                         FontList.instance.getFont("hitachi-led-dot_matrix"),
-                        6F,
+                        5F,
                         0xFFFF4800);
                 liftFloorDisplayView.setTextureId("hitachi-vib-322-dot-matrix");
                 liftFloorDisplayView.setWidth(1.5F / 16);
@@ -210,7 +210,7 @@ public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
                             FontList.instance.getFont("hitachi-led-dot_matrix_small"),
-                            6F,
+                            5F,
                             0xFFFF4800);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);
                 } else {
@@ -221,9 +221,8 @@ public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658
                 final LiftArrowView liftArrowView = new LiftArrowView();
                 liftArrowView.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.AUTO);
                 liftArrowView.setTexture(ARROW_TEXTURE);
-                liftArrowView.setDimension(0.6F / 16, 384, 512);
-                liftArrowView.setMargin(0, 1.37F / 16, 0, 0);
-                liftArrowView.setGravity(Gravity.CENTER_HORIZONTAL);
+                liftArrowView.setDimension(0.475F / 16, 384, 512);
+                liftArrowView.setMargin(0.6F / 16, 1.75F / 16, 0, -0.3F/16);
                 liftArrowView.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
                 if (unlocked) {
                     liftArrowView.setColor(0xFFFFFFFF);
