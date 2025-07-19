@@ -96,14 +96,15 @@ public class RenderMitsubishiNexWayScreen2<T extends LiftPanelBase.BlockEntityBa
                         16,
                         0xFFFFFFFF);
                 liftFloorDisplayView.setTextureId("mitsubishi_nexway_screen_2_display");
-                liftFloorDisplayView.setWidth(1.5F / 16);
+                liftFloorDisplayView.setWidth(1.9F / 16);
                 liftFloorDisplayView.setHeight(1.5F / 16);
                 liftFloorDisplayView.setGravity(Gravity.CENTER_VERTICAL);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
                 liftFloorDisplayView.setLetterSpacing(0);
-                liftFloorDisplayView.setMargin(0.2F / 16, 0, 0, 0);
+                liftFloorDisplayView.setMargin(0.02F / 16, 0, 0, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
                 if (liftFloorDisplayView.getTextLength() >= 3) {
+                    liftFloorDisplayView.setMargin(0F / 16, 0, 0, 0);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);
                 } else {
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.ASPECT_FILL);
