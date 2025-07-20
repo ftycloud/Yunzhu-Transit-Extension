@@ -7,6 +7,12 @@
   "overrides": [
     {
       "predicate": {
+        "mtr:selected": 2
+      },
+      "model": "yte:item/yte_group_lift_buttons_link_remover_selected_2"
+    },
+    {
+      "predicate": {
         "mtr:selected": 1
       },
       "model": "yte:item/yte_group_lift_buttons_link_remover_selected"

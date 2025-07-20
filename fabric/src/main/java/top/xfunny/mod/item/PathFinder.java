@@ -14,31 +14,38 @@ import java.util.ArrayList;
 public class PathFinder implements DirectionHelper {
     ArrayList<BlockPos> mark = new ArrayList<>();
     ;
-    Object[] array = new Object[2];
+    Object[] array = new Object[3];
     ;
 
-    public Object[] findPath(ItemUsageContext context, BlockPos pos) {//调用入口
+    public Object[] findPath(ItemUsageContext context, BlockPos pos) {
         final World world = context.getWorld();
-        checkPosition(world, pos, new BlockPos(0, 0, 0), facingHelper(context, pos));
+        checkPosition(world, pos, new BlockPos(0, 0, 0),new BlockPos(0, 0, 0), facingHelper(context, pos));
         return array;
     }
 
     public Object[] findPath(ItemUsageContext context, BlockPos pos1, BlockPos pos2) {
         final World world = context.getWorld();
         if (world.getBlockState(pos1).getBlock().data instanceof BlockLiftTrackBase) {
-            checkPosition(world, pos1, pos2, facingHelper(context, pos1, pos2));
+            checkPosition(world, pos1, pos2, new BlockPos(0, 0, 0), facingHelper(context, pos1, pos2));
         } else {
-            checkPosition(world, pos2, pos1, facingHelper(context, pos1, pos2));
+            checkPosition(world, pos2, pos1, new BlockPos(0, 0, 0), facingHelper(context, pos1, pos2));
         }
         return array;
     }
 
-    private void checkPosition(World world, BlockPos pos, BlockPos otherPos, boolean facing) {
+    public Object[] findPath(ItemUsageContext context, BlockPos pos1, BlockPos pos2, BlockPos pos3) {
+        final World world = context.getWorld();
+        checkPosition(world, pos3, pos1, pos2, facingHelper(context, pos3, pos3));//pos3为轨道
+        return array;
+    }
+
+    private void checkPosition(World world, BlockPos pos, BlockPos otherPos, BlockPos thirdPos, boolean facing) {
         if (world.getBlockState(pos.up(1)).getBlock().data instanceof BlockLiftTrackBase) {
             //Init.LOGGER.info("上");
             if (!findMark(pos.up(1))) {
                 array[0] = pos.up(1);
                 array[1] = otherPos.up(1);
+                array[2] = thirdPos.up(1);
                 mark.add(pos);
             }
         }
@@ -47,6 +54,7 @@ public class PathFinder implements DirectionHelper {
             if (!findMark(pos.down(1))) {
                 array[0] = pos.down(1);
                 array[1] = otherPos.down(1);
+                array[2] = thirdPos.down(1);
                 mark.add(pos);
             }
         }
@@ -55,6 +63,7 @@ public class PathFinder implements DirectionHelper {
             if (!findMark(pos.south(1))) {
                 array[0] = pos.south(1);
                 array[1] = otherPos.south(1);
+                array[2] = thirdPos.south(1);
                 mark.add(pos);
             }
         }
@@ -63,6 +72,7 @@ public class PathFinder implements DirectionHelper {
             if (!findMark(pos.north(1))) {
                 array[0] = pos.north(1);
                 array[1] = otherPos.north(1);
+                array[2] = thirdPos.north(1);
 
                 mark.add(pos);
             }
@@ -72,6 +82,7 @@ public class PathFinder implements DirectionHelper {
             if (!findMark(pos.east(1))) {
                 array[0] = pos.east(1);
                 array[1] = otherPos.east(1);
+                array[2] = thirdPos.east(1);
                 mark.add(pos);
             }
         }
@@ -80,6 +91,7 @@ public class PathFinder implements DirectionHelper {
             if (!findMark(pos.west(1))) {
                 array[0] = pos.west(1);
                 array[1] = otherPos.west(1);
+                array[2] = thirdPos.west(1);
                 mark.add(pos);
             }
         }

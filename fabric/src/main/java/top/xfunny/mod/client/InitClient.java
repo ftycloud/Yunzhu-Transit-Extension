@@ -11,6 +11,7 @@ import top.xfunny.mod.Blocks;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.Items;
 import top.xfunny.mod.client.render.*;
+import top.xfunny.mod.item.YTEItemBlockClickingBase;
 
 
 public final class InitClient {
@@ -210,10 +211,10 @@ public final class InitClient {
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.PAT_RS01_RAILWAY_SIGN_7_EVEN, RenderPATRS01RailwaySign::new);
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.PAT_RS01_RAILWAY_SIGN_7_ODD, RenderPATRS01RailwaySign::new);
 
-        REGISTRY_CLIENT.registerItemModelPredicate(Items.YTE_LIFT_BUTTONS_LINK_CONNECTOR, new Identifier(org.mtr.mod.Init.MOD_ID, "selected"), checkItemPredicateTag());
-        REGISTRY_CLIENT.registerItemModelPredicate(Items.YTE_LIFT_BUTTONS_LINK_REMOVER, new Identifier(org.mtr.mod.Init.MOD_ID, "selected"), checkItemPredicateTag());
-        REGISTRY_CLIENT.registerItemModelPredicate(Items.YTE_GROUP_LIFT_BUTTONS_LINK_CONNECTOR, new Identifier(org.mtr.mod.Init.MOD_ID, "selected"), checkItemPredicateTag());
-        REGISTRY_CLIENT.registerItemModelPredicate(Items.YTE_GROUP_LIFT_BUTTONS_LINK_REMOVER, new Identifier(org.mtr.mod.Init.MOD_ID, "selected"), checkItemPredicateTag());
+        REGISTRY_CLIENT.registerItemModelPredicate(Items.YTE_LIFT_BUTTONS_LINK_CONNECTOR, new Identifier(Init.MOD_ID, "selected"), checkItemPredicateTag());
+        REGISTRY_CLIENT.registerItemModelPredicate(Items.YTE_LIFT_BUTTONS_LINK_REMOVER, new Identifier(Init.MOD_ID, "selected"), checkItemPredicateTag());
+        REGISTRY_CLIENT.registerItemModelPredicate(Items.YTE_GROUP_LIFT_BUTTONS_LINK_CONNECTOR, new Identifier(Init.MOD_ID, "selected"), checkItemPredicateTag());
+        REGISTRY_CLIENT.registerItemModelPredicate(Items.YTE_GROUP_LIFT_BUTTONS_LINK_REMOVER, new Identifier(Init.MOD_ID, "selected"), checkItemPredicateTag());
 
         REGISTRY_CLIENT.setupPackets(new Identifier(Init.MOD_ID, "packet"));
 
@@ -230,7 +231,15 @@ public final class InitClient {
 
 
     private static RegistryClient.ModelPredicateProvider checkItemPredicateTag() {
-        return (itemStack, clientWorld, livingEntity) -> itemStack.getOrCreateTag().contains(ItemBlockClickingBase.TAG_POS) ? 1 : 0;
+        return (itemStack, clientWorld, livingEntity) -> {
+            if (itemStack.getOrCreateTag().contains(YTEItemBlockClickingBase.TAG_SECOND_POS)) {
+                return 2.0F;
+            } else if (itemStack.getOrCreateTag().contains(YTEItemBlockClickingBase.TAG_POS)) {
+                return 1.0F;
+            } else {
+                return 0.0F;
+            }
+        };
     }
 
     public static float getGameTick() {

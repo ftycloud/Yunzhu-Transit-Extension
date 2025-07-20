@@ -176,6 +176,7 @@
   "message.linker_status_failed_remove": "Removal failed",
   "message.floor_auto_setter_status_finished": "Done! Set %d floor numbers",
   "message.floor_auto_setter_status_failed": "Operation failed",
+  "message.floor_auto_setter_status_need_track_floor_position": "Please select an lift/elevator floor track.",
   "tooltip.hitachi_display_cip_71": "Display:CIP-71",
   "tooltip.hitachi_display_bx_scl_c6": "Display:BX-SCL-C6",
   "tooltip.hitachi_display_bx_scl_c5": "Display:BX-SCL-C5",

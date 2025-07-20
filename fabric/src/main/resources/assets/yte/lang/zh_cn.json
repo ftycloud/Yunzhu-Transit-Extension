@@ -180,6 +180,7 @@
   "message.linker_status_failed_remove": "移除失败",
   "message.floor_auto_setter_status_finished": "设置完成！已设置%d个楼层编号",
   "message.floor_auto_setter_status_failed": "操作失败",
+  "message.floor_auto_setter_status_need_track_floor_position": "请选中一个楼层轨道",
   "tooltip.hitachi_display_cip_71": "显示器型号：CIP-71",
   "tooltip.hitachi_display_bx_scl_c6": "显示器型号：BX-SCL-C6",
   "tooltip.hitachi_display_bx_scl_c5": "显示器型号：BX-SCL-C5",

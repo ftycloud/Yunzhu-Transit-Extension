@@ -176,6 +176,7 @@
   "message.linker_status_failed_remove": "拆除失敗",
   "message.floor_auto_setter_status_finished": "搞掂！set好咗%d個樓層號碼",
   "message.floor_auto_setter_status_failed": "操作失敗",
+  "message.floor_auto_setter_status_need_track_floor_position": "請揀一個樓層軌道位置",
   "tooltip.hitachi_display_cip_71": "顯示器型號：CIP-71",
   "tooltip.hitachi_display_bx_scl_c6": "顯示器型號：BX-SCL-C6",
   "tooltip.hitachi_display_bx_scl_c5": "顯示器型號：BX-SCL-C5",
