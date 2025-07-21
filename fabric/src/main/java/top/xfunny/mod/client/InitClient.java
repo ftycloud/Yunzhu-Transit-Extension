@@ -87,6 +87,7 @@ public final class InitClient {
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.MITSUBISHI_NEXWAY_SCREEN_3_ODD, dispatcher -> new top.xfunny.mod.client.render.RenderMitsubishiNexWayScreen3<>(dispatcher, true));
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.MITSUBISHI_NEXWAY_SCREEN_3_SEGMENTED_EVEN, dispatcher -> new top.xfunny.mod.client.render.RenderMitsubishiNexWayScreen3Segmented<>(dispatcher, false));
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.MITSUBISHI_NEXWAY_SCREEN_3_SEGMENTED_ODD, dispatcher -> new top.xfunny.mod.client.render.RenderMitsubishiNexWayScreen3Segmented<>(dispatcher, true));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SHANGHAI_MITSUBISHI_NEXWAY_BUTTON_1, RenderShanghaiMitsubishiNexWayCRButton1::new);
 
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.THYSSENKRUPP_TEGL1_BUTTON_1, RenderThyssenkruppTEGL1Button1::new);
 

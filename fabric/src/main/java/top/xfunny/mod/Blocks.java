@@ -89,6 +89,7 @@ public class Blocks {
     public static final BlockRegistryObject MITSUBISHI_MPVF_BUTTON_1;
     public static final BlockRegistryObject MITSUBISHI_MPVF_SCREEN_1_VERTICAL_ODD;
     public static final BlockRegistryObject MITSUBISHI_MPVF_SCREEN_1_VERTICAL_EVEN;
+    public static final BlockRegistryObject SHANGHAI_MITSUBISHI_NEXWAY_CR_BUTTON_1;
 
     public static final BlockRegistryObject SCHINDLER_D_SERIES_D2BUTTON;
     public static final BlockRegistryObject SCHINDLER_D_SERIES_SCREEN_1_ODD;
@@ -267,6 +268,7 @@ public class Blocks {
         MITSUBISHI_MPVF_BUTTON_1 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_mpvf_button_1"), () -> new Block(new MitsubishiMPVFButton1()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_MPVF_SCREEN_1_VERTICAL_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_mpvf_screen_1_vertical_odd"), () -> new Block(new MitsubishiMPVFScreen1VerticalOdd()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_MPVF_SCREEN_1_VERTICAL_EVEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_mpvf_screen_1_vertical_even"), () -> new Block(new MitsubishiMPVFScreen1VerticalEven()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        SHANGHAI_MITSUBISHI_NEXWAY_CR_BUTTON_1 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "shanghai_mitsubishi_nexway_cr_button_1"), () -> new Block(new ShanghaiMitsubishiNexWayCRButton1()), CreativeModeTabs.YTE_LIFT_FIXTURES);
 
         TEST_LIFT_HALL_LANTERNS = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "test_lift_hall_lanterns"), () -> new Block(new TestLiftHallLanterns()));
         TEST_LIFT_PANEL = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "test_lift_panel"), () -> new Block(new TestLiftPanel()));
