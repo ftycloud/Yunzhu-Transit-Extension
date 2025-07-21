@@ -113,6 +113,7 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
         while (true) {
             if(pos1 != null && pos2 != null && world.getBlockState(pos3).getBlock().data instanceof BlockLiftTrackBase){
                 connect(world, pos1, pos2, isConnector);
+                connect(world, pos2, pos1, isConnector);
                 Object[] pos = pathFinder.findPath(context, pos1, pos2, pos3);
                 pos1 = (BlockPos) pos[1];
                 pos2 = (BlockPos) pos[2];

@@ -233,11 +233,11 @@ public final class InitClient {
     private static RegistryClient.ModelPredicateProvider checkItemPredicateTag() {
         return (itemStack, clientWorld, livingEntity) -> {
             if (itemStack.getOrCreateTag().contains(YTEItemBlockClickingBase.TAG_SECOND_POS)) {
-                return 2.0F;
+                return 1F;
             } else if (itemStack.getOrCreateTag().contains(YTEItemBlockClickingBase.TAG_POS)) {
-                return 1.0F;
+                return 0.5F;
             } else {
-                return 0.0F;
+                return 0;
             }
         };
     }
