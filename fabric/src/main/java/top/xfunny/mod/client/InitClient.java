@@ -104,6 +104,8 @@ public final class InitClient {
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.OTIS_SPEC_60_BUTTON_1, RenderOtisSPEC60Button1::new);
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.OTIS_SPEC_90_BUTTON_1_BLACK, RenderOtisSPEC90Button1Black::new);
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.OTIS_SPEC_90_BUTTON_1_WHITE, RenderOtisSPEC90Button1White::new);
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.OTIS_SPEC_90_BUTTON_2_BLACK, RenderOtisSPEC90Button2Black::new);
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.OTIS_SPEC_90_BUTTON_2_WHITE, RenderOtisSPEC90Button2White::new);
 
 
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_D_SERIES_D2BUTTON, RenderSchindlerDSeriesD2Button::new);

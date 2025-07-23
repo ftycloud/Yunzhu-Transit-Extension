@@ -100,6 +100,8 @@
   "block.yte.otis_spec_60_button_1": "奥的斯SPEC60呼梯面板（类型1）",
   "block.yte.otis_spec_90_button_1_black": "奥的斯SPEC90呼梯面板（类型1，黑色）",
   "block.yte.otis_spec_90_button_1_white": "奥的斯SPEC90呼梯面板（类型1，白色）",
+  "block.yte.otis_spec_90_button_2_black": "奥的斯SPEC90呼梯面板（类型2，黑色）",
+  "block.yte.otis_spec_90_button_2_white": "奥的斯SPEC90呼梯面板（类型2，白色）",
   "block.yte.schindler_d_series_d2button": "迅达D系列D2按钮呼梯面板",
   "block.yte.schindler_d_series_screen_1_even": "迅达D系列候梯楼层显示器（类型1，占两格）",
   "block.yte.schindler_d_series_screen_1_odd": "迅达D系列候梯楼层显示器（类型1，占一格）",

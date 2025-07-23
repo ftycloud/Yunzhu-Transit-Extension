@@ -37,6 +37,8 @@ public class LinkerValidTypes {
             OtisSPEC60Button1.class,
             OtisSPEC90Button1Black.class,
             OtisSPEC90Button1White.class,
+            OtisSPEC90Button2Black.class,
+            OtisSPEC90Button2White.class,
             TestLiftHallLanterns.class,
             TestLiftPanel.class,
             HitachiVIB320Button.class,

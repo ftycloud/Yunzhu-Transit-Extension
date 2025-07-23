@@ -52,6 +52,8 @@ public class Blocks {
     public static final BlockRegistryObject OTIS_SPEC_60_BUTTON_1;
     public static final BlockRegistryObject OTIS_SPEC_90_BUTTON_1_BLACK;
     public static final BlockRegistryObject OTIS_SPEC_90_BUTTON_1_WHITE;
+    public static final BlockRegistryObject OTIS_SPEC_90_BUTTON_2_BLACK;
+    public static final BlockRegistryObject OTIS_SPEC_90_BUTTON_2_WHITE;
 
     public static final BlockRegistryObject MITSUBISHI_GPS_BUTTON_1;
     public static final BlockRegistryObject MITSUBISHI_GPS_BUTTON_1_WITHOUT_SCREEN;
@@ -290,6 +292,8 @@ public class Blocks {
         OTIS_SPEC_60_BUTTON_1 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "otis_spec_60_button_1"), () -> new Block(new OtisSPEC60Button1()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         OTIS_SPEC_90_BUTTON_1_BLACK = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "otis_spec_90_button_1_black"), () -> new Block(new OtisSPEC90Button1Black()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         OTIS_SPEC_90_BUTTON_1_WHITE = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "otis_spec_90_button_1_white"), () -> new Block(new OtisSPEC90Button1White()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        OTIS_SPEC_90_BUTTON_2_BLACK = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "otis_spec_90_button_2_black"), () -> new Block(new OtisSPEC90Button2Black()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        OTIS_SPEC_90_BUTTON_2_WHITE = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "otis_spec_90_button_2_white"), () -> new Block(new OtisSPEC90Button2White()), CreativeModeTabs.YTE_LIFT_FIXTURES);
 
         SCHINDLER_D_SERIES_D2BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_d_series_d2button"), () -> new Block(new SchindlerDSeriesD2Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         SCHINDLER_D_SERIES_SCREEN_1_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_d_series_screen_1_odd"), () -> new Block(new SchindlerDSeriesScreen1Odd()), CreativeModeTabs.YTE_LIFT_FIXTURES);
