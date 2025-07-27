@@ -83,7 +83,7 @@ public class SchindlerZLine3Keypad1 extends LiftDestinationDispatchTerminalBase 
     }
 
     private void processKeyInput(World world, BlockPos pos, SchindlerZLine3Keypad1.BlockEntity data1, LiftDestinationDispatchTerminalBase.BlockEntityBase data, String screenId, String output) {
-        Map<String, Integer> numberKeys = new HashMap<>() {{
+        Map<String, Integer> numberKeys = new HashMap<String, Integer>() {{
             put("number1", 1);
             put("number2", 2);
             put("number3", 3);
