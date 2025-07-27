@@ -204,5 +204,19 @@
   "tooltip.id_card.floors": "通行楼层: %d",
   "tooltip.auth_qrcode.used": "已作废",
   "tooltip.auth_qrcode.unused": "未使用",
-  "tooltip.warning_block_testing": "!!!警告:此方块正在测试中，我们并不建议您使用此方块"
+  "tooltip.warning_block_testing": "!!!警告:此方块正在测试中，我们并不建议您使用此方块",
+  "block.yte.test": "广州地铁风格导向指示牌",
+  "gui.yte.signs.list.signs_display": "指示牌配置",
+  "gui.yte.signs.list.signs_setting": "编辑导向标识",
+  "gui.yte.signs.subtitle": "已选择：%d",
+  "gui.yte.search": "搜索...",
+  "gui.yte.setting": "配置",
+  "gui.yte.select": "选择",
+  "gui.yte.selected": "已选择",
+  "gui.yte.built_in_style": "内置样式",
+  "gui.yte.extended_style": "扩展样式",
+  "gui.yte.subtitle": "位置：%d %d %d",
+  "gui.yte.subtitle_with_station": "位置：%d %d %d | %s",
+  "gui.yte.watermark": "测试版本不代表最终质量。",
+  "gui.yte.watermark_1": "版本 %s。开发者构建版本。"
 }
