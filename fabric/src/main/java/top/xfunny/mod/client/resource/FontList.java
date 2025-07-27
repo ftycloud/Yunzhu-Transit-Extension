@@ -12,7 +12,7 @@ import java.util.Objects;
 public class FontList {
     public static FontList instance = new FontList();
 
-    private Map<String, Font> fonts = new HashMap<>();
+    private Map<String, Font> fonts = new HashMap<String, Font>();
     private boolean fontsLoaded = false;
 
     public void FontReload() {

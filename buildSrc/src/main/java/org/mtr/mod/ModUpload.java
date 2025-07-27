@@ -24,7 +24,7 @@ public class ModUpload {
 					final String fileName = String.format("Yunzhu-Transit-Extension-%s.jar", modVersion);
 					final Path filePath = Paths.get("build/release").resolve(fileName);
 
-					final Map<String, DependencyType> dependenciesModrinth = new HashMap<>();
+					final Map<String, DependencyType> dependenciesModrinth = new HashMap<String, DependencyType>();
 					if (modLoader == ModLoader.FABRIC) {
 						dependenciesModrinth.put("P7dR8mSH", DependencyType.REQUIRED);
 					}
