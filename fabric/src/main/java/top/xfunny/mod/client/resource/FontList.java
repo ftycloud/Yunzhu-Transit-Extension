@@ -28,6 +28,7 @@ public class FontList {
             loadFont("koneModernization", "font/kone-modernization.ttf");
             loadFont("schindler_m_series", "font/schindler-m-line-led.ttf");
             loadFont("mitsubishi_modern", "font/mitsubishi_modern.ttf");
+            loadFont("mitsubishi_small_regular", "font/mitsubishi-dot-matrix-small-generic.ttf");
             loadFont("mitsubishi_small_sht", "font/mitsubishi-dot-matrix-small-shanghai-tower.ttf");
             loadFont("mitsubishi_seg_universal", "font/mitsubishi_seg_universal.ttf");
             loadFont("kone-m-series", "font/kone-m-series.ttf");
