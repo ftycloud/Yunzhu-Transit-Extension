@@ -26,7 +26,7 @@ jobs:
       - name: Build ${{ matrix.minecraft }}
         run: ./gradlew build -PminecraftVersion="${{ matrix.minecraft }}" --no-daemon
       - name: Capture release artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@main
         with:
           name: Fabric and Forge ${{ matrix.minecraft }}
           path: build/release/

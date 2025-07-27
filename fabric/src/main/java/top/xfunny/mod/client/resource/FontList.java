@@ -37,6 +37,7 @@ public class FontList {
             loadFont("schindler_linea", "font/schindler-linea.ttf");
             loadFont("schindler_linea_large", "font/schindler-linea-large.ttf");
             loadFont("hitachi_b85", "font/hitachi_b85.ttf");
+            loadFont("hitachi_b85_left", "font/hitachi_b85_1_left.ttf");
             loadFont("nimbus_sans_bold", "font/nimbus_sans_bold.ttf");
             loadFont("gill_sans_mt", "font/gill_sans_mt.ttf");
             loadFont("hitachi_modern", "font/hitachi_modern.ttf");
@@ -46,8 +47,8 @@ public class FontList {
             loadFont("wqy-microhei", "font/wqy-microhei.ttc");
             loadFont("thyssenkrupp_lcd", "font/new-thyssenkrupp.ttf");
             loadFont("kone-kss", "font/kone-kss-800-signalization.ttf");
-//            loadFont("hitachi-led-seg", "font/hitachi_led_segmented.ttf");
             loadFont("hitachi-led-seg", "font/hitachi-led-segmented.ttf");
+            loadFont("hitachi-led-seg-fix", "font/hitachi_led_segmented_fix");
             loadFont("hitachi-led-dot_matrix", "font/hitachi-dot-matrix-regular.ttf");
             loadFont("hitachi-led-dot_matrix_small", "font/hitachi-dot-matrix-small.ttf");
             loadFont("hitachi-lcd-seg", "font/hitachi-lcd-segmented.ttf");

@@ -155,6 +155,7 @@ public class Blocks {
     public static final BlockRegistryObject HITACHI_VIB322_BUTTON_DOT_MATRIX;
     public static final BlockRegistryObject HITACHI_VIB221_BUTTON;
     public static final BlockRegistryObject HITACHI_VIB221_BUTTON_DOT_MATRIX;
+    public static final BlockRegistryObject HITACHI_VIB221_BUTTON_LCD_SEGMENTED;
     public static final BlockRegistryObject HITACHI_VIB820_BUTTON;
     public static final BlockRegistryObject HITACHI_VIB820_BUTTON_LCD;
     public static final BlockRegistryObject HITACHI_VIB68_BUTTON;
@@ -349,6 +350,7 @@ public class Blocks {
         HITACHI_VIB322_BUTTON_DOT_MATRIX = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib322_button_1_dot_matrix"), () -> new Block(new HitachiVIB322ButtonDotMatrix()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB221_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib221_button_1"), () -> new Block(new HitachiVIB221Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB221_BUTTON_DOT_MATRIX = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib221_button_1_dot_matrix"), () -> new Block(new HitachiVIB221ButtonDotMatrix()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB221_BUTTON_LCD_SEGMENTED = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib221_button_1_lcd_segmented"), () -> new Block(new HitachiVIB221ButtonLCDSegmented()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB820_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib820_button_1"), () -> new Block(new HitachiVIB820Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB820_BUTTON_LCD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib820_button_1_lcd"), () -> new Block(new HitachiVIB820ButtonLCD()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB68_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib68_button_1"), () -> new Block(new HitachiVIB68Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
