@@ -197,7 +197,7 @@ public class RenderHitachiB85Button1 extends BlockEntityRenderer<HitachiB85Butto
                 liftFloorDisplayView.setLetterSpacing(15);
                 liftFloorDisplayView.setWidth(0.6F / 16);
                 liftFloorDisplayView.setHeight(0.6F / 16);
-                liftFloorDisplayView.setMargin(0.2F / 16, 0.2F / 16, 0, 0);
+                liftFloorDisplayView.setMargin(0.2F / 16, 0.15F / 16, 0, 0);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
 
                 final LiftArrowView liftArrowView = new LiftArrowView();

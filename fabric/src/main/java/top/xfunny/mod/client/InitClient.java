@@ -11,16 +11,20 @@ import top.xfunny.mod.Blocks;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.Items;
 import top.xfunny.mod.client.render.*;
+import top.xfunny.mod.config.ClientConfig;
 import top.xfunny.mod.item.YTEItemBlockClickingBase;
 
 
 public final class InitClient {
     public static final RegistryClient REGISTRY_CLIENT = new RegistryClient(Init.REGISTRY);
+    private static final ClientConfig config = new ClientConfig();
     private static long lastMillis = 0;
     private static long gameMillis = 0;
 
 
     public static void init() {
+        initializeConfig();
+
         REGISTRY_CLIENT.registerBlockRenderType(RenderLayer.getCutout(), Blocks.SCHINDLER_QKS9_DOOR_1);
         REGISTRY_CLIENT.registerBlockRenderType(RenderLayer.getCutout(), Blocks.MITSUBISHI_NEXWAY_DOOR_1);
 
@@ -248,6 +252,14 @@ public final class InitClient {
                 return 0;
             }
         };
+    }
+
+    private static void initializeConfig() {
+        config.readConfig();
+    }
+
+    public static ClientConfig getConfig() {
+        return config;
     }
 
     public static float getGameTick() {

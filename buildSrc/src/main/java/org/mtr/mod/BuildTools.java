@@ -71,6 +71,15 @@ public class BuildTools {
         return getJson("https://files.minecraftforge.net/net/minecraftforge/forge/promotions_slim.json").getAsJsonObject().getAsJsonObject("promos").get(minecraftVersion + "-latest").getAsString();
     }
 
+    public String getModMenuVersion() {
+        if (minecraftVersion.equals("1.20.4")) {
+            return "9.0.0";
+        }
+        final String modIdString = "modmenu";
+        return new ModId(modIdString, ModProvider.MODRINTH).getModFiles(minecraftVersion, ModLoader.FABRIC, "").get(0).fileName.split("\\.jar")[0].replace(modIdString + "-", "");
+    }
+
+
     public void copyBuildFile() throws IOException {
         final Path directory = path.getParent().resolve("build/release");
         Files.createDirectories(directory);
