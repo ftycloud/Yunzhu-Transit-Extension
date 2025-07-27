@@ -190,11 +190,11 @@ public class RenderHitachiB85Button1 extends BlockEntityRenderer<HitachiB85Butto
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
                         FontList.instance.getFont(floorNumber.matches("^(-1|1)$")?"hitachi_b85_left":"hitachi_b85"),
-                        8,
+                        8.375F,
                         0xFFFF0000);
                 liftFloorDisplayView.setDisplayLength(2, 0.05F);
                 liftFloorDisplayView.setTextureId("hitachi_b85_screen_1_display");
-                liftFloorDisplayView.setLetterSpacing(5);
+                liftFloorDisplayView.setLetterSpacing(15);
                 liftFloorDisplayView.setWidth(0.6F / 16);
                 liftFloorDisplayView.setHeight(0.6F / 16);
                 liftFloorDisplayView.setMargin(0.2F / 16, 0.2F / 16, 0, 0);
