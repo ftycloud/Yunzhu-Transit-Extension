@@ -20,6 +20,8 @@
     ],
     "client": [
       "top.xfunny.entrypoint.YunzhuTransitExtensionClient"
+    ],"modmenu": [
+      "top.xfunny.entrypoint.ModMenu"
     ]
   },
   "mixins": [

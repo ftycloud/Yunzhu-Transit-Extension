@@ -17,6 +17,11 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${buildTools.getFabricVersion()}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${buildTools.getFabricApiVersion()}"
     modImplementation "org.mtr:MTR-fabric:${mtrVersion}+${minecraftVersion}-server"
+    modApi("com.terraformersmc:modmenu:${buildTools.getModMenuVersion()}") { exclude group: "net.fabricmc", module: "fabric-loader" }
+}
+
+repositories {
+    maven { url = "https://maven.terraformersmc.com/" }
 }
 
 java {
