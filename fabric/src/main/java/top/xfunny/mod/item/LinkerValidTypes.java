@@ -47,6 +47,7 @@ public class LinkerValidTypes {
             HitachiVIB322ButtonDotMatrix.class,
             HitachiVIB221Button.class,
             HitachiVIB221ButtonDotMatrix.class,
+            HitachiVIB221ButtonLCDSegmented.class,
             HitachiVIB820Button.class,
             HitachiVIB820ButtonLCD.class,
             HitachiVIB68Button.class,

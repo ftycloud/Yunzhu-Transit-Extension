@@ -97,29 +97,17 @@ public class RenderKoneKSS280Screen1<T extends LiftPanelBase.BlockEntityBase> ex
                 liftFloorDisplayView.setMargin(0.075F / 16, 0, 0, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
 
-                final LiftArrowView liftArrowView_right = new LiftArrowView();
-                liftArrowView_right.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.DOWN);
-                liftArrowView_right.setTexture(new Identifier(Init.MOD_ID, "textures/block/kone_arrow_light.png"));
-                liftArrowView_right.setAnimationScrolling(false, 0.05F);
-                liftArrowView_right.setDimension(1F / 16);
-                liftArrowView_right.setMargin(1F / 16, 3F / 16, 0, 0);
-                liftArrowView_right.setGravity(Gravity.CENTER_VERTICAL);
-                liftArrowView_right.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
-                liftArrowView_right.setColor(0xFFFFFFFF);
-
                 final LiftArrowView liftArrowView_left = new LiftArrowView();
-                liftArrowView_left.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.UP);
+                liftArrowView_left.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.AUTO);
                 liftArrowView_left.setTexture(new Identifier(Init.MOD_ID, "textures/block/kone_arrow_light.png"));
                 liftArrowView_left.setAnimationScrolling(false, 0.05F);
                 liftArrowView_left.setDimension(1F / 16);
-                liftArrowView_left.setMargin(-1.875F / 16, 3F / 16, 0, 0);
-                liftArrowView_left.setGravity(Gravity.CENTER_VERTICAL);
+                liftArrowView_left.setMargin(0.25F / 16, 1.875F / 16, 0, 0);
                 liftArrowView_left.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
                 liftArrowView_left.setColor(0xFFFFFFFF);
 
 
                 parentLayout.addChild(liftFloorDisplayView);
-                parentLayout.addChild(liftArrowView_right);
                 parentLayout.addChild(liftArrowView_left);
 
             }
