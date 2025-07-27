@@ -220,5 +220,7 @@
   "gui.yte.subtitle": "位置：%d %d %d",
   "gui.yte.subtitle_with_station": "位置：%d %d %d | %s",
   "gui.yte.watermark": "测试版本不代表最终质量。",
-  "gui.yte.watermark_1": "版本 %s。开发者构建版本。"
+  "gui.yte.watermark_1": "构建版本 %s.%s",
+  "gui.yte.watermark_2": "YTE \u5f00\u53d1\u4eba\u5458\u7248\u672c",
+  "gui.yte.watermark_3": "\u8bf7\u8f6c\u5230 Modrinth \u4e0b\u8f7d\u6700\u65b0\u7a33\u5b9a\u7248\u672c\u3002"
 }
