@@ -197,5 +197,7 @@
   "tooltip.hitachi_button_yl_gw02": "Button:YL-GW02",
   "tooltip.hitachi_button_yl_gw": "Button:YL-GW",
   "tooltip.hitachi_button_fl_pw": "Button:FL-PW",
-  "tooltip.warning_block_testing": "!!!Warning: This block is being tested and is not recommended"
+  "tooltip.warning_block_testing": "!!!Warning: This block is being tested and is not recommended",
+  "gui.yte.watermark": "The beta version does not represent the final quality.",
+  "gui.yte.watermark_1": "Version %s.%s"
 }

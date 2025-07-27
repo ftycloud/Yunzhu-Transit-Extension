@@ -230,6 +230,10 @@ public final class InitClient {
 
             DynamicTextureCache.instance.reload();
         });
+
+        // TODO: 发布前请注释此行代码。
+        REGISTRY_CLIENT.eventRegistryClient.registerGuiRendering(RenderWatermark::render);
+
         REGISTRY_CLIENT.init();
     }
 
