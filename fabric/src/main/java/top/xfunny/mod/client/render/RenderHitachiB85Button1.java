@@ -190,19 +190,20 @@ public class RenderHitachiB85Button1 extends BlockEntityRenderer<HitachiB85Butto
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
                         FontList.instance.getFont(floorNumber.matches("^(-1|1)$")?"hitachi_b85_left":"hitachi_b85"),
-                        10,
+                        8.375F,
                         0xFFFF0000);
                 liftFloorDisplayView.setDisplayLength(2, 0.05F);
                 liftFloorDisplayView.setTextureId("hitachi_b85_screen_1_display");
+                liftFloorDisplayView.setLetterSpacing(15);
                 liftFloorDisplayView.setWidth(0.6F / 16);
                 liftFloorDisplayView.setHeight(0.6F / 16);
-                liftFloorDisplayView.setMargin(0.2F / 16, 0.2F / 16, 0, 0);
+                liftFloorDisplayView.setMargin(0.2F / 16, 0.15F / 16, 0, 0);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
 
                 final LiftArrowView liftArrowView = new LiftArrowView();
                 liftArrowView.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.AUTO);
                 liftArrowView.setTexture(ARROW_TEXTURE);
-                liftArrowView.setDimension(0.4F / 16);
+                liftArrowView.setDimension(0.5F / 16);
                 liftArrowView.setGravity(Gravity.CENTER_HORIZONTAL);
                 liftArrowView.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
                 liftArrowView.setMargin(0, 0, 0, 0.2F / 16);

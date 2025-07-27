@@ -48,7 +48,7 @@ public class FontList {
             loadFont("thyssenkrupp_lcd", "font/new-thyssenkrupp.ttf");
             loadFont("kone-kss", "font/kone-kss-800-signalization.ttf");
             loadFont("hitachi-led-seg", "font/hitachi-led-segmented.ttf");
-            loadFont("hitachi-led-seg-fix", "font/hitachi_led_segmented_fix");
+            loadFont("hitachi-led-seg-fix", "font/hitachi_led_segmented_fix.ttf");
             loadFont("hitachi-led-dot_matrix", "font/hitachi-dot-matrix-regular.ttf");
             loadFont("hitachi-led-dot_matrix_small", "font/hitachi-dot-matrix-small.ttf");
             loadFont("hitachi-lcd-seg", "font/hitachi-lcd-segmented.ttf");

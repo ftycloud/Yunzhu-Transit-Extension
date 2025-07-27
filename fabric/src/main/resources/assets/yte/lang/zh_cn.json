@@ -54,7 +54,7 @@
   "block.yte.mitsubishi_gps_button_1": "三菱GPS/GPM呼梯面板（类型1）",
   "block.yte.mitsubishi_gps_button_1_without_screen": "三菱GPS/GPM呼梯面板（类型1，无屏幕）",
   "block.yte.mitsubishi_button_shun_hing_plaza": "三菱呼梯面板（信兴广场）",
-  "block.yte.mitsubishi_mpvf_screen_1_vertical_odd": "三菱呼MP-VF候梯楼层显示器（类型1，占一格）",
+  "block.yte.mitsubishi_mpvf_screen_1_vertical_odd": "三菱MP-VF候梯楼层显示器（类型1，占一格）",
   "block.yte.mitsubishi_mpvf_screen_1_vertical_even": "三菱MP-VF候梯楼层显示器（类型1，占两格）",
   "block.yte.mitsubishi_mpvf_button_1": "三菱呼MP-VF呼梯面板（类型1）",
   "block.yte.mitsubishi_ryoden_screen_1_even": "三菱菱电升降机外显（类型1，占两格）",
@@ -220,5 +220,7 @@
   "gui.yte.subtitle": "位置：%d %d %d",
   "gui.yte.subtitle_with_station": "位置：%d %d %d | %s",
   "gui.yte.watermark": "测试版本不代表最终质量。",
-  "gui.yte.watermark_1": "版本 %s。开发者构建版本。"
+  "gui.yte.watermark_1": "构建版本 %s.%s",
+  "gui.yte.watermark_2": "YTE \u5f00\u53d1\u4eba\u5458\u7248\u672c",
+  "gui.yte.watermark_3": "\u8bf7\u8f6c\u5230 Modrinth \u4e0b\u8f7d\u6700\u65b0\u7a33\u5b9a\u7248\u672c\u3002"
 }
