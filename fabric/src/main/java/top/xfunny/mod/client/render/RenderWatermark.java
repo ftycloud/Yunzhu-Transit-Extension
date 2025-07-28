@@ -6,26 +6,21 @@ import org.mtr.mapping.holder.MutableText;
 import org.mtr.mapping.holder.Window;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.TextHelper;
-import org.mtr.mod.data.IGui;
+import top.xfunny.mod.Init;
+import top.xfunny.mod.Keys;
 import top.xfunny.mod.client.InitClient;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-
-public class RenderWatermark implements IGui {
+public class RenderWatermark {
     private static final int a = 10;
-    private static final ZonedDateTime n = ZonedDateTime.now();
-    public static final String t = n.format(DateTimeFormatter.ofPattern("yyMMdd-HHmmXX"));
-    public static void render(GraphicsHolder b) {
-        if(!InitClient.getConfig().hideTestWatermark){
+    public static void render(GraphicsHolder b){
+        if(!InitClient.getConfig().hideTestWatermark || Init.HAS_UPDATE == 1){
             final MinecraftClient c = MinecraftClient.getInstance();
             final Window x = c.getWindow();
-            int j = ARGB_WHITE;
+            int j = -1;
             int z = 0;
             String e = "Yunzhu Transit Extension Beta";
-            String f = "1.0.2-beta.3";
             MutableText g = TextHelper.translatable("gui.yte.watermark");
-            MutableText q = TextHelper.translatable("gui.yte.watermark_1", f, t);
+            MutableText q = TextHelper.translatable("gui.yte.watermark_1", Keys.MOD_VERSION, Keys.BUILD_TIME);
             int h = x.getScaledWidth();
             int w = x.getScaledHeight();
             final ClientPlayerEntity p = c.getPlayerMapped();

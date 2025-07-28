@@ -1,11 +1,12 @@
 package top.xfunny.mod.client.screen;
 
+import org.jetbrains.annotations.NotNull;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.*;
 
 import org.mtr.mod.generated.lang.TranslationProvider;
+import top.xfunny.mod.Keys;
 import top.xfunny.mod.client.InitClient;
-import top.xfunny.mod.client.render.RenderWatermark;
 import top.xfunny.mod.client.screen.base.BaseConfigScreen;
 import top.xfunny.mod.client.screen.widget.ContentItem;
 
@@ -32,7 +33,7 @@ public class ClientConfigScreen extends BaseConfigScreen {
     }
 
     @Override
-    public void render(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull GraphicsHolder graphicsHolder, int mouseX, int mouseY, float delta) {
         renderBackground(graphicsHolder);
         super.render(graphicsHolder, mouseX, mouseY, delta);
     }
@@ -52,12 +53,12 @@ public class ClientConfigScreen extends BaseConfigScreen {
     }
 
     public MutableText getScreenSubtitle(){
-        return TextHelper.translatable("1.0.2-beta.3.%s", RenderWatermark.t);
+        return TextHelper.translatable("%s.%s", Keys.MOD_VERSION,Keys.BUILD_TIME);
     }
 
     public void addItemConfig(){
         addChild(new ClickableWidget(hideTestWatermark));
         ContentItem hideWatermark = new ContentItem(TextHelper.literal("Hide Test Watermark"),hideTestWatermark);
         listViewWidget.add(hideWatermark);
-    };
+    }
 }
