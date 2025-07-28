@@ -1,0 +1,63 @@
+package top.xfunny.mod.client.screen;
+
+import org.mtr.mapping.holder.*;
+import org.mtr.mapping.mapper.ButtonWidgetExtension;
+import org.mtr.mapping.mapper.GraphicsHolder;
+import org.mtr.mapping.mapper.TextHelper;
+import top.xfunny.mod.Init;
+import top.xfunny.mod.client.screen.base.BlockConfigScreen;
+import top.xfunny.mod.client.screen.widget.ContentItem;
+
+public class GuangzhouRailwaySignScreen extends BlockConfigScreen {
+    protected String signId;
+    private final ButtonWidgetExtension signSelected;
+
+    public GuangzhouRailwaySignScreen(BlockPos blockPos) {
+        super(blockPos);
+        this.signId = null;
+
+        signSelected = new ButtonWidgetExtension(0, 0, 60, 20, TextHelper.translatable("selectWorld.edit"), (btn) -> {
+            MinecraftClient.getInstance().openScreen(
+                    new Screen(new SignSettingScreen(blockPos, signId, (str) -> {
+                        this.signId = str;
+                    }).withPreviousScreen(new Screen(this)))
+            );
+        });
+    }
+
+    @Override
+    protected void init2() {
+        super.init2();
+    }
+
+    @Override
+    public void render(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float delta) {
+        renderBackground(graphicsHolder);
+        super.render(graphicsHolder, mouseX, mouseY, delta);
+    }
+
+    @Override
+    public void onClose2() {
+        super.onClose2();
+    }
+
+    public MutableText getScreenTitle(){
+        return TextHelper.translatable("测试屏幕");
+    };
+
+    @Override
+    public void addItemConfig() {
+        addChild(new ClickableWidget(signSelected));
+        ContentItem chooseSignItem = new ContentItem(TextHelper.translatable(signId), signSelected);
+
+        if(signId != null){
+            Init.LOGGER.info(signId);
+            chooseSignItem.setIcon(new Identifier("mtr","textures/block/sign/" +  signId + ".png"));
+        }
+
+        listViewWidget.addCategory(TextHelper.translatable("gui.yte.signs.list.signs_setting"));
+        listViewWidget.add(chooseSignItem);
+        listViewWidget.addCategory(TextHelper.translatable("gui.yte.signs.list.signs_display"));
+    }
+
+}
