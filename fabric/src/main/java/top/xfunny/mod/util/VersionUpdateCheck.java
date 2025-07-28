@@ -1,6 +1,8 @@
 package top.xfunny.mod.util;
 
 import com.google.gson.*;
+import com.vdurmont.semver4j.Semver;
+import com.vdurmont.semver4j.SemverException;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.Keys;
 
@@ -9,13 +11,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.*;
 
 public class VersionUpdateCheck {
     private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)(?:-([a-zA-Z0-9.]+))?");
     private static String REMOTE_VERSION;
 
-    private static String HttpsfetchJson(String urlString) throws IOException {
+    private static String fetchJson(String urlString) throws IOException {
         URL url = new URL(urlString);
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
@@ -41,100 +44,37 @@ public class VersionUpdateCheck {
         }
     }
 
-    public static int VersionCheck(String urlString) {
+    public static void init() {
         Init.LOGGER.info("Checking mod updates...");
-        try {
-            String JsonData = HttpsfetchJson(urlString);
-            String currentGameVersion = "1.20.1";
+        CompletableFuture.runAsync(() -> {
+            try {
+                String jsonData = fetchJson(Keys.API_URL);
+                JsonArray versions = JsonParser.parseString(jsonData).getAsJsonArray();
 
-            JsonArray versions = JsonParser.parseString(JsonData).getAsJsonArray();
+                String version = versions.get(0).getAsJsonObject().get("version_number").getAsString();
 
-            for (JsonElement element : versions) {
-                JsonObject version = element.getAsJsonObject();
-
-                if (matchesEnvironment(version, currentGameVersion)) {
-                    REMOTE_VERSION = version.get("version_number").getAsString();
+                Matcher matcher = VERSION_PATTERN.matcher(version);
+                if (matcher.find()) {
+                    REMOTE_VERSION = matcher.group(0);
                 }
-            }
 
-            int result = compareVersions(REMOTE_VERSION);
+                Semver localSemver = new Semver(Keys.MOD_VERSION, Semver.SemverType.LOOSE);
+                Semver remoteSemver = new Semver(REMOTE_VERSION, Semver.SemverType.LOOSE);
 
-            if (result == -1){
-                Init.LOGGER.info("A new version has been released. Get the latest version here: https://modrinth.com/mod/yunzhu-transit-extension/versions");
-            } else if (result == 1) {
-                Init.LOGGER.warn("You are using the development version!");
-            }
+                int result = remoteSemver.compareTo(localSemver);
+                Init.HAS_UPDATE = Integer.compare(0, result);
 
-            return result;
-        } catch (Exception e){
-            Init.LOGGER.error(e);
-            return 0;
-        }
-    }
-
-    private static boolean matchesEnvironment(JsonObject version, String gameVersion){
-        JsonArray gameVersions = version.get("game_versions").getAsJsonArray();
-        boolean versionMatch = false;
-
-        for (JsonElement v : gameVersions) {
-            if (v.getAsString().equals(gameVersion)) {
-                versionMatch = true;
-                break;
-            }
-        }
-
-        return versionMatch;
-    }
-
-    /**
-     * 比较两个语义化版本号 (SemVer)
-     * @return -1: v1 < v2 | 0: v1 == v2 | 1: v1 > v2
-     */
-    private static int compareVersions(String v2) {
-        Matcher m1 = VERSION_PATTERN.matcher(Keys.MOD_VERSION);
-        Matcher m2 = VERSION_PATTERN.matcher(v2);
-
-        if (!m1.find() || !m2.find()) {
-            throw new IllegalArgumentException();
-        }
-
-        // 比较主版本号 (MAJOR.MINOR.PATCH)
-        for (int i = 1; i <= 3; i++) {
-            int num1 = Integer.parseInt(m1.group(i));
-            int num2 = Integer.parseInt(m2.group(i));
-            if (num1 != num2) {
-                return Integer.compare(num1, num2);
-            }
-        }
-
-        // 处理预发布标签 (PRERELEASE)
-        String pre1 = m1.group(4);
-        String pre2 = m2.group(4);
-
-        // 有预发布标签的版本优先级更低 (1.0.0 > 1.0.0-alpha)
-        if (pre1 == null && pre2 != null) return 1;
-        if (pre1 != null && pre2 == null) return -1;
-        if (pre1 == null) return 0;
-
-        // 拆分预发布标签 (如 "beta.1" -> ["beta", "1"])
-        String[] parts1 = pre1.split("\\.");
-        String[] parts2 = pre2.split("\\.");
-
-        for (int i = 0; i < Math.min(parts1.length, parts2.length); i++) {
-            if (parts1[i].matches("\\d+") && parts2[i].matches("\\d+")) {
-                int num1 = Integer.parseInt(parts1[i]);
-                int num2 = Integer.parseInt(parts2[i]);
-                if (num1 != num2) {
-                    return Integer.compare(num1, num2);
+                if (Init.HAS_UPDATE == -1) {
+                    Init.LOGGER.warn("New version available: {} → {}", Keys.MOD_VERSION, REMOTE_VERSION);
+                    Init.LOGGER.warn("Get the latest version here: https://modrinth.com/mod/yunzhu-transit-extension/versions");
+                } else if (Init.HAS_UPDATE == 1) {
+                    Init.LOGGER.warn("You are using a development version!");
                 }
-            } else {
-                int cmp = parts1[i].compareTo(parts2[i]);
-                if (cmp != 0) {
-                    return cmp;
-                }
+            } catch (SemverException e) {
+                Init.LOGGER.error(e.getMessage());
+            } catch (Exception e) {
+                Init.LOGGER.error("Update check failed", e);
             }
-        }
-
-        return Integer.compare(parts1.length, parts2.length);
+        });
     }
 }

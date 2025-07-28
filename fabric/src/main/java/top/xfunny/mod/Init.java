@@ -15,10 +15,11 @@ public final class Init {
     public static final String MOD_ID = "yte";
     public static final Logger LOGGER = LogManager.getLogger("YunzhuTransitExtension");
     public static final Registry REGISTRY = new Registry();
-    public static final int HAS_UPDATE = VersionUpdateCheck.VersionCheck(Keys.API_URL);
+    public static int HAS_UPDATE = -1;
 
 
     public static void init() {
+        VersionUpdateCheck.init();
         Blocks.init();
         BlockEntityTypes.init();
         Items.init();
