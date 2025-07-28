@@ -13,20 +13,16 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class RenderWatermark implements IGui {
-
-
-
     private static final int a = 10;
     private static final ZonedDateTime n = ZonedDateTime.now();
-    private static final String t = n.format(DateTimeFormatter.ofPattern("yyMMdd-HHmmXX"));
+    public static final String t = n.format(DateTimeFormatter.ofPattern("yyMMdd-HHmmXX"));
     public static void render(GraphicsHolder b) {
         if(!InitClient.getConfig().hideTestWatermark){
             final MinecraftClient c = MinecraftClient.getInstance();
             final Window x = c.getWindow();
             int j = ARGB_WHITE;
             int z = 0;
-            float s = 0.9F;
-            String e = "\u0059\u0075\u006e\u007a\u0068\u0075\u0020\u0054\u0072\u0061\u006e\u0073\u0069\u0074\u0020\u0045\u0078\u0074\u0065\u006e\u0073\u0069\u006f\u006e\u0020\u0042\u0065\u0074\u0061";
+            String e = "Yunzhu Transit Extension Beta";
             String f = "1.0.2-beta.3";
             MutableText g = TextHelper.translatable("gui.yte.watermark");
             MutableText q = TextHelper.translatable("gui.yte.watermark_1", f, t);
@@ -35,11 +31,10 @@ public class RenderWatermark implements IGui {
             final ClientPlayerEntity p = c.getPlayerMapped();
             if (p != null) {
                 b.push();
-                b.translate(h, w - 25 , z);
-                b.scale(s,s,s);
-                b.drawText(e, -GraphicsHolder.getTextWidth(e), -a * 3, j, true, GraphicsHolder.getDefaultLight());
-                b.drawText(g, -GraphicsHolder.getTextWidth(g), -a * 2, j, true, GraphicsHolder.getDefaultLight());
-                b.drawText(q, -GraphicsHolder.getTextWidth(q), -a, j, true, GraphicsHolder.getDefaultLight());
+                b.translate(h, w, z);
+                b.drawText(e, -GraphicsHolder.getTextWidth(e) - 1, -a * 3, j, true, GraphicsHolder.getDefaultLight());
+                b.drawText(g, -GraphicsHolder.getTextWidth(g) - 1, -a * 2, j, true, GraphicsHolder.getDefaultLight());
+                b.drawText(q, -GraphicsHolder.getTextWidth(q) - 1, -a, j, true, GraphicsHolder.getDefaultLight());
                 b.pop();
             }
         }

@@ -199,7 +199,5 @@
   "tooltip.hitachi_button_fl_pw": "按鈕型號：FL-PW",
   "tooltip.warning_block_testing": "!!!警告：呢個方塊正喺測試中，我哋並唔建議你使用呢個方塊",
   "gui.yte.watermark": "測試版本唔代表最終質素",
-  "gui.yte.watermark_1": "構建版本 %s.%s",
-  "gui.yte.watermark_2": "YTE \u958b\u767c\u4eba\u54e1\u7248\u672c",
-  "gui.yte.watermark_3": "\u8acb\u5230 Modrinth \u4e0b\u8f09\u6700\u65b0\u7a69\u5b9a\u7248\u672c\u3002"
+  "gui.yte.watermark_1": "構建版本 %s.%s"
 }

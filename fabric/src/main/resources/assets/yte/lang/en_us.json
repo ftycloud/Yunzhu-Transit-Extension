@@ -199,7 +199,5 @@
   "tooltip.hitachi_button_fl_pw": "Button:FL-PW",
   "tooltip.warning_block_testing": "!!!Warning: This block is being tested and is not recommended",
   "gui.yte.watermark": "The beta version does not represent the final quality.",
-  "gui.yte.watermark_1": "Build %s.%s",
-  "gui.yte.watermark_2": " ",
-  "gui.yte.watermark_3": " "
+  "gui.yte.watermark_1": "Build %s.%s"
 }
