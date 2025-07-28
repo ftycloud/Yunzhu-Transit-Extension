@@ -1,7 +1,5 @@
 package top.xfunny.mod.client.screen.widget;
 
-
-import org.mtr.mapping.mapper.ClickableWidgetExtension;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.GuiDrawing;
 

@@ -8,11 +8,11 @@ import top.xfunny.mod.client.screen.widget.ListViewWidget;
 
 import static top.xfunny.mod.client.screen.GuiHelper.MAX_CONTENT_WIDTH;
 
-public abstract class BlockConfigScreen extends TitledScreen {
+public abstract class BaseConfigScreen extends TitledScreen {
     protected final ListViewWidget listViewWidget;
     final BlockPos blockPos;
 
-    public BlockConfigScreen(BlockPos blockPos) {
+    public BaseConfigScreen(BlockPos blockPos) {
         this.blockPos = blockPos;
         this.listViewWidget = new ListViewWidget();
     }
@@ -34,7 +34,7 @@ public abstract class BlockConfigScreen extends TitledScreen {
 
     public MutableText getScreenSubtitle(){
         return TextHelper.translatable("gui.yte.subtitle", blockPos.getX(), blockPos.getY(), blockPos.getZ());
-    };
+    }
 
     public abstract void addItemConfig();
 }

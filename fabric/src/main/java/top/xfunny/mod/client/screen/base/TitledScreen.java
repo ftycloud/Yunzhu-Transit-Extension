@@ -1,5 +1,6 @@
 package top.xfunny.mod.client.screen.base;
 
+import org.jetbrains.annotations.NotNull;
 import org.mtr.mapping.holder.MutableText;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import top.xfunny.mod.client.screen.RenderHelper;
@@ -9,7 +10,7 @@ public abstract class TitledScreen extends BaseScreen{
     public static final int TITLE_SCALE = 2;
 
     @Override
-    public void render(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) {
+    public void render(@NotNull GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) {
         drawTitle(graphicsHolder);
         drawSubtitle(graphicsHolder);
 

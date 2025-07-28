@@ -1,18 +1,19 @@
 package top.xfunny.mod.client.screen;
 
+import org.jetbrains.annotations.NotNull;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.ButtonWidgetExtension;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.TextHelper;
 
-import top.xfunny.mod.client.screen.base.BlockConfigScreen;
+import top.xfunny.mod.client.screen.base.BaseConfigScreen;
 import top.xfunny.mod.client.screen.widget.ContentItem;
 import top.xfunny.mod.client.screen.widget.CustomSignsManager;
 
 import java.util.function.Consumer;
 
-public class SignSettingScreen extends BlockConfigScreen {
+public class SignSettingScreen extends BaseConfigScreen {
     private String selectedSignId;
     private final ObjectArrayList<String> allSignIds = CustomSignsManager.getSignText();
 
@@ -34,7 +35,7 @@ public class SignSettingScreen extends BlockConfigScreen {
     }
 
     @Override
-    public void render(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull GraphicsHolder graphicsHolder, int mouseX, int mouseY, float delta) {
         renderBackground(graphicsHolder);
 
         super.render(graphicsHolder, mouseX, mouseY, delta);
@@ -79,10 +80,10 @@ public class SignSettingScreen extends BlockConfigScreen {
 
     public MutableText getScreenTitle(){
         return TextHelper.translatable("gui.yte.signs.list.signs_setting");
-    };
+    }
     public MutableText getScreenSubtitle(){
         return TextHelper.translatable("gui.yte.signs.subtitle", selectedSignId);
-    };
+    }
 
     @Override
     public void addItemConfig() {

@@ -1,14 +1,15 @@
 package top.xfunny.mod.client.screen;
 
+import org.jetbrains.annotations.NotNull;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.ButtonWidgetExtension;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.TextHelper;
 import top.xfunny.mod.Init;
-import top.xfunny.mod.client.screen.base.BlockConfigScreen;
+import top.xfunny.mod.client.screen.base.BaseConfigScreen;
 import top.xfunny.mod.client.screen.widget.ContentItem;
 
-public class GuangzhouRailwaySignScreen extends BlockConfigScreen {
+public class GuangzhouRailwaySignScreen extends BaseConfigScreen {
     protected String signId;
     private final ButtonWidgetExtension signSelected;
 
@@ -16,13 +17,11 @@ public class GuangzhouRailwaySignScreen extends BlockConfigScreen {
         super(blockPos);
         this.signId = null;
 
-        signSelected = new ButtonWidgetExtension(0, 0, 60, 20, TextHelper.translatable("selectWorld.edit"), (btn) -> {
-            MinecraftClient.getInstance().openScreen(
-                    new Screen(new SignSettingScreen(blockPos, signId, (str) -> {
-                        this.signId = str;
-                    }).withPreviousScreen(new Screen(this)))
-            );
-        });
+        signSelected = new ButtonWidgetExtension(0, 0, 60, 20, TextHelper.translatable("selectWorld.edit"), (btn) ->
+                MinecraftClient.getInstance().openScreen(
+                new Screen(new SignSettingScreen(blockPos, signId, (str) ->
+                        this.signId = str).withPreviousScreen(new Screen(this)))
+        ));
     }
 
     @Override
@@ -31,7 +30,7 @@ public class GuangzhouRailwaySignScreen extends BlockConfigScreen {
     }
 
     @Override
-    public void render(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull GraphicsHolder graphicsHolder, int mouseX, int mouseY, float delta) {
         renderBackground(graphicsHolder);
         super.render(graphicsHolder, mouseX, mouseY, delta);
     }
@@ -43,7 +42,7 @@ public class GuangzhouRailwaySignScreen extends BlockConfigScreen {
 
     public MutableText getScreenTitle(){
         return TextHelper.translatable("测试屏幕");
-    };
+    }
 
     @Override
     public void addItemConfig() {

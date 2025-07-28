@@ -26,14 +26,13 @@ public class ContentItem extends BaseListItem {
         this(title, widget, 26);
     }
 
-    public ContentItem setIcon(Identifier textureResource) {
+    public void setIcon(Identifier textureResource) {
         if (textureResource != null) {
             this.textureResource = textureResource;
             hasIcon = true;
         } else {
             hasIcon = false;
         }
-        return this;
     }
 
     public boolean hasIcon() {

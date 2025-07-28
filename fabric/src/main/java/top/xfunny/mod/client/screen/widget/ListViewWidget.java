@@ -12,7 +12,6 @@ public class ListViewWidget extends ClickableWidgetExtension {
     public static final int ENTRY_PADDING = 5;
     private final List<BaseListItem> displayedEntryList = new ArrayList<>();
     private final List<BaseListItem> entryList = new ArrayList<>();
-    private float elapsed;
     private String searchTerm = "";
 
     public ListViewWidget() {
@@ -89,5 +88,7 @@ public class ListViewWidget extends ClickableWidgetExtension {
             listItem.positionChanged(entryX + width - ENTRY_PADDING, entryY);
             incY += listItem.height;
         }
-    };
+    }
+
+    //TODO: 添加滚动
 }

@@ -4,7 +4,9 @@ import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.BlockEntityExtension;
 import org.mtr.mapping.tool.HolderBase;
 import org.mtr.mod.block.IBlock;
+import top.xfunny.mod.Init;
 import top.xfunny.mod.block.base.LiftButtonsBase;
+import top.xfunny.mod.packet.PacketYTEOpenBlockEntityScreen;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -63,6 +65,13 @@ public class TestLiftButtons extends LiftButtonsBase {
         }
     }
 
+    @Nonnull
+    @Override
+    public ActionResult onUse2(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        return IBlock.checkHoldingBrush(world, player, () -> {
+            Init.REGISTRY.sendPacketToClient(ServerPlayerEntity.cast(player), new PacketYTEOpenBlockEntityScreen(pos));
+        });
+    }
 }
 
 
