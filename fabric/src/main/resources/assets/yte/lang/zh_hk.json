@@ -199,5 +199,6 @@
   "tooltip.hitachi_button_fl_pw": "按鈕型號：FL-PW",
   "tooltip.warning_block_testing": "!!!警告：呢個方塊正喺測試中，我哋並唔建議你使用呢個方塊",
   "gui.yte.watermark": "測試版本唔代表最終質素",
-  "gui.yte.watermark_1": "構建版本 %s.%s"
+  "gui.yte.watermark_1": "構建版本 %s.%s",
+  "gui.yte.hide_watermark": "隱藏測試版水印"
 }

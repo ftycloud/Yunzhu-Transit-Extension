@@ -58,7 +58,7 @@ public class ClientConfigScreen extends BaseConfigScreen {
 
     public void addItemConfig(){
         addChild(new ClickableWidget(hideTestWatermark));
-        ContentItem hideWatermark = new ContentItem(TextHelper.literal("Hide Test Watermark"),hideTestWatermark);
+        ContentItem hideWatermark = new ContentItem(TextHelper.translatable("gui.yte.hide_watermark"),hideTestWatermark);
         listViewWidget.add(hideWatermark);
     }
 }

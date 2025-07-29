@@ -5,11 +5,17 @@
   "name": "Yunzhu Transit Extension",
   "description": "云竹交通\n云筑工坊交通拓展",
   "authors": [
-    "\nXFunny\nMrNTkey\nQBYQ"
+    "XFunny",
+    "MrNTKey",
+    "QBYQ"
+  ],
+  "contributors": [
+    "juebieshu"
   ],
   "contact": {
     "homepage": "https://space.bilibili.com/3546779284932989",
-    "sources": "https://github.com/X-Funny/Yunzhu-Transit-Extension"
+    "sources": "https://github.com/Yunzhu-Dev/Yunzhu-Transit-Extension",
+    "issues": "https://github.com/Yunzhu-Dev/Yunzhu-Transit-Extension/issues"
   },
   "license": "MIT License",
   "icon": "assets/yte/icon.png",

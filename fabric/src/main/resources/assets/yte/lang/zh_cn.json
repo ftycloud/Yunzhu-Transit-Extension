@@ -220,5 +220,6 @@
   "gui.yte.subtitle": "位置：%d %d %d",
   "gui.yte.subtitle_with_station": "位置：%d %d %d | %s",
   "gui.yte.watermark": "测试版本不代表最终质量。",
-  "gui.yte.watermark_1": "构建版本 %s.%s"
+  "gui.yte.watermark_1": "构建版本 %s.%s",
+  "gui.yte.hide_watermark": "隐藏测试版水印"
 }
