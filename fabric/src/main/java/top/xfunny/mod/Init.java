@@ -19,7 +19,7 @@ public final class Init {
 
 
     public static void init() {
-        //VersionUpdateCheck.init();
+        VersionUpdateCheck.init();
         Blocks.init();
         BlockEntityTypes.init();
         Items.init();
