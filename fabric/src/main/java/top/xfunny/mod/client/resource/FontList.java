@@ -60,6 +60,7 @@ public class FontList {
             loadFont("tonic-led-thin", "font/tonic-thin.ttf");
             loadFont("mitsubishi_old_segmented_1", "font/mitsubishi_old_segmented_1.ttf");
             loadFont("ryoden-led", "font/ryoden-led.ttf");
+            loadFont("helvetica", "font/helvetica.ttf");
             fontsLoaded = true;
         }
     }
