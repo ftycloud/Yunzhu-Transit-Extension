@@ -241,6 +241,9 @@ public class RenderMitsubishiNexWayScreen1<T extends LiftButtonsBase.BlockEntity
             final int count = 1;
 
             for (int i = 0; i < count; i++) {
+                final Lift lift = sortedPositionsAndLifts.get(i).right();
+                ObjectObjectImmutablePair<LiftDirection, ObjectObjectImmutablePair<String, String>> liftDetails = ClientGetLiftDetails.getLiftDetails(world, lift, org.mtr.mod.Init.positionToBlockPos(lift.getCurrentFloor().getPosition()));
+                String floorNumber = liftDetails.right().left();
                 final LiftFloorDisplayView liftFloorDisplayView = new LiftFloorDisplayView();
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
@@ -248,27 +251,27 @@ public class RenderMitsubishiNexWayScreen1<T extends LiftButtonsBase.BlockEntity
                         FontList.instance.getFont("mitsubishi_modern"),//字体
                         11,//字号
                         0xFFFA7A24);//字体颜色
-                liftFloorDisplayView.setDisplayLength(2, 0);//true开启滚动，开启滚动时的字数条件(>)，滚动速度
+                //liftFloorDisplayView.setDisplayLength(2, 0);//true开启滚动，开启滚动时的字数条件(>)，滚动速度
                 liftFloorDisplayView.setTextureId("mitsubishi_nexway_screen_1");//字体贴图id，不能与其他显示屏的重复
-                liftFloorDisplayView.setWidth(2F / 16);//显示屏宽度
+                liftFloorDisplayView.setWidth(2.7F / 16);//显示屏宽度
                 liftFloorDisplayView.setHeight(2F / 16);//显示屏高度
                 liftFloorDisplayView.setGravity(Gravity.CENTER);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);//文字对齐方式，center为居中对齐，left为左对齐，right为右对齐
-                liftFloorDisplayView.setMargin(0.6F / 16, 0, 0.6F / 16, 0);
-                // Three-digits WIP
-//                liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
-//                if (liftFloorDisplayView.getTextLength() >= 3) {
-//                    liftFloorDisplayView.setBasicsAttributes(world,
-//                            blockPos,
-//                            sortedPositionsAndLifts.get(i).right(),
-//                            FontList.instance.getFont("mitsubishi_small_sht"),
-//                            11,
-//                            0xFFFA7A24);
-//                    liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);
-//                    liftFloorDisplayView.setMargin(0.7F / 16, 0, 0.5F / 16, 0);
-//                } else {
-//                    liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.ASPECT_FILL);
-//                }
+                liftFloorDisplayView.setMargin(0.4F / 16, 0, 0.4F / 16, 0);
+                liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
+                // Three-digit display is not perfect, adjustments are needed.
+                if (liftFloorDisplayView.getTextLength() >= 3) {
+                    liftFloorDisplayView.setBasicsAttributes(world,
+                            blockPos,
+                            sortedPositionsAndLifts.get(i).right(),
+                            FontList.instance.getFont(floorNumber.matches(".*[A-Z].*")?"mitsubishi_small_regular":"mitsubishi_small_sht"),
+                            11,
+                            0xFFFA7A24);
+                    liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);
+                    liftFloorDisplayView.setMargin(0.6F / 16, 0, 0.2F / 16, 0);
+                } else {
+                    liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.ASPECT_FILL);
+                }
                 screenLayout.addChild(liftFloorDisplayView);
             }
         }

@@ -19,12 +19,11 @@ public class CustomSignsManager {
     private static final ObjectArrayList<String> allSigns = new ObjectArrayList<>();
 
     private static final Set<String> builtinFileNames = new HashSet<>(Set.of(""));
+    // 内置非图标列表
     private static final Set<String> NAFileNames = Set.of(
             "seven_segment.png","qr_code.png","lift_arrow.png",
             "exit_letter_blank.png","circle.png","door_not_in_use.png",
             "gap_small.png","logo_grayscale.png","rubbish.png","spit.png");
-
-
 
     public static void loader() {
         ObjectArrayList<String> defaultSigns = new ObjectArrayList<>();
@@ -73,7 +72,7 @@ public class CustomSignsManager {
         Init.LOGGER.info("Found {} Icon Files", allSigns.size());
     }
 
-    public static ObjectArrayList<String> getSignText(){
+    public static ObjectArrayList<String> getSignList(){
         return allSigns;
     }
 }
