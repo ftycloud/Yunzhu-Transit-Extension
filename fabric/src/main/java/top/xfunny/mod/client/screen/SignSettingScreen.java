@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 
 public class SignSettingScreen extends BaseConfigScreen {
     private String selectedSignId;
-    private final ObjectArrayList<String> allSignIds = CustomSignsManager.getSignText();
+    private final ObjectArrayList<String> allSignIds = CustomSignsManager.getSignList();
 
     private final ButtonWidgetExtension[] chooseSignButton;
     private final Consumer<String> callback;
