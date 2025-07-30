@@ -217,7 +217,6 @@ public class RenderSchindlerFIGSButton1Steel extends BlockEntityRenderer<Schindl
                 numberLayout.setHeight(LayoutSize.WRAP_CONTENT);
                 numberLayout.addChild(liftArrowView);
                 numberLayout.addChild(liftFloorDisplayView);
-                numberLayout.setBackgroundColor(0xFF000000);
 
                 if (reverseRendering) {
                     screenLayout.addChild(numberLayout);
