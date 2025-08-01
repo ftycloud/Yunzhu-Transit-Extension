@@ -11,9 +11,9 @@ import javax.annotation.Nonnull;
 import java.util.List;
 
 
-public class MitsubishiNexWayButton2 extends LiftButtonsBase {
+public class MitsubishiButtonSHT extends LiftButtonsBase {
 
-    public MitsubishiNexWayButton2() {
+    public MitsubishiButtonSHT() {
         super(true, true);
     }
 
@@ -60,7 +60,7 @@ public class MitsubishiNexWayButton2 extends LiftButtonsBase {
      */
     public static class BlockEntity extends BlockEntityBase {
         public BlockEntity(BlockPos pos, BlockState state) {
-            super(BlockEntityTypes.MITSUBISHI_NEXWAY_BUTTON_2.get(), pos, state);
+            super(BlockEntityTypes.MITSUBISHI_BUTTON_SHT.get(), pos, state);
         }
     }
 

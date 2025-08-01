@@ -201,8 +201,8 @@ public class RenderMitsubishiNexWayButton4 extends BlockEntityRenderer<Mitsubish
                         6,
                         0xFFFA7A24);
                 //liftFloorDisplayView.setDisplayLength(2, 0.05F);
-                liftFloorDisplayView.setTextureId("mitsubishi_nexway_button_2_display");
-                liftFloorDisplayView.setWidth((float) 1.3 / 16);
+                liftFloorDisplayView.setTextureId("mitsubishi_nexway_button_4_display");
+                liftFloorDisplayView.setWidth((float) 1.5 / 16);
                 liftFloorDisplayView.setHeight((float) 1.7 / 16);
                 liftFloorDisplayView.setMargin(0, 0, (float) -0.1 / 16, 0);
 
