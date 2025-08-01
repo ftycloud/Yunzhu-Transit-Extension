@@ -156,6 +156,8 @@ public class Blocks {
     public static final BlockRegistryObject HITACHI_VIB320_BUTTON_DOT_MATRIX;
     public static final BlockRegistryObject HITACHI_VIB322_BUTTON;
     public static final BlockRegistryObject HITACHI_VIB322_BUTTON_DOT_MATRIX;
+    public static final BlockRegistryObject HITACHI_VIB325_BUTTON;
+    public static final BlockRegistryObject HITACHI_VIB325_BUTTON_DOT_MATRIX;
     public static final BlockRegistryObject HITACHI_VIB221_BUTTON;
     public static final BlockRegistryObject HITACHI_VIB221_BUTTON_DOT_MATRIX;
     public static final BlockRegistryObject HITACHI_VIB221_BUTTON_LCD_SEGMENTED;
@@ -354,6 +356,8 @@ public class Blocks {
         HITACHI_VIB320_BUTTON_DOT_MATRIX = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib320_button_1_dot_matrix"), () -> new Block(new HitachiVIB320ButtonDotMatrix()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB322_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib322_button_1"), () -> new Block(new HitachiVIB322Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB322_BUTTON_DOT_MATRIX = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib322_button_1_dot_matrix"), () -> new Block(new HitachiVIB322ButtonDotMatrix()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB325_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib325_button_1"), () -> new Block(new HitachiVIB325Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB325_BUTTON_DOT_MATRIX = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib325_button_1_dot_matrix"), () -> new Block(new HitachiVIB325ButtonDotMatrix()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB221_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib221_button_1"), () -> new Block(new HitachiVIB221Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB221_BUTTON_DOT_MATRIX = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib221_button_1_dot_matrix"), () -> new Block(new HitachiVIB221ButtonDotMatrix()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB221_BUTTON_LCD_SEGMENTED = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib221_button_1_lcd_segmented"), () -> new Block(new HitachiVIB221ButtonLCDSegmented()), CreativeModeTabs.YTE_LIFT_FIXTURES);
