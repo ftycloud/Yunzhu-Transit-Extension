@@ -35,14 +35,5 @@ public class RenderWatermark {
                 b.pop();
             }
         }
-        if (Init.HAS_UPDATE == 1){
-            float s = 1.5F;
-            MutableText r = TextHelper.literal("YTE 开发人员版本");
-            MutableText n = TextHelper.literal("请转到 Modrinth 下载最新版本。");
-            b.translate(h - 80 -GraphicsHolder.getTextWidth(n), w - 50, 0);
-            b.drawText(n, 0, 0, ARGB_WHITE_TRANSLUCENT, false, GraphicsHolder.getDefaultLight());
-            b.scale(s,s,s);
-            b.drawText(r, 0, -a, ARGB_WHITE_TRANSLUCENT, false, GraphicsHolder.getDefaultLight());
-        }
     }
 }

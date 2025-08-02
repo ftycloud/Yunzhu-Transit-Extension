@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "top.xfunny"
-version rootProject.properties.version
+version = rootProject.properties.version
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
@@ -12,14 +12,14 @@ tasks.withType(JavaCompile) {
 subprojects {
     apply plugin: "java"
 
-    dependencies {
-        compileOnly "com.google.code.findbugs:jsr305:+"
-        implementation 'org.jetbrains:annotations:+'
-        implementation 'com.vdurmont:semver4j:+'
-    }
-
     repositories {
         flatDir { dirs "../libs" }
         maven { url "https://jitpack.io" }
+        mavenCentral()
+    }
+
+    dependencies {
+        compileOnly "com.google.code.findbugs:jsr305:3.0.2"
+        implementation "org.jetbrains:annotations:24.0.1"
     }
 }

@@ -17,6 +17,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${buildTools.getFabricVersion()}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${buildTools.getFabricApiVersion()}"
     modImplementation "org.mtr:MTR-fabric:${mtrVersion}+${minecraftVersion}-server"
+    implementation 'com.vdurmont:semver4j:3.1.0'
     modApi("com.terraformersmc:modmenu:${buildTools.getModMenuVersion()}") { exclude group: "net.fabricmc", module: "fabric-loader" }
 }
 

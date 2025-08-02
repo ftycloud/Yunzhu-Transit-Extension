@@ -2,8 +2,9 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.mtr.mod.BuildTools
 
 plugins {
-    id "net.minecraftforge.gradle" version "[6.0,6.2)"
+    id "net.minecraftforge.gradle" version "6.0.36"
     id "org.spongepowered.mixin" version "+"
+
 }
 
 final BuildTools buildTools = new BuildTools(minecraftVersion, "forge", project)
@@ -26,7 +27,22 @@ sourceSets.main.resources { srcDir "src/generated/resources" }
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraftVersion}-${buildTools.getForgeVersion()}"
     annotationProcessor "org.spongepowered:mixin:+:processor"
+    annotationProcessor 'systems.manifold:manifold-preprocessor:+'
     implementation fg.deobf("org.mtr:MTR-forge:${mtrVersion}+${minecraftVersion}-server")
+    implementation 'com.vdurmont:semver4j:3.1.0'
+}
+
+// 添加配置以仅将semver4j依赖打包到最终jar中
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect {
+            // 仅打包semver4j依赖
+            if (it.name.contains("semver4j")) {
+                it.isDirectory() ? it : zipTree(it)
+            }
+        }
+    }
 }
 
 mixin {
@@ -44,6 +60,25 @@ java {
     withSourcesJar()
     //withJavadocJar()
 }
+
+
+
+tasks.withType(JavaCompile) {
+    def parts = minecraftVersion.tokenize('.')
+    def major = parts[0]
+    def minor = parts[1].padLeft(2, '0')
+    def patch = parts.size() >= 3 ? parts[2].padLeft(2, '0') : '00'
+    def mcVersionNumber = "${major}${minor}${patch}"
+
+    println "Passing MC_VERSION=$mcVersionNumber to Manifold"
+
+    options.compilerArgs += [
+            "-Xplugin:Manifold",
+            "-AMC_VERSION=$mcVersionNumber"
+    ]
+}
+
+
 
 tasks.register("setupFiles") {
     copy {
