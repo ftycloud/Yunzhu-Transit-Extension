@@ -94,7 +94,7 @@ public class RenderSchindlerLineaScreen1BlackHorizontal<T extends LiftPanelBase.
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
                 liftFloorDisplayView.setLetterSpacing(0);
-                liftFloorDisplayView.setDisplayLength(2, 0);
+                liftFloorDisplayView.setDisplayLength(3, 0);
                 liftFloorDisplayView.setMargin(0.6F / 16, 1.225F / 16, 0.1F/16, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
 

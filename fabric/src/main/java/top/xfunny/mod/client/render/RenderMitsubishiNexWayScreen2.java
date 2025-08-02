@@ -129,7 +129,7 @@ public class RenderMitsubishiNexWayScreen2<T extends LiftPanelBase.BlockEntityBa
                 int hours = (totalSeconds / 3600 + 6) % 24; //从06:00开始
                 int minutes = (totalSeconds % 3600) / 60;
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MM月dd日");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("M月 d日");
                 String timeStr = dateFormat.format(day);
                 String formattedTime = String.format("%02d:%02d", hours, minutes);
                 String timePeriod = hours < 12 ? "AM" : "PM";

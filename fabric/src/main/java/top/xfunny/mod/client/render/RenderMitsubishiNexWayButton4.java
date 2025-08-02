@@ -11,6 +11,7 @@ import org.mtr.mapping.mapper.BlockEntityRenderer;
 import org.mtr.mapping.mapper.DirectionHelper;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.PlayerHelper;
+import org.mtr.mod.Init;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.QueuedRenderLayer;
@@ -24,6 +25,7 @@ import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
 import top.xfunny.mod.keymapping.DefaultButtonsKeyMapping;
+import top.xfunny.mod.util.ClientGetLiftDetails;
 import top.xfunny.mod.util.ReverseRendering;
 
 import java.util.Comparator;
@@ -187,6 +189,9 @@ public class RenderMitsubishiNexWayButton4 extends BlockEntityRenderer<Mitsubish
 
 
             for (int i = 0; i < count; i++) {
+                final Lift lift = sortedPositionsAndLifts.get(i).right();
+                ObjectObjectImmutablePair<LiftDirection, ObjectObjectImmutablePair<String, String>> liftDetails = ClientGetLiftDetails.getLiftDetails(world, lift, Init.positionToBlockPos(lift.getCurrentFloor().getPosition()));
+                String floorNumber = liftDetails.right().left();
 
                 final LiftFloorDisplayView liftFloorDisplayView = new LiftFloorDisplayView();
                 liftFloorDisplayView.setBasicsAttributes(world,
@@ -196,8 +201,8 @@ public class RenderMitsubishiNexWayButton4 extends BlockEntityRenderer<Mitsubish
                         6,
                         0xFFFA7A24);
                 //liftFloorDisplayView.setDisplayLength(2, 0.05F);
-                liftFloorDisplayView.setTextureId("mitsubishi_nexway_button_2_display");
-                liftFloorDisplayView.setWidth((float) 1.3 / 16);
+                liftFloorDisplayView.setTextureId("mitsubishi_nexway_button_4_display");
+                liftFloorDisplayView.setWidth((float) 1.5 / 16);
                 liftFloorDisplayView.setHeight((float) 1.7 / 16);
                 liftFloorDisplayView.setMargin(0, 0, (float) -0.1 / 16, 0);
 
@@ -207,11 +212,11 @@ public class RenderMitsubishiNexWayButton4 extends BlockEntityRenderer<Mitsubish
                     liftFloorDisplayView.setBasicsAttributes(world,
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
-                            FontList.instance.getFont("mitsubishi_small_sht"),
+                            FontList.instance.getFont(floorNumber.matches(".*[A-Z].*")?"mitsubishi_small_regular":"mitsubishi_small_sht"),
                             6,
                             0xFFFA7A24);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);
-                    liftFloorDisplayView.setMargin(0.25F / 16, 0, 0, 0);
+                    liftFloorDisplayView.setMargin(0.2F / 16, 0, 0, 0);
                 } else {
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.ASPECT_FILL);
                 }

@@ -72,6 +72,7 @@ public class Blocks {
     public static final BlockRegistryObject MITSUBISHI_NEXWAY_BUTTON_3_WITHOUT_SCREEN;
     public static final BlockRegistryObject MITSUBISHI_NEXWAY_BUTTON_4;
     public static final BlockRegistryObject MITSUBISHI_NEXWAY_BUTTON_4_WITHOUT_SCREEN;
+    public static final BlockRegistryObject MITSUBISHI_BUTTON_SHT;
     public static final BlockRegistryObject MITSUBISHI_MAXIEZ_BUTTON_1_GOLD;
     public static final BlockRegistryObject MITSUBISHI_MAXIEZ_BUTTON_1_SILVER;
     public static final BlockRegistryObject MITSUBISHI_NEXWAY_LANTERN_1_HORIZONTAL_ODD;
@@ -139,6 +140,9 @@ public class Blocks {
     public static final BlockRegistryObject SCHINDLER_LINEA_SCREEN_2_BLACK_HORIZONTAL_EVEN;
     public static final BlockRegistryObject SCHINDLER_LINEA_SCREEN_2_BLACK_VERTICAL_ODD;
     public static final BlockRegistryObject SCHINDLER_LINEA_SCREEN_2_BLACK_VERTICAL_EVEN;
+    public static final BlockRegistryObject SCHINDLER_FI_GS_BUTTON_1;
+    public static final BlockRegistryObject SCHINDLER_FI_GS_TOUCH_BUTTON_1;
+    public static final BlockRegistryObject SCHINDLER_FI_GS_BUTTON_1_STEEL;
     public static final BlockRegistryObject SCHINDLER_Z_LINE_3_KEYPAD_1;
 
     public static final BlockRegistryObject THYSSENKRUPP_TEGL1_BUTTON_1;
@@ -153,6 +157,8 @@ public class Blocks {
     public static final BlockRegistryObject HITACHI_VIB320_BUTTON_DOT_MATRIX;
     public static final BlockRegistryObject HITACHI_VIB322_BUTTON;
     public static final BlockRegistryObject HITACHI_VIB322_BUTTON_DOT_MATRIX;
+    public static final BlockRegistryObject HITACHI_VIB325_BUTTON;
+    public static final BlockRegistryObject HITACHI_VIB325_BUTTON_DOT_MATRIX;
     public static final BlockRegistryObject HITACHI_VIB221_BUTTON;
     public static final BlockRegistryObject HITACHI_VIB221_BUTTON_DOT_MATRIX;
     public static final BlockRegistryObject HITACHI_VIB221_BUTTON_LCD_SEGMENTED;
@@ -237,7 +243,7 @@ public class Blocks {
 
         MITSUBISHI_GPS_BUTTON_1 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_gps_button_1"), () -> new Block(new MitsubishiGPSButton1()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_GPS_BUTTON_1_WITHOUT_SCREEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_gps_button_1_without_screen"), () -> new Block(new MitsubishiGPSButton1WithoutScreen()), CreativeModeTabs.YTE_LIFT_FIXTURES);
-        MITSUBISHI_BUTTON_SHUN_HING_SQUARE = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_button_shun_hing_plaza"), () -> new Block(new MitsubishiButtonShunHingSquare()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        MITSUBISHI_BUTTON_SHUN_HING_SQUARE = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_button_shun_hing_square"), () -> new Block(new MitsubishiButtonShunHingSquare()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_RYODEN_SCREEN_1_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_ryoden_screen_1_odd"), () -> new Block(new MitsubishiRyodenScreen1Odd()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_RYODEN_SCREEN_1_EVEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_ryoden_screen_1_even"), () -> new Block(new MitsubishiRyodenScreen1Even()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_NEXWAY_BUTTON_1 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_nexway_button_1"), () -> new Block(new MitsubishiNexWayButton1()), CreativeModeTabs.YTE_LIFT_FIXTURES);
@@ -252,6 +258,7 @@ public class Blocks {
         MITSUBISHI_NEXWAY_BUTTON_3_WITHOUT_SCREEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_nexway_button_3_without_screen"), () -> new Block(new MitsubishiNexWayButton3WithoutScreen()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_NEXWAY_BUTTON_4 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_nexway_button_4"), () -> new Block(new MitsubishiNexWayButton4()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_NEXWAY_BUTTON_4_WITHOUT_SCREEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_nexway_button_4_without_screen"), () -> new Block(new MitsubishiNexWayButton4WithoutScreen()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        MITSUBISHI_BUTTON_SHT = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_button_sht"), () -> new Block(new MitsubishiButtonSHT()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_MAXIEZ_BUTTON_1_GOLD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_maxiez_button_1_gold"), () -> new Block(new MitsubishiMaxiezButton1Gold()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_MAXIEZ_BUTTON_1_SILVER = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_maxiez_button_1_silver"), () -> new Block(new MitsubishiMaxiezButton1Silver()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         MITSUBISHI_NEXWAY_LANTERN_1_HORIZONTAL_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "mitsubishi_nexway_lantern_1_horizontal_odd"), () -> new Block(new MitsubishiNexWayLantern1HorizontalOdd()), CreativeModeTabs.YTE_LIFT_FIXTURES);
@@ -342,12 +349,17 @@ public class Blocks {
         SCHINDLER_LINEA_SCREEN_2_BLACK_HORIZONTAL_EVEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_linea_screen_2_black_horizontal_even"), () -> new Block(new SchindlerLineaScreen2BlackHorizontalEven()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         SCHINDLER_LINEA_SCREEN_2_BLACK_VERTICAL_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_linea_screen_2_black_vertical_odd"), () -> new Block(new SchindlerLineaScreen2BlackVerticalOdd()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         SCHINDLER_LINEA_SCREEN_2_BLACK_VERTICAL_EVEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_linea_screen_2_black_vertical_even"), () -> new Block(new SchindlerLineaScreen2BlackVerticalEven()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        SCHINDLER_FI_GS_BUTTON_1 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_fi_gs_button_1"), () -> new Block(new SchindlerFIGSButton1()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        SCHINDLER_FI_GS_TOUCH_BUTTON_1 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_fi_gs_touch_button_1"), () -> new Block(new SchindlerFIGSTouchButton1()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        SCHINDLER_FI_GS_BUTTON_1_STEEL = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_fi_gs_button_1_steel"), () -> new Block(new SchindlerFIGSButton1Steel()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         SCHINDLER_Z_LINE_3_KEYPAD_1 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_z_line_3_keypad_1"), () -> new Block(new SchindlerZLine3Keypad1()), CreativeModeTabs.YTE_LIFT_FIXTURES);
 
         HITACHI_VIB320_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib320_button_1"), () -> new Block(new HitachiVIB320Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB320_BUTTON_DOT_MATRIX = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib320_button_1_dot_matrix"), () -> new Block(new HitachiVIB320ButtonDotMatrix()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB322_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib322_button_1"), () -> new Block(new HitachiVIB322Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB322_BUTTON_DOT_MATRIX = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib322_button_1_dot_matrix"), () -> new Block(new HitachiVIB322ButtonDotMatrix()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB325_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib325_button_1"), () -> new Block(new HitachiVIB325Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB325_BUTTON_DOT_MATRIX = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib325_button_1_dot_matrix"), () -> new Block(new HitachiVIB325ButtonDotMatrix()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB221_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib221_button_1"), () -> new Block(new HitachiVIB221Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB221_BUTTON_DOT_MATRIX = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib221_button_1_dot_matrix"), () -> new Block(new HitachiVIB221ButtonDotMatrix()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB221_BUTTON_LCD_SEGMENTED = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib221_button_1_lcd_segmented"), () -> new Block(new HitachiVIB221ButtonLCDSegmented()), CreativeModeTabs.YTE_LIFT_FIXTURES);

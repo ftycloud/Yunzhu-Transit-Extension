@@ -2,8 +2,9 @@ package top.xfunny.mod.packet;
 
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.ScreenExtension;
-import org.mtr.mod.screen.RailwaySignScreen;
 import top.xfunny.mod.block.PATRS01RailwaySign;
+import top.xfunny.mod.block.TestLiftButtons;
+import top.xfunny.mod.client.screen.GuangzhouRailwaySignScreen;
 import top.xfunny.mod.client.screen.PATRS01RailwaySignScreen;
 
 import java.util.function.Consumer;
@@ -14,11 +15,16 @@ public final class YTEClientPacketHelper {
     public static void openBlockEntityScreen(BlockPos blockPos) {
         getBlockEntity(blockPos, blockEntity -> {
             if (blockEntity.data instanceof PATRS01RailwaySign.BlockEntity) {
-                openScreen(new PATRS01RailwaySignScreen(blockPos), screenExtension -> screenExtension instanceof PATRS01RailwaySignScreen);
+                openScreen(new PATRS01RailwaySignScreen(blockPos),
+                        screenExtension -> screenExtension instanceof PATRS01RailwaySignScreen);
+            }
+            // 测试新屏幕
+            else if (blockEntity.data instanceof TestLiftButtons.BlockEntity) {
+                openScreen(new GuangzhouRailwaySignScreen(blockPos),
+                        screenExtension -> screenExtension instanceof GuangzhouRailwaySignScreen);
             }
         });
     }
-
 
     private static void openScreen(ScreenExtension screenExtension, Predicate<ScreenExtension> isInstance) {
         final MinecraftClient minecraftClient = MinecraftClient.getInstance();

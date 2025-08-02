@@ -6,44 +6,43 @@ import org.mtr.mapping.holder.MutableText;
 import org.mtr.mapping.holder.Window;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.TextHelper;
-import org.mtr.mod.data.IGui;
+import top.xfunny.mod.Init;
+import top.xfunny.mod.Keys;
 import top.xfunny.mod.client.InitClient;
 
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import static org.mtr.mod.data.IGui.ARGB_WHITE_TRANSLUCENT;
 
-public class RenderWatermark implements IGui {
+public class RenderWatermark {
     private static final int a = 10;
-    private static final ZonedDateTime n = ZonedDateTime.now();
-    private static final String t = n.format(DateTimeFormatter.ofPattern("yyMMdd-HHmmXX"));
-    public static void render(GraphicsHolder b) {
-        if (!InitClient.getConfig().hideTestWatermark) {
-            final MinecraftClient c = MinecraftClient.getInstance();
-            final Window x = c.getWindow();
-            int j = ARGB_WHITE;
+    public static void render(GraphicsHolder b){
+        final MinecraftClient c = MinecraftClient.getInstance();
+        final Window x = c.getWindow();
+        int h = x.getScaledWidth() - 1;
+        int w = x.getScaledHeight();
+        if(!InitClient.getConfig().hideTestWatermark || Init.HAS_UPDATE == 1){
+            int j = -1;
             int z = 0;
-            float s = 1.5F;
-            String e = "\u0059\u0075\u006e\u007a\u0068\u0075\u0020\u0054\u0072\u0061\u006e\u0073\u0069\u0074\u0020\u0045\u0078\u0074\u0065\u006e\u0073\u0069\u006f\u006e\u0020\u0042\u0065\u0074\u0061";
-            String f = "1.0.2-beta.3";
+            String e = "Yunzhu Transit Extension Beta";
             MutableText g = TextHelper.translatable("gui.yte.watermark");
-            MutableText q = TextHelper.translatable("gui.yte.watermark_1", f, t);
-            MutableText r = TextHelper.translatable("gui.yte.watermark_2");
-            MutableText n = TextHelper.translatable("gui.yte.watermark_3");
-            int h = x.getScaledWidth();
-            int w = x.getScaledHeight();
+            MutableText q = TextHelper.translatable("gui.yte.watermark_1", Keys.MOD_VERSION, Keys.BUILD_TIME);
             final ClientPlayerEntity p = c.getPlayerMapped();
             if (p != null) {
                 b.push();
                 b.translate(h, w, z);
-                b.drawText(e, -GraphicsHolder.getTextWidth(e) - 2, -a * 3, j, true, GraphicsHolder.getDefaultLight());
-                b.drawText(g, -GraphicsHolder.getTextWidth(g) - 2, -a * 2, j, true, GraphicsHolder.getDefaultLight());
-                b.drawText(q, -GraphicsHolder.getTextWidth(q) - 2, -a, j, true, GraphicsHolder.getDefaultLight());
+                b.drawText(e, -GraphicsHolder.getTextWidth(e), -a * 3, j, true, GraphicsHolder.getDefaultLight());
+                b.drawText(g, -GraphicsHolder.getTextWidth(g), -a * 2, j, true, GraphicsHolder.getDefaultLight());
+                b.drawText(q, -GraphicsHolder.getTextWidth(q), -a, j, true, GraphicsHolder.getDefaultLight());
                 b.pop();
-                b.translate(h - 82 - GraphicsHolder.getTextWidth(n), w - 50, z);
-                b.drawText(n, 0, 0, ARGB_WHITE_TRANSLUCENT, false, GraphicsHolder.getDefaultLight());
-                b.scale(s, s, s);
-                b.drawText(r, 0, -a, ARGB_WHITE_TRANSLUCENT, false, GraphicsHolder.getDefaultLight());
             }
+        }
+        if (Init.HAS_UPDATE == 1){
+            float s = 1.5F;
+            MutableText r = TextHelper.literal("YTE 开发人员版本");
+            MutableText n = TextHelper.literal("请转到 Modrinth 下载最新版本。");
+            b.translate(h - 80 -GraphicsHolder.getTextWidth(n), w - 50, 0);
+            b.drawText(n, 0, 0, ARGB_WHITE_TRANSLUCENT, false, GraphicsHolder.getDefaultLight());
+            b.scale(s,s,s);
+            b.drawText(r, 0, -a, ARGB_WHITE_TRANSLUCENT, false, GraphicsHolder.getDefaultLight());
         }
     }
 }
