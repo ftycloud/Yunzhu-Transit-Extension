@@ -2,6 +2,7 @@ package top.xfunny.mod.client.render;
 
 
 import org.mtr.core.data.Lift;
+import org.mtr.core.data.LiftDirection;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
 import org.mtr.mapping.holder.*;
@@ -21,6 +22,8 @@ import top.xfunny.mod.client.view.*;
 import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
+import top.xfunny.mod.util.ClientGetLiftDetails;
+import top.xfunny.mod.util.ReverseRendering;
 
 import java.util.Comparator;
 
@@ -78,14 +81,19 @@ public class RenderHitachiGHD820proScreen<T extends LiftPanelBase.BlockEntityBas
         sortedPositionsAndLifts.sort(Comparator.comparingInt(sortedPositionAndLift -> blockPos.getManhattanDistance(new Vector3i(sortedPositionAndLift.left().data))));
 
         if (!sortedPositionsAndLifts.isEmpty()) {
-            final int count = 1;
+
+            final int count = Math.min(2, sortedPositionsAndLifts.size());
 
             for (int i = 0; i < count; i++) {
+                final Lift lift = sortedPositionsAndLifts.get(i).right();
+                ObjectObjectImmutablePair<LiftDirection, ObjectObjectImmutablePair<String, String>> liftDetails = ClientGetLiftDetails.getLiftDetails(world, lift, org.mtr.mod.Init.positionToBlockPos(lift.getCurrentFloor().getPosition()));
+                String floorNumber = liftDetails.right().left();
+
                 final LiftFloorDisplayView liftFloorDisplayView = new LiftFloorDisplayView();
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
-                        sortedPositionsAndLifts.get(i).right(),
-                        FontList.instance.getFont("hitachi-led-seg"),
+                        lift,
+                        FontList.instance.getFont(floorNumber.matches("^(1[0-9]|20|[1-9])$")?"hitachi-led-seg":"hitachi-led-seg-fix"),
                         8.5F,
                         0xFFFFFFFF);
                 liftFloorDisplayView.setTextureId("hitachi_ghd820_screen");
