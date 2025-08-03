@@ -2,16 +2,8 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.mtr.mod.BuildTools
 
 plugins {
-    id "net.minecraftforge.gradle" version "[6.0,6.2)"
+    id "net.minecraftforge.gradle" version "6.+"
     id "org.spongepowered.mixin" version "+"
-
-}
-
-repositories {
-    mavenCentral()
-    maven { url "https://maven.minecraftforge.net/" }
-    maven { url "https://libraries.minecraft.net/" }
-    maven { url "https://repo.maven.apache.org/maven2/" }
 }
 
 
@@ -21,14 +13,13 @@ minecraft {
     mappings channel: "official", version: minecraftVersion
     runs {
         configureEach {
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
+            property "forge.logging.markers", "REGISTRIES"
+            property "forge.logging.console.level", "debug"
         }
         client {}
         server { args "--nogui" }
     }
 }
-
 
 sourceSets.main.resources { srcDir "src/generated/resources" }
 
@@ -36,11 +27,10 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraftVersion}-${buildTools.getForgeVersion()}"
     annotationProcessor "org.spongepowered:mixin:+:processor"
     annotationProcessor 'systems.manifold:manifold-preprocessor:+'
-    implementation fg.deobf("org.mtr:MTR-forge:${mtrVersion}+${minecraftVersion}-server")
     implementation 'com.vdurmont:semver4j:3.1.0'
+    implementation fg.deobf("org.mtr:MTR-forge:${mtrVersion}+${minecraftVersion}-server")
 }
 
-// 添加配置以仅将semver4j依赖打包到最终jar中
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from {
@@ -53,23 +43,21 @@ jar {
     }
 }
 
+
 mixin {
-    add sourceSets.main, "yte.refmap.json"
-    config "yte.mixins.json"
+    add sourceSets.main, "mtr.refmap.json"
+    config "mtr.mixins.json"
     debug.verbose = true
     debug.export = true
 }
 
 java {
     toolchain {
-        println("Using Java " + JavaLanguageVersion.of(buildTools.javaLanguageVersion))
         languageVersion.set(JavaLanguageVersion.of(buildTools.javaLanguageVersion))
     }
     withSourcesJar()
     //withJavadocJar()
 }
-
-
 
 tasks.withType(JavaCompile) {
     def parts = minecraftVersion.tokenize('.')
@@ -85,7 +73,6 @@ tasks.withType(JavaCompile) {
             "-AMC_VERSION=$mcVersionNumber"
     ]
 }
-
 
 
 tasks.register("setupFiles") {
