@@ -25,6 +25,7 @@ minecraft {
 sourceSets.main.resources { srcDir "src/generated/resources" }
 
 dependencies {
+    implementation 'systems.manifold:manifold:+'
     minecraft "net.minecraftforge:forge:${minecraftVersion}-${buildTools.getForgeVersion()}"
     annotationProcessor "org.spongepowered:mixin:+:processor"
     annotationProcessor 'systems.manifold:manifold-preprocessor:+'
@@ -48,8 +49,7 @@ java {
 }
 
 
-
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     def parts = minecraftVersion.tokenize('.')
     def major = parts[0]
     def minor = parts[1].padLeft(2, '0')
@@ -62,6 +62,10 @@ tasks.withType(JavaCompile) {
             "-Xplugin:Manifold",
             "-AMC_VERSION=$mcVersionNumber"
     ]
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
 }
 
 
@@ -113,6 +117,20 @@ tasks.register("setupFiles") {
         from "../fabric/src/main/resources/yte.mixins.json"
         into "src/main/resources"
     }
+}
+
+
+tasks.register('resolveDependencies') {
+    doLast {
+        configurations.compileClasspath.resolve()
+        configurations.annotationProcessor.resolve()
+        configurations.runtimeClasspath.resolve()
+    }
+}
+
+
+tasks.withType(JavaCompile).configureEach {
+    dependsOn resolveDependencies
 }
 
 build {
