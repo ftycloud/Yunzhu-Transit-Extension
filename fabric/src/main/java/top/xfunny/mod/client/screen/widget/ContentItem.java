@@ -52,12 +52,12 @@ public class ContentItem extends BaseListItem {
     public void draw(GraphicsHolder graphicsHolder, GuiDrawing guiDrawing, int entryX, int entryY, int width, int height, int mouseX, int mouseY, boolean widgetVisible, float tickDelta) {
         super.draw(graphicsHolder, guiDrawing, entryX, entryY, width, height, mouseX, mouseY, widgetVisible, tickDelta);
         drawBackground(guiDrawing, entryX, entryY, width, mouseX, mouseY, tickDelta);
-        drawListEntry(graphicsHolder, guiDrawing, entryX, entryY, width, mouseX, mouseY, widgetVisible, tickDelta);
+        drawListEntry(graphicsHolder, entryX, entryY, mouseX, mouseY, widgetVisible, tickDelta);
     }
 
-    private void drawListEntry(GraphicsHolder graphicsHolder, GuiDrawing guiDrawing, int entryX, int entryY, int width, int mouseX, int mouseY, boolean widgetVisible, float tickDelta) {
+    private void drawListEntry(GraphicsHolder graphicsHolder, int entryX, int entryY, int mouseX, int mouseY, boolean widgetVisible, float tickDelta) {
         if(title != null)
-            drawListEntryDescription(graphicsHolder, entryX, entryY, width);
+            drawListEntryDescription(graphicsHolder, entryX, entryY);
 
         if(widget != null) {
             widget.visible = widgetVisible;
@@ -65,7 +65,7 @@ public class ContentItem extends BaseListItem {
         }
     }
 
-    private void drawListEntryDescription(GraphicsHolder graphicsHolder, int entryX, int entryY, int width) {
+    private void drawListEntryDescription(GraphicsHolder graphicsHolder, int entryX, int entryY) {
         int textHeight = 9;
         int iconSize = hasIcon() ? height - ENTRY_PADDING : 0;
         int textY = (height / 2) - (textHeight / 2) - (ENTRY_PADDING / 2);
@@ -86,7 +86,7 @@ public class ContentItem extends BaseListItem {
         graphicsHolder.pop();
     }
 
-    private void drawBackground( GuiDrawing guiDrawing, int entryX, int entryY, int width, int mouseX, int mouseY, float tickDelta) {
+    private void drawBackground(GuiDrawing guiDrawing, int entryX, int entryY, int width, int mouseX, int mouseY, float tickDelta) {
         double highlightFadeSpeed = (tickDelta / 4);
         boolean entryHovered = mouseX >= entryX && mouseY >= entryY && mouseX < entryX + width && mouseY < entryY + this.height;
         hoverOpacity = entryHovered ? Math.min(1, hoverOpacity + highlightFadeSpeed) : Math.max(0, hoverOpacity - highlightFadeSpeed);

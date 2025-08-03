@@ -1,10 +1,13 @@
 package top.xfunny.mod.client.screen;
 
-import org.mtr.mapping.holder.Direction;
 import org.mtr.mapping.mapper.GraphicsHolder;
 
+/**
+ * @deprecated
+ * 或将在以后版本中删除此接口。
+ */
+@Deprecated
 public interface RenderHelper {
-    int ARGB_WHITE = 0xFFFFFFFF;
     int lineHeight = 9;
 
     static void scaleToFit(GraphicsHolder graphicsHolder, int targetW, double maxW, boolean keepAspectRatio) {

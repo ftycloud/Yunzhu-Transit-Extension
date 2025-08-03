@@ -5,8 +5,6 @@ import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.GuiDrawing;
 import top.xfunny.mod.client.screen.GuiHelper;
 
-import static top.xfunny.mod.client.screen.RenderHelper.ARGB_WHITE;
-
 public class CategoryItem extends BaseListItem {
     public final MutableText title;
 
@@ -23,7 +21,7 @@ public class CategoryItem extends BaseListItem {
     @Override
     public void draw(GraphicsHolder graphicsHolder, GuiDrawing guiDrawing, int entryX, int entryY, int width, int height, int mouseX, int mouseY, boolean widgetVisible, float tickDelta) {
         GuiHelper.drawRectangle(guiDrawing, entryX, entryY, width, this.height, 0x99999999);
-        graphicsHolder.drawCenteredText(title, (entryX + width / 2), entryY - (8/2) + (this.height / 2), ARGB_WHITE);
+        graphicsHolder.drawCenteredText(title, (entryX + width / 2), entryY - (8/2) + (this.height / 2), 0xFFFFFFFF);
     }
 
     @Override
