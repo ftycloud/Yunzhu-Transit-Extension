@@ -15,6 +15,7 @@ subprojects {
     repositories {
         flatDir { dirs "../libs" }
         maven { url "https://jitpack.io" }
+        maven { url "https://maven.minecraftforge.net" }
         mavenCentral()
     }
 

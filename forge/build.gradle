@@ -30,7 +30,6 @@ dependencies {
     annotationProcessor 'systems.manifold:manifold-preprocessor:+'
     implementation fg.deobf("org.mtr:MTR-forge:${mtrVersion}+${minecraftVersion}-server")
     implementation 'com.vdurmont:semver4j:3.1.0'
-    implementation 'net.jodah:typetools:0.6.2'
 }
 
 jar {
