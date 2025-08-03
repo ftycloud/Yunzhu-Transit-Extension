@@ -11,7 +11,7 @@ public class MainForge {
 
     public MainForge() {
         Init.init();
-        ForgeConfig.registerConfig();
+        //ForgeConfig.registerConfig();
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> InitClient::init);
     }
 }

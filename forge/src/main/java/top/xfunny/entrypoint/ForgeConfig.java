@@ -1,6 +1,6 @@
 package top.xfunny.entrypoint;
 
-import net.minecraftforge.client.ConfigScreenHandler;
+/*import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.fml.ModLoadingContext;
 import org.mtr.mapping.holder.BlockPos;
 import org.mtr.mapping.holder.Screen;
@@ -33,3 +33,4 @@ public class ForgeConfig {
         #endif
     }
 }
+*/
