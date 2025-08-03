@@ -24,12 +24,25 @@ minecraft {
 
 sourceSets.main.resources { srcDir "src/generated/resources" }
 
+repositories {
+    maven {
+        name = "MinecraftForge"
+        url = "https://maven.minecraftforge.net/"
+        content {
+            includeGroup "net.minecraftforge.eventbus"
+        }
+    }
+}
+
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraftVersion}-${buildTools.getForgeVersion()}"
     annotationProcessor "org.spongepowered:mixin:+:processor"
     annotationProcessor 'systems.manifold:manifold-preprocessor:+'
     implementation fg.deobf("org.mtr:MTR-forge:${mtrVersion}+${minecraftVersion}-server")
     implementation 'com.vdurmont:semver4j:3.1.0'
+    
+    // 添加typetools依赖以解决Forge EventBus的兼容性问题
+    implementation 'net.jodah:typetools:0.6.3'
 }
 
 jar {
