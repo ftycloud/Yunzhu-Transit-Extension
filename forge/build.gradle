@@ -120,19 +120,6 @@ tasks.register("setupFiles") {
 }
 
 
-tasks.register('resolveDependencies') {
-    doLast {
-        configurations.compileClasspath.resolve()
-        configurations.annotationProcessor.resolve()
-        configurations.runtimeClasspath.resolve()
-    }
-}
-
-
-tasks.withType(JavaCompile).configureEach {
-    dependsOn resolveDependencies
-}
-
 build {
     doLast {
         buildTools.copyBuildFile()
