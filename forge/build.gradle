@@ -2,10 +2,10 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.mtr.mod.BuildTools
 
 plugins {
-    id "net.minecraftforge.gradle" version "[6.0,6.2)"
+    id "net.minecraftforge.gradle" version "6.+"
     id "org.spongepowered.mixin" version "+"
-
 }
+
 
 final BuildTools buildTools = new BuildTools(minecraftVersion, "forge", project)
 
@@ -13,8 +13,8 @@ minecraft {
     mappings channel: "official", version: minecraftVersion
     runs {
         configureEach {
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
+            property "forge.logging.markers", "REGISTRIES"
+            property "forge.logging.console.level", "debug"
         }
         client {}
         server { args "--nogui" }
@@ -32,8 +32,8 @@ dependencies {
 }
 
 mixin {
-    add sourceSets.main, "yte.refmap.json"
-    config "yte.mixins.json"
+    add sourceSets.main, "mtr.refmap.json"
+    config "mtr.mixins.json"
     debug.verbose = true
     debug.export = true
 }
