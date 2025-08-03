@@ -19,7 +19,8 @@ public class RenderWatermark {
         final Window x = c.getWindow();
         int h = x.getScaledWidth() - 1;
         int w = x.getScaledHeight();
-        if(!InitClient.getConfig().hideTestWatermark || Init.HAS_UPDATE == 1){
+        //if(!InitClient.getConfig().hideTestWatermark || Init.HAS_UPDATE == 1){
+            if(Init.HAS_UPDATE == 1){
             int j = -1;
             int z = 0;
             String e = "Yunzhu Transit Extension Beta";
