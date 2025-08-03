@@ -10,7 +10,6 @@ plugins {
 
 final BuildTools buildTools = new BuildTools(minecraftVersion, "forge", project)
 
-
 minecraft {
     mappings channel: "official", version: minecraftVersion
     runs {
@@ -52,15 +51,19 @@ java {
 
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-    options.compilerArgs += [
-            "-Amanifold.preprocessor.defs=MC_VERSION=" + buildTools.getMCVersionNumber()
-    ]
     doLast {
         configurations.runtimeClasspath.resolve()
         configurations.compileClasspath.resolve()
         configurations.annotationProcessor.resolve()
     }
+
+    options.encoding = 'UTF-8'
+    options.fork = true
+
+    options.compilerArgs += [
+            '-Xplugin:Manifold',
+            '-AMC_VERSION=' + buildTools.getMCVersionNumber()
+    ]
 }
 
 
