@@ -12,11 +12,13 @@ import top.xfunny.mod.Init;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class CustomSignsManager {
     // 存储所有标志牌资源的列表
-    private static final ObjectArrayList<String> allSigns = new ObjectArrayList<>();
+    private static ObjectArrayList<String> allSigns = new ObjectArrayList<>();
+    private static ObjectArrayList<String> defaultSigns = new ObjectArrayList<>();
 
     private static final Set<String> builtinFileNames = new HashSet<>(Set.of(""));
     // 内置非图标列表
@@ -26,8 +28,7 @@ public class CustomSignsManager {
             "gap_small.png","logo_grayscale.png","rubbish.png","spit.png");
 
     public static void loader() {
-        ObjectArrayList<String> defaultSigns = new ObjectArrayList<>();
-
+        defaultSigns.clear();
         builtinFileNames.clear();
         allSigns.clear();
 
@@ -68,11 +69,17 @@ public class CustomSignsManager {
             }catch (Exception e){Init.LOGGER.error("Fake MTR", e);}
         });
 
+        defaultSigns = new ObjectArrayList<>(new LinkedHashSet<>(defaultSigns));
         allSigns.addAll(0, defaultSigns);
+        allSigns = new ObjectArrayList<>(new LinkedHashSet<>(allSigns));
         Init.LOGGER.info("Found {} Icon Files", allSigns.size());
     }
 
     public static ObjectArrayList<String> getSignList(){
         return allSigns;
+    }
+
+    public static int getDefaultSignListSize(){
+        return defaultSigns.size();
     }
 }

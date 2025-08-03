@@ -5,7 +5,6 @@ import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.ButtonWidgetExtension;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.TextHelper;
-import top.xfunny.mod.Init;
 import top.xfunny.mod.client.screen.base.BaseConfigScreen;
 import top.xfunny.mod.client.screen.widget.ContentItem;
 
@@ -50,7 +49,6 @@ public class GuangzhouRailwaySignScreen extends BaseConfigScreen {
         ContentItem chooseSignItem = new ContentItem(TextHelper.translatable(signId), signSelected);
 
         if(signId != null){
-            Init.LOGGER.info(signId);
             chooseSignItem.setIcon(new Identifier("mtr","textures/block/sign/" +  signId + ".png"));
         }
 

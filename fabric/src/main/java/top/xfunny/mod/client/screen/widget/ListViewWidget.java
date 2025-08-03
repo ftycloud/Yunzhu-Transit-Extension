@@ -1,6 +1,7 @@
 package top.xfunny.mod.client.screen.widget;
 
 import org.jetbrains.annotations.NotNull;
+import org.mtr.mapping.holder.MathHelper;
 import org.mtr.mapping.holder.MutableText;
 import org.mtr.mapping.mapper.*;
 import top.xfunny.mod.client.screen.GuiHelper;
@@ -13,6 +14,9 @@ public class ListViewWidget extends ClickableWidgetExtension {
     private final List<BaseListItem> displayedEntryList = new ArrayList<>();
     private final List<BaseListItem> entryList = new ArrayList<>();
     private String searchTerm = "";
+    public static final int SCROLLBAR_WIDTH = 5;
+    protected double currentScroll = 0;
+    private boolean scrollbarDragging = false;
 
     public ListViewWidget() {
         super(0, 0, 0, 0);
@@ -57,6 +61,7 @@ public class ListViewWidget extends ClickableWidgetExtension {
         entryList.addAll(displayedEntryList);
         displayedEntryList.clear();
         updateItemPositions();
+        setScroll(currentScroll);
     }
 
     private void updateItemPositions() {
@@ -64,7 +69,7 @@ public class ListViewWidget extends ClickableWidgetExtension {
 
         for (BaseListItem listItem : entryList) {
             int entryX = getX2();
-            int entryY = getY2() + incY;
+            int entryY = getY2() + incY - (int) currentScroll;
             listItem.positionChanged(entryX + width - ENTRY_PADDING, entryY);
             incY += listItem.height;
         }
@@ -75,6 +80,7 @@ public class ListViewWidget extends ClickableWidgetExtension {
         GuiHelper.drawRectangle(new GuiDrawing(graphicsHolder), getX2(), getY2(), width, height, 0x4C4C4C4C);
         renderContent(graphicsHolder, mouseX, mouseY, tickDelta);
         super.render(graphicsHolder, mouseX, mouseY, tickDelta);
+        renderScrollBar(graphicsHolder, mouseX, mouseY, tickDelta);
     }
 
     public void renderContent(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta){
@@ -82,13 +88,68 @@ public class ListViewWidget extends ClickableWidgetExtension {
         int incY = 0;
 
         for (BaseListItem listItem : entryList) {
+            int scrollbarWidth = contentOverflowed() ? SCROLLBAR_WIDTH : 0;
+            int listItemWidth = width - scrollbarWidth;
             int entryX = getX2();
-            int entryY = getY2() + incY;
-            listItem.draw(graphicsHolder,guiDrawing,entryX,entryY,width,height,mouseX,mouseY,true,tickDelta);
-            listItem.positionChanged(entryX + width - ENTRY_PADDING, entryY);
+            int entryY = getY2() + incY - (int) currentScroll;
+
+
+
+            listItem.draw(graphicsHolder,guiDrawing,entryX,entryY,listItemWidth,height,mouseX,mouseY,true,tickDelta);
+            listItem.positionChanged(entryX + listItemWidth - ENTRY_PADDING, entryY);
             incY += listItem.height;
         }
     }
 
     //TODO: 添加滚动
+    @Override
+    public boolean mouseScrolled2(double mouseX, double mouseY, double amount) {
+        double oldScroll = currentScroll;
+        if(contentOverflowed()) {
+            amount *= 26;
+            setScroll(oldScroll - amount);
+        }
+        return oldScroll != currentScroll;
+    }
+
+    @Override
+    public boolean mouseClicked2(double mouseX, double mouseY, int button) {
+        scrollbarDragging = button == 0 && isScrollbarHover(mouseX, mouseY);
+        return true;
+    }
+
+    public void renderScrollBar(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) {
+        if(!contentOverflowed()) return;
+
+        GuiDrawing guiDrawing = new GuiDrawing(graphicsHolder);
+        int entryHeight = getContentHeight();
+        int visibleHeight = getHeight2();
+        // 计算滚动条滑块高度
+        double scrollbarHeight = visibleHeight * ((double)visibleHeight / entryHeight);
+        double bottomOffset = currentScroll / (entryHeight - visibleHeight);
+        double yOffset = bottomOffset * (visibleHeight - scrollbarHeight);
+
+        GuiHelper.drawRectangle(guiDrawing, getX2() + getWidth2() - SCROLLBAR_WIDTH, getY2() + yOffset, SCROLLBAR_WIDTH, scrollbarHeight, isScrollbarHover(mouseX, mouseY) ? 0xFFD1D1D1 : 0xFF9F9F9F);
+    }
+
+    protected int getContentHeight() {
+        int entryHeight = 0;
+        for (BaseListItem listItem : entryList) {
+            entryHeight += listItem.height;
+        }
+        return entryHeight;
+    }
+
+    protected boolean contentOverflowed() {
+        return getContentHeight() > getHeight2();
+    }
+
+    private boolean isScrollbarHover(double mouseX, double mouseY){
+        return mouseX >= getX2() + getWidth2() - SCROLLBAR_WIDTH && mouseY >= getY2() && mouseX < getX2() + getWidth2() && mouseY < getY2() + getContentHeight();
+    }
+
+    public void setScroll(double scroll) {
+        int maxScroll = Math.max(0, getContentHeight() - getHeight2());
+        currentScroll = MathHelper.clamp(scroll, 0, maxScroll);
+    }
 }
