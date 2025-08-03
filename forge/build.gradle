@@ -4,10 +4,12 @@ import org.mtr.mod.BuildTools
 plugins {
     id "net.minecraftforge.gradle" version "6.+"
     id "org.spongepowered.mixin" version "+"
+    id 'systems.manifold.manifold-gradle-plugin' version '+'
 }
 
 
 final BuildTools buildTools = new BuildTools(minecraftVersion, "forge", project)
+
 
 minecraft {
     mappings channel: "official", version: minecraftVersion
@@ -50,24 +52,16 @@ java {
 
 
 tasks.withType(JavaCompile).configureEach {
-    def parts = minecraftVersion.tokenize('.')
-    def major = parts[0]
-    def minor = parts[1].padLeft(2, '0')
-    def patch = parts.size() >= 3 ? parts[2].padLeft(2, '0') : '00'
-    def mcVersionNumber = "${major}${minor}${patch}"
-
-    println "Passing MC_VERSION=$mcVersionNumber to Manifold"
-
-    options.compilerArgs += [
-            "-Xplugin:Manifold",
-            "-AMC_VERSION=$mcVersionNumber"
-    ]
-}
-
-compileJava {
     options.encoding = 'UTF-8'
+    options.compilerArgs += [
+            "-Amanifold.preprocessor.defs=MC_VERSION=" + buildTools.getMCVersionNumber()
+    ]
+    doLast {
+        configurations.runtimeClasspath.resolve()
+        configurations.compileClasspath.resolve()
+        configurations.annotationProcessor.resolve()
+    }
 }
-
 
 
 tasks.register("setupFiles") {
