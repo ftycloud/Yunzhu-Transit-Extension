@@ -75,7 +75,7 @@ public class SignSettingScreen extends BaseConfigScreen {
             Identifier SIGN_ICON = new Identifier("mtr:textures/block/sign/" + signId + ".png");
             String displaySignId = signId.replace("_"," ");
 
-            if (i == getDefaultSignListSize() - 1){
+            if (i == getDefaultSignListSize()){
                 listViewWidget.addCategory(TextHelper.translatable("gui.yte.extended_style"));
             }
 
