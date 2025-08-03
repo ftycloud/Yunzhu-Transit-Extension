@@ -7,14 +7,6 @@ plugins {
 
 }
 
-repositories {
-    mavenCentral()
-    maven { url "https://maven.minecraftforge.net/" }
-    maven { url "https://libraries.minecraft.net/" }
-    maven { url "https://repo.maven.apache.org/maven2/" }
-}
-
-
 final BuildTools buildTools = new BuildTools(minecraftVersion, "forge", project)
 
 minecraft {
@@ -37,20 +29,6 @@ dependencies {
     annotationProcessor "org.spongepowered:mixin:+:processor"
     annotationProcessor 'systems.manifold:manifold-preprocessor:+'
     implementation fg.deobf("org.mtr:MTR-forge:${mtrVersion}+${minecraftVersion}-server")
-    implementation 'com.vdurmont:semver4j:3.1.0'
-}
-
-// 添加配置以仅将semver4j依赖打包到最终jar中
-jar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from {
-        configurations.runtimeClasspath.collect {
-            // 仅打包semver4j依赖
-            if (it.name.contains("semver4j")) {
-                it.isDirectory() ? it : zipTree(it)
-            }
-        }
-    }
 }
 
 mixin {
