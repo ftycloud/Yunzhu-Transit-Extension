@@ -2,7 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.mtr.mod.BuildTools
 
 plugins {
-    id "net.minecraftforge.gradle" version "6.0.36"
+    id "net.minecraftforge.gradle" version "6.+"
     id "org.spongepowered.mixin" version "+"
 
 }
@@ -32,7 +32,6 @@ dependencies {
     implementation 'com.vdurmont:semver4j:3.1.0'
 }
 
-// 添加配置以仅将semver4j依赖打包到最终jar中
 jar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from {
