@@ -51,42 +51,14 @@ public class UpdateCheckerUtil {
         Init.LOGGER.info("[YTE] Yunzhu Transit Extension {} @ MTR {}", Keys.MOD_VERSION, org.mtr.mod.Keys.MOD_VERSION);
         LOGGER.info("Checking mod updates...");
         checkUpdata();
-//        CompletableFuture.runAsync(() -> {
-//            try {
-//                String jsonData = fetchJson(Keys.API_URL);
-//                JsonArray versions = JsonParser.parseString(jsonData).getAsJsonArray();
-//
-//                String version = versions.get(0).getAsJsonObject().get("version_number").getAsString();
-//
-//                Matcher matcher = VERSION_PATTERN.matcher(version);
-//                if (matcher.find()) {
-//                    REMOTE_VERSION = matcher.group(0);
-//                }
-//
-//                Semver localSemver = new Semver(Keys.MOD_VERSION, Semver.SemverType.LOOSE);
-//                Semver remoteSemver = new Semver(REMOTE_VERSION, Semver.SemverType.LOOSE);
-//
-//                int result = remoteSemver.compareTo(localSemver);
-//                Init.HAS_UPDATE = Integer.compare(0, result);
-//
-//                if (Init.HAS_UPDATE == -1) {
-//
-//                } else if (Init.HAS_UPDATE == 1) {
-//                    Init.LOGGER.warn("You are using a development version!");
-//                }
-//            } catch (SemverException e) {
-//                Init.LOGGER.error(e.getMessage());
-//            } catch (Exception e) {
-//                Init.LOGGER.error("Update check failed", e);
-//            }
-//        });
     }
 
     private static void checkUpdata(){
         String CurrentVersionHash = getCurrentVersionHash();
-
-        LOGGER.info("New version available: {} → {}", Keys.MOD_VERSION, UPDATE_VERSION);
-        LOGGER.info("Get the latest version here: https://modrinth.com/mod/yunzhu-transit-extension/versions");
+        LOGGER.info("Hash: {}", CurrentVersionHash);
+        LOGGER.info("You are using a development version!");
+//        LOGGER.info("New version available: {} → {}", Keys.MOD_VERSION, UPDATE_VERSION);
+//        LOGGER.info("Get the latest version here: https://modrinth.com/mod/yunzhu-transit-extension/versions");
     }
 
     private static Map<String, Instant> getUpdateVersions(String Hash){
