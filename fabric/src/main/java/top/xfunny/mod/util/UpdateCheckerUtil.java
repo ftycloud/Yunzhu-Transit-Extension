@@ -1,24 +1,24 @@
 package top.xfunny.mod.util;
 
-import com.google.gson.*;
-//import com.vdurmont.semver4j.Semver;
-//import com.vdurmont.semver4j.SemverException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.Keys;
 
-import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.concurrent.CompletableFuture;
-import java.util.regex.*;
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.security.MessageDigest;
+import java.time.Instant;
+import java.util.Map;
 
 //TODO： 需要重写版本检查功能
 @Deprecated
-public class VersionUpdateCheck {
-//    private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)(?:-([a-zA-Z0-9.]+))?");
+public class UpdateCheckerUtil {
+    private static final Logger LOGGER = LogManager.getLogger("Yunzhu Transit Extension/Update Utility");
+    private static final String UPDATE_VERSION = "";
+
+    //    private static final Pattern VERSION_PATTERN = Pattern.compile("(\\d+)\\.(\\d+)\\.(\\d+)(?:-([a-zA-Z0-9.]+))?");
 //    private static String REMOTE_VERSION;
 //
 //    private static String fetchJson(String urlString) throws IOException {
@@ -48,7 +48,9 @@ public class VersionUpdateCheck {
 //    }
 //
     public static void init() {
-//        Init.LOGGER.info("Checking mod updates...");
+        Init.LOGGER.info("[YTE] Yunzhu Transit Extension {} @ MTR {}", Keys.MOD_VERSION, org.mtr.mod.Keys.MOD_VERSION);
+        LOGGER.info("Checking mod updates...");
+        checkUpdata();
 //        CompletableFuture.runAsync(() -> {
 //            try {
 //                String jsonData = fetchJson(Keys.API_URL);
@@ -68,8 +70,7 @@ public class VersionUpdateCheck {
 //                Init.HAS_UPDATE = Integer.compare(0, result);
 //
 //                if (Init.HAS_UPDATE == -1) {
-//                    Init.LOGGER.warn("New version available: {} → {}", Keys.MOD_VERSION, REMOTE_VERSION);
-//                    Init.LOGGER.warn("Get the latest version here: https://modrinth.com/mod/yunzhu-transit-extension/versions");
+//
 //                } else if (Init.HAS_UPDATE == 1) {
 //                    Init.LOGGER.warn("You are using a development version!");
 //                }
@@ -79,5 +80,49 @@ public class VersionUpdateCheck {
 //                Init.LOGGER.error("Update check failed", e);
 //            }
 //        });
+    }
+
+    private static void checkUpdata(){
+        String CurrentVersionHash = getCurrentVersionHash();
+
+        LOGGER.info("New version available: {} → {}", Keys.MOD_VERSION, UPDATE_VERSION);
+        LOGGER.info("Get the latest version here: https://modrinth.com/mod/yunzhu-transit-extension/versions");
+    }
+
+    private static Map<String, Instant> getUpdateVersions(String Hash){
+        return Map.of();
+    }
+
+    private static String getCurrentVersionHash(){
+        try{
+            File jarFile = new File(UpdateCheckerUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+
+            if (!jarFile.getName().toLowerCase().endsWith(".jar") || !jarFile.isFile()){
+                LOGGER.info("DEBUG Mode/Skipped");
+                Init.HAS_UPDATE = 1;
+                return "";
+            }
+
+            MessageDigest digest = MessageDigest.getInstance("SHA-1");
+
+            try(InputStream is = new FileInputStream(jarFile)){
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = is.read(buffer)) != -1){
+                    digest.update(buffer, 0, bytesRead);
+                }
+
+                StringBuilder hexString = new StringBuilder();
+                for (byte b : digest.digest()){
+                    hexString.append(String.format("%02x",b));
+                }
+
+                return hexString.toString();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
