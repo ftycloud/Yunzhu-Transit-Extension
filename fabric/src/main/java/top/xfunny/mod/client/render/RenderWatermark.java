@@ -6,11 +6,7 @@ import org.mtr.mapping.holder.MutableText;
 import org.mtr.mapping.holder.Window;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.TextHelper;
-import top.xfunny.mod.Init;
 import top.xfunny.mod.Keys;
-import top.xfunny.mod.client.InitClient;
-
-import static org.mtr.mod.data.IGui.ARGB_WHITE_TRANSLUCENT;
 
 public class RenderWatermark {
     private static final int a = 10;
@@ -19,8 +15,7 @@ public class RenderWatermark {
         final Window x = c.getWindow();
         int h = x.getScaledWidth() - 1;
         int w = x.getScaledHeight();
-        //if(!InitClient.getConfig().hideTestWatermark || Init.HAS_UPDATE == 1){
-            if(Init.HAS_UPDATE == 1){
+//        if(!InitClient.getConfig().hideTestWatermark || Init.HAS_UPDATE == 1){
             int j = -1;
             int z = 0;
             String e = "Yunzhu Transit Extension Beta";
@@ -35,6 +30,6 @@ public class RenderWatermark {
                 b.drawText(q, -GraphicsHolder.getTextWidth(q), -a, j, true, GraphicsHolder.getDefaultLight());
                 b.pop();
             }
-        }
+//        }
     }
 }

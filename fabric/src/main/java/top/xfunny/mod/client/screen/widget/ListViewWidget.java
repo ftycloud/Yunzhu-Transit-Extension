@@ -79,7 +79,7 @@ public class ListViewWidget extends ClickableWidgetExtension {
     public void render(@NotNull GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) {
         GuiHelper.drawRectangle(new GuiDrawing(graphicsHolder), getX2(), getY2(), width, height, 0x4C4C4C4C);
         renderContent(graphicsHolder, mouseX, mouseY, tickDelta);
-        super.render(graphicsHolder, mouseX, mouseY, tickDelta);
+//        super.render(graphicsHolder, mouseX, mouseY, tickDelta);
         renderScrollBar(graphicsHolder, mouseX, mouseY, tickDelta);
     }
 

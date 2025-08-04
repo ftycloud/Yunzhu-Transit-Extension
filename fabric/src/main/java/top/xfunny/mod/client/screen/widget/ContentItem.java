@@ -43,8 +43,8 @@ public class ContentItem extends BaseListItem {
     public void positionChanged(int entryX, int entryY) {
         if(widget != null) {
             int offsetY = (height - widget.getHeight2()) / 2;
-            widget.setX(entryX - widget.getWidth2());
-            widget.setY(entryY + offsetY);
+            widget.setX2(entryX - widget.getWidth2());
+            widget.setY2(entryY + offsetY);
         }
     }
 
