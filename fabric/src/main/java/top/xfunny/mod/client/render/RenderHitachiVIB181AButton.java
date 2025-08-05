@@ -15,7 +15,7 @@ import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
-import top.xfunny.mod.block.HitachiVIB658Button;
+import top.xfunny.mod.block.HitachiVIB181AButton;
 import top.xfunny.mod.block.base.LiftButtonsBase;
 import top.xfunny.mod.client.resource.FontList;
 import top.xfunny.mod.client.view.*;
@@ -28,7 +28,7 @@ import top.xfunny.mod.util.ReverseRendering;
 
 import java.util.Comparator;
 
-public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658Button.BlockEntity> implements DirectionHelper, IGui, IBlock {
+public class RenderHitachiVIB181AButton extends BlockEntityRenderer<HitachiVIB181AButton.BlockEntity> implements DirectionHelper, IGui, IBlock {
 
     private static final int HOVER_COLOR = 0xAAFFFFFF;
     private static final int PRESSED_COLOR = 0xFFFFFFFF;
@@ -40,12 +40,12 @@ public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658
     private static final Identifier LIGHT_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mo_down_light.png");
     private static final BooleanProperty UNLOCKED = BooleanProperty.of("unlocked");
 
-    public RenderHitachiVIB658Button(Argument dispatcher) {
+    public RenderHitachiVIB181AButton(Argument dispatcher) {
         super(dispatcher);
     }
 
     @Override
-    public void render(HitachiVIB658Button.BlockEntity blockEntity, float tickDelta, GraphicsHolder graphicsHolder1, int light, int overlay) {
+    public void render(HitachiVIB181AButton.BlockEntity blockEntity, float tickDelta, GraphicsHolder graphicsHolder1, int light, int overlay) {
         final World world = blockEntity.getWorld2();
         if (world == null) {
             return;
@@ -69,7 +69,7 @@ public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658
         StoredMatrixTransformations storedMatrixTransformations1 = storedMatrixTransformations.copy();
         storedMatrixTransformations1.add(graphicsHolder -> {
             graphicsHolder.rotateYDegrees(-facing.asRotation());
-            graphicsHolder.translate(0, 0, 7.55F / 16 - SMALL_OFFSET);
+            graphicsHolder.translate(0, 0, 7.9F / 16 - SMALL_OFFSET);
         });
 
 
@@ -167,7 +167,7 @@ public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658
             line.RenderLine(holdingLinker, trackPosition);
 
 
-            HitachiVIB658Button.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
+            HitachiVIB181AButton.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
                 sortedPositionsAndLifts.add(new ObjectObjectImmutablePair<>(trackPosition, lift));
                 final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
                 instructionDirections.forEach(liftDirection -> {
@@ -198,7 +198,7 @@ public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658
                         FontList.instance.getFont("hitachi-led-dot_matrix"),
                         5F,
                         0xFFFF4800);
-                liftFloorDisplayView.setTextureId("hitachi-vib-658-dot-matrix");
+                liftFloorDisplayView.setTextureId("hitachi-vib-181A-dot-matrix");
                 liftFloorDisplayView.setWidth(1.5F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
 

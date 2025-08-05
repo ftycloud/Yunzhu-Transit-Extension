@@ -15,7 +15,7 @@ import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
-import top.xfunny.mod.block.HitachiVIB658Button;
+import top.xfunny.mod.block.HitachiVIB676Button;
 import top.xfunny.mod.block.base.LiftButtonsBase;
 import top.xfunny.mod.client.resource.FontList;
 import top.xfunny.mod.client.view.*;
@@ -28,24 +28,24 @@ import top.xfunny.mod.util.ReverseRendering;
 
 import java.util.Comparator;
 
-public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658Button.BlockEntity> implements DirectionHelper, IGui, IBlock {
+public class RenderHitachiVIB676Button extends BlockEntityRenderer<HitachiVIB676Button.BlockEntity> implements DirectionHelper, IGui, IBlock {
 
     private static final int HOVER_COLOR = 0xAAFFFFFF;
     private static final int PRESSED_COLOR = 0xFFFFFFFF;
     private static final int DEFAULT_COLOR = 0x00FFFFFF;
-    private static final Identifier ARROW_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/hitachi_bxsclc6_arrow.png");
-    private static final Identifier BUTTON_UP_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mo_up.png");
-    private static final Identifier LIGHT_UP_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mo_up_light.png");
-    private static final Identifier BUTTON_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mo_down.png");
-    private static final Identifier LIGHT_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mo_down_light.png");
+    private static final Identifier ARROW_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/hitachi_hip43_arrow.png");
+    private static final Identifier BUTTON_UP_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mw_up.png");
+    private static final Identifier LIGHT_UP_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mw_up_light.png");
+    private static final Identifier BUTTON_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mw_down.png");
+    private static final Identifier LIGHT_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mw_down_light.png");
     private static final BooleanProperty UNLOCKED = BooleanProperty.of("unlocked");
 
-    public RenderHitachiVIB658Button(Argument dispatcher) {
+    public RenderHitachiVIB676Button(Argument dispatcher) {
         super(dispatcher);
     }
 
     @Override
-    public void render(HitachiVIB658Button.BlockEntity blockEntity, float tickDelta, GraphicsHolder graphicsHolder1, int light, int overlay) {
+    public void render(HitachiVIB676Button.BlockEntity blockEntity, float tickDelta, GraphicsHolder graphicsHolder1, int light, int overlay) {
         final World world = blockEntity.getWorld2();
         if (world == null) {
             return;
@@ -167,7 +167,7 @@ public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658
             line.RenderLine(holdingLinker, trackPosition);
 
 
-            HitachiVIB658Button.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
+            HitachiVIB676Button.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
                 sortedPositionsAndLifts.add(new ObjectObjectImmutablePair<>(trackPosition, lift));
                 final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
                 instructionDirections.forEach(liftDirection -> {
@@ -195,37 +195,26 @@ public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
-                        FontList.instance.getFont("hitachi-led-dot_matrix"),
-                        5F,
-                        0xFFFF4800);
-                liftFloorDisplayView.setTextureId("hitachi-vib-658-dot-matrix");
+                        FontList.instance.getFont("hitachi-hip43"),
+                        7.5F,
+                        0xFFDEF6FF);
+                liftFloorDisplayView.setTextureId("hitachi-vib-676");
                 liftFloorDisplayView.setWidth(1.5F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
 
-                liftFloorDisplayView.setMargin(0.01F, 0, 0, 0);
-                liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
+                liftFloorDisplayView.setMargin(0, 0, 0.15F/16, 0);
+                liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
-                if (liftFloorDisplayView.getTextLength() >= 3) {
-                    liftFloorDisplayView.setBasicsAttributes(world,
-                            blockPos,
-                            sortedPositionsAndLifts.get(i).right(),
-                            FontList.instance.getFont("hitachi-led-dot_matrix_small"),
-                            5F,
-                            0xFFFF4800);
-                    liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);
-                } else {
-                    liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.ASPECT_FILL);
-                }
-
 
                 final LiftArrowView liftArrowView = new LiftArrowView();
                 liftArrowView.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.AUTO);
                 liftArrowView.setTexture(ARROW_TEXTURE);
-                liftArrowView.setDimension(0.475F / 16, 384, 512);
-                liftArrowView.setMargin(0.6F / 16, 1.75F / 16, 0, -0.3F/16);
+                liftArrowView.setDimension(1F / 16, 489, 468);
+                liftArrowView.setMargin(0, 1.37F / 16, 0, 0);
+                liftArrowView.setGravity(Gravity.CENTER_HORIZONTAL);
                 liftArrowView.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
                 if (unlocked) {
-                    liftArrowView.setColor(0xFFFFFFFF);
+                    liftArrowView.setColor(0xFFDEF6FF);
                 } else {
                     liftArrowView.setColor(0xFF000000);
                 }
