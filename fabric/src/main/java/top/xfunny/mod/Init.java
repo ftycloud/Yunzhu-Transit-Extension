@@ -9,17 +9,17 @@ import org.mtr.mapping.holder.MathHelper;
 import org.mtr.mapping.registry.Registry;
 import top.xfunny.mod.packet.PacketYTEOpenBlockEntityScreen;
 import top.xfunny.mod.packet.PacketUpdatePATRS01RailwaySignConfig;
-import top.xfunny.mod.util.VersionUpdateCheck;
+import top.xfunny.mod.util.UpdateCheckerUtil;
 
 public final class Init {
     public static final String MOD_ID = "yte";
-    public static final Logger LOGGER = LogManager.getLogger("YunzhuTransitExtension");
+    public static final Logger LOGGER = LogManager.getLogger("Yunzhu Transit Extension");
     public static final Registry REGISTRY = new Registry();
     public static int HAS_UPDATE = -1;
 
 
     public static void init() {
-        VersionUpdateCheck.init();
+        UpdateCheckerUtil.init();
         Blocks.init();
         BlockEntityTypes.init();
         Items.init();

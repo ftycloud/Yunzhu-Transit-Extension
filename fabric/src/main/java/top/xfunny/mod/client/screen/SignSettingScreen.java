@@ -13,6 +13,8 @@ import top.xfunny.mod.client.screen.widget.CustomSignsManager;
 
 import java.util.function.Consumer;
 
+import static top.xfunny.mod.client.screen.widget.CustomSignsManager.getDefaultSignListSize;
+
 public class SignSettingScreen extends BaseConfigScreen {
     private String selectedSignId;
     private final ObjectArrayList<String> allSignIds = CustomSignsManager.getSignList();
@@ -47,6 +49,8 @@ public class SignSettingScreen extends BaseConfigScreen {
     }
 
     private void drawSignItems() {
+        listViewWidget.addCategory(TextHelper.translatable("gui.yte.built_in_style"));
+
         for (int i = 0; i < allSignIds.size(); i++) {
             String signId = allSignIds.get(i);
             if (signId == null || signId.isEmpty()) continue;
@@ -71,6 +75,10 @@ public class SignSettingScreen extends BaseConfigScreen {
             Identifier SIGN_ICON = new Identifier("mtr:textures/block/sign/" + signId + ".png");
             String displaySignId = signId.replace("_"," ");
 
+            if (i == getDefaultSignListSize()){
+                listViewWidget.addCategory(TextHelper.translatable("gui.yte.extended_style"));
+            }
+
             addChild(new ClickableWidget(chooseSignButton[i]));
             ContentItem chooseSignItem = new ContentItem(TextHelper.translatable(displaySignId), chooseSignButton[i]);
             chooseSignItem.setIcon(SIGN_ICON);
@@ -87,8 +95,8 @@ public class SignSettingScreen extends BaseConfigScreen {
 
     @Override
     public void addItemConfig() {
-        listViewWidget.addCategory(TextHelper.translatable("gui.yte.built_in_style"));
         drawSignItems();
+        listViewWidget.addCategory(TextHelper.translatable("更多设置"));
     }
 
     public void setSelectedSign(String signId){

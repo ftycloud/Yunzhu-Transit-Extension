@@ -2,9 +2,11 @@ import org.apache.tools.ant.filters.ReplaceTokens
 import org.mtr.mod.BuildTools
 
 plugins {
-    id "net.minecraftforge.gradle" version "[6.0,6.2)"
+    id "net.minecraftforge.gradle" version "6.+"
     id "org.spongepowered.mixin" version "+"
+    //id 'systems.manifold.manifold-gradle-plugin' version '+'
 }
+
 
 final BuildTools buildTools = new BuildTools(minecraftVersion, "forge", project)
 
@@ -12,8 +14,8 @@ minecraft {
     mappings channel: "official", version: minecraftVersion
     runs {
         configureEach {
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
+            property "forge.logging.markers", "REGISTRIES"
+            property "forge.logging.console.level", "debug"
         }
         client {}
         server { args "--nogui" }
@@ -24,14 +26,16 @@ minecraft {
 sourceSets.main.resources { srcDir "src/generated/resources" }
 
 dependencies {
+    //implementation 'systems.manifold:manifold:+'
     minecraft "net.minecraftforge:forge:${minecraftVersion}-${buildTools.getForgeVersion()}"
     annotationProcessor "org.spongepowered:mixin:+:processor"
+    //annotationProcessor 'systems.manifold:manifold-preprocessor:+'
     implementation fg.deobf("org.mtr:MTR-forge:${mtrVersion}+${minecraftVersion}-server")
 }
 
 mixin {
-    add sourceSets.main, "yte.refmap.json"
-    config "yte.mixins.json"
+    add sourceSets.main, "mtr.refmap.json"
+    config "mtr.mixins.json"
     debug.verbose = true
     debug.export = true
 }
@@ -44,6 +48,24 @@ java {
     withSourcesJar()
     //withJavadocJar()
 }
+
+
+/*tasks.withType(JavaCompile).configureEach {
+    doLast {
+        configurations.runtimeClasspath.resolve()
+        configurations.compileClasspath.resolve()
+        configurations.annotationProcessor.resolve()
+    }
+
+    options.encoding = 'UTF-8'
+    options.fork = true
+
+    options.compilerArgs += [
+            '-Xplugin:Manifold',
+            '-AMC_VERSION=' + buildTools.getMCVersionNumber()
+    ]
+}*/
+
 
 tasks.register("setupFiles") {
     copy {
@@ -93,6 +115,7 @@ tasks.register("setupFiles") {
         into "src/main/resources"
     }
 }
+
 
 build {
     doLast {

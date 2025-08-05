@@ -7,8 +7,8 @@ import org.mtr.mapping.holder.Screen;
 import top.xfunny.mod.client.screen.ClientConfigScreen;
 
 public class ModMenu implements ModMenuApi {
-    @Override
+    /*@Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return parent -> new ClientConfigScreen(null).withPreviousScreen(new Screen(parent));
-    }
+    }*/
 }
