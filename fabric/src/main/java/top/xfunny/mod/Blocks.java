@@ -155,6 +155,7 @@ public class Blocks {
 
     public static final BlockRegistryObject HITACHI_VIB320_BUTTON;
     public static final BlockRegistryObject HITACHI_VIB320_BUTTON_DOT_MATRIX;
+    public static final BlockRegistryObject HITACHI_VIB320_BUTTON_HIP43;
     public static final BlockRegistryObject HITACHI_VIB322_BUTTON;
     public static final BlockRegistryObject HITACHI_VIB322_BUTTON_DOT_MATRIX;
     public static final BlockRegistryObject HITACHI_VIB325_BUTTON;
@@ -162,6 +163,7 @@ public class Blocks {
     public static final BlockRegistryObject HITACHI_VIB221_BUTTON;
     public static final BlockRegistryObject HITACHI_VIB221_BUTTON_DOT_MATRIX;
     public static final BlockRegistryObject HITACHI_VIB221_BUTTON_LCD_SEGMENTED;
+    public static final BlockRegistryObject HITACHI_VIB221_BUTTON_HIP43;
     public static final BlockRegistryObject HITACHI_VIB820_BUTTON;
     public static final BlockRegistryObject HITACHI_VIB820_BUTTON_LCD;
     public static final BlockRegistryObject HITACHI_VIB68_BUTTON;
@@ -180,6 +182,13 @@ public class Blocks {
     public static final BlockRegistryObject HITACHI_VIB668_BUTTON;
     public static final BlockRegistryObject HITACHI_VIB658_BUTTON;
     public static final BlockRegistryObject HITACHI_VIB663_BUTTON;
+    public static final BlockRegistryObject HITACHI_VIB681_BUTTON;
+    public static final BlockRegistryObject HITACHI_VIB676_BUTTON;
+    public static final BlockRegistryObject HITACHI_VIB679_BUTTON;
+    public static final BlockRegistryObject HITACHI_VIB673_BUTTON;
+    public static final BlockRegistryObject HITACHI_VIB673_BUTTON_HIP43;
+    public static final BlockRegistryObject HITACHI_VIB181A_BUTTON;
+    public static final BlockRegistryObject HITACHI_VIB182A_BUTTON;
 
     public static final BlockRegistryObject TONIC_DS_SCREEN_1_ODD;
     public static final BlockRegistryObject TONIC_DS_SCREEN_1_EVEN;
@@ -356,6 +365,7 @@ public class Blocks {
 
         HITACHI_VIB320_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib320_button_1"), () -> new Block(new HitachiVIB320Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB320_BUTTON_DOT_MATRIX = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib320_button_1_dot_matrix"), () -> new Block(new HitachiVIB320ButtonDotMatrix()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB320_BUTTON_HIP43 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib320_button_1_hip43"), () -> new Block(new HitachiVIB320ButtonHIP43()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB322_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib322_button_1"), () -> new Block(new HitachiVIB322Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB322_BUTTON_DOT_MATRIX = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib322_button_1_dot_matrix"), () -> new Block(new HitachiVIB322ButtonDotMatrix()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB325_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib325_button_1"), () -> new Block(new HitachiVIB325Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
@@ -363,6 +373,7 @@ public class Blocks {
         HITACHI_VIB221_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib221_button_1"), () -> new Block(new HitachiVIB221Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB221_BUTTON_DOT_MATRIX = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib221_button_1_dot_matrix"), () -> new Block(new HitachiVIB221ButtonDotMatrix()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB221_BUTTON_LCD_SEGMENTED = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib221_button_1_lcd_segmented"), () -> new Block(new HitachiVIB221ButtonLCDSegmented()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB221_BUTTON_HIP43 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib221_button_1_hip43"), () -> new Block(new HitachiVIB221ButtonHIP43()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB820_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib820_button_1"), () -> new Block(new HitachiVIB820Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB820_BUTTON_LCD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib820_button_1_lcd"), () -> new Block(new HitachiVIB820ButtonLCD()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB68_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib68_button_1"), () -> new Block(new HitachiVIB68Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
@@ -381,6 +392,13 @@ public class Blocks {
         HITACHI_VIB668_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib668_button_1"), () -> new Block(new HitachiVIB668Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB658_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib658_button_1"), () -> new Block(new HitachiVIB658Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_VIB663_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib663_button_1"), () -> new Block(new HitachiVIB663Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB681_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib681_button_1"), () -> new Block(new HitachiVIB681Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB676_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib676_button_1"), () -> new Block(new HitachiVIB676Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB679_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib679_button_1"), () -> new Block(new HitachiVIB679Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB673_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib673_button_1"), () -> new Block(new HitachiVIB673Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB673_BUTTON_HIP43 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib673_button_1_hip43"), () -> new Block(new HitachiVIB673ButtonHIP43()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB181A_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib181a_button_1"), () -> new Block(new HitachiVIB181AButton()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_VIB182A_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_vib182a_button_1"), () -> new Block(new HitachiVIB182AButton()), CreativeModeTabs.YTE_LIFT_FIXTURES);
 
         HITACHI_B85_BUTTON_1 = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_b85_button_1"), () -> new Block(new HitachiB85Button1()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_B85_BUTTON_1_WITHOUT_SCREEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_b85_button_1_without_screen"), () -> new Block(new HitachiB85Button1WithoutScreen()), CreativeModeTabs.YTE_LIFT_FIXTURES);
