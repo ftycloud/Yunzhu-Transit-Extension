@@ -13,39 +13,35 @@ import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.PlayerHelper;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
-import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
-import top.xfunny.mod.block.HitachiVIB68Button;
+import top.xfunny.mod.block.HitachiHB673Button;
 import top.xfunny.mod.block.base.LiftButtonsBase;
-import top.xfunny.mod.client.resource.FontList;
 import top.xfunny.mod.client.view.*;
 import top.xfunny.mod.client.view.view_group.FrameLayout;
 import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
 import top.xfunny.mod.keymapping.DefaultButtonsKeyMapping;
-import top.xfunny.mod.util.ReverseRendering;
 
 import java.util.Comparator;
 
-public class RenderHitachiVIB68Button extends BlockEntityRenderer<HitachiVIB68Button.BlockEntity> implements DirectionHelper, IGui, IBlock {
+public class RenderHitachiHB673Button extends BlockEntityRenderer<HitachiHB673Button.BlockEntity> implements DirectionHelper, IGui, IBlock {
 
     private static final int HOVER_COLOR = 0xAAFFFFFF;
     private static final int PRESSED_COLOR = 0xFFFFFFFF;
     private static final int DEFAULT_COLOR = 0x00FFFFFF;
-    private static final Identifier ARROW_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/hitachi_sclva043_arrow.png");
-    private static final Identifier BUTTON_UP_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/fl_pw_up.png");
-    private static final Identifier LIGHT_UP_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/fl_pw_up_light.png");
-    private static final Identifier BUTTON_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/fl_pw_down.png");
-    private static final Identifier LIGHT_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/fl_pw_down_light.png");
+    private static final Identifier BUTTON_UP_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mw_up.png");
+    private static final Identifier LIGHT_UP_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mw_up_light.png");
+    private static final Identifier BUTTON_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mw_down.png");
+    private static final Identifier LIGHT_DOWN_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/wl_mw_down_light.png");
     private static final BooleanProperty UNLOCKED = BooleanProperty.of("unlocked");
 
-    public RenderHitachiVIB68Button(Argument dispatcher) {
+    public RenderHitachiHB673Button(Argument dispatcher) {
         super(dispatcher);
     }
 
     @Override
-    public void render(HitachiVIB68Button.BlockEntity blockEntity, float tickDelta, GraphicsHolder graphicsHolder1, int light, int overlay) {
+    public void render(HitachiHB673Button.BlockEntity blockEntity, float tickDelta, GraphicsHolder graphicsHolder1, int light, int overlay) {
         final World world = blockEntity.getWorld2();
         if (world == null) {
             return;
@@ -94,7 +90,7 @@ public class RenderHitachiVIB68Button extends BlockEntityRenderer<HitachiVIB68Bu
         buttonLayout.setBasicsAttributes(world, blockPos);
         buttonLayout.setWidth(LayoutSize.MATCH_PARENT);
         buttonLayout.setHeight(LayoutSize.MATCH_PARENT);
-        buttonLayout.setMargin(0, -0.5F / 16, 0, 0);
+        buttonLayout.setMargin(0, 0.5F / 16, 0, 0);
 
 
         final LinearLayout buttonContainer = new LinearLayout(true);
@@ -167,7 +163,7 @@ public class RenderHitachiVIB68Button extends BlockEntityRenderer<HitachiVIB68Bu
             line.RenderLine(holdingLinker, trackPosition);
 
 
-            HitachiVIB68Button.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
+            HitachiHB673Button.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
                 sortedPositionsAndLifts.add(new ObjectObjectImmutablePair<>(trackPosition, lift));
                 final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
                 instructionDirections.forEach(liftDirection -> {
@@ -184,57 +180,6 @@ public class RenderHitachiVIB68Button extends BlockEntityRenderer<HitachiVIB68Bu
         });
         sortedPositionsAndLifts.sort(Comparator.comparingInt(sortedPositionAndLift -> blockPos.getManhattanDistance(new Vector3i(sortedPositionAndLift.left().data))));
 
-        if (!sortedPositionsAndLifts.isEmpty()) {
-
-            final int count = Math.min(2, sortedPositionsAndLifts.size());
-            final boolean reverseRendering = count > 1 && ReverseRendering.reverseRendering(facing.rotateYCounterclockwise(), sortedPositionsAndLifts.get(0).left(), sortedPositionsAndLifts.get(1).left());
-
-            for (int i = 0; i < count; i++) {
-
-                final LiftFloorDisplayView liftFloorDisplayView = new LiftFloorDisplayView();
-                liftFloorDisplayView.setBasicsAttributes(world,
-                        blockPos,
-                        sortedPositionsAndLifts.get(i).right(),
-                        FontList.instance.getFont("hitachi-sclva043"),
-                        7.5F,
-                        0xFFDEF6FF);
-                liftFloorDisplayView.setTextureId("hitachi-vib-68");
-                liftFloorDisplayView.setWidth(1.5F / 16);
-                liftFloorDisplayView.setHeight(1.7F / 16);
-
-                liftFloorDisplayView.setMargin(0, 0, 0.275F/16, 0);
-                liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
-                liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
-
-                final LiftArrowView liftArrowView = new LiftArrowView();
-                liftArrowView.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.AUTO);
-                liftArrowView.setTexture(ARROW_TEXTURE);
-                liftArrowView.setDimension(0.75F / 16, 396, 476);
-                liftArrowView.setMargin(0, 1.37F / 16, 0, 0);
-                liftArrowView.setGravity(Gravity.CENTER_HORIZONTAL);
-                liftArrowView.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
-                if (unlocked) {
-                    liftArrowView.setColor(0xFFDEF6FF);
-                } else {
-                    liftArrowView.setColor(0xFF000000);
-                }
-
-                final LinearLayout numberLayout = new LinearLayout(true);
-                numberLayout.setBasicsAttributes(world, blockPos);
-                numberLayout.setWidth(LayoutSize.WRAP_CONTENT);
-                numberLayout.setHeight(LayoutSize.WRAP_CONTENT);
-                numberLayout.addChild(liftArrowView);
-                numberLayout.addChild(liftFloorDisplayView);
-
-                if (reverseRendering) {
-                    screenLayout.addChild(numberLayout);
-                    screenLayout.reverseChildren();
-                } else {
-                    screenLayout.addChild(numberLayout);
-                }
-            }
-        }
-
         upButtonGroup.addChild(buttonUp);
         upButtonGroup.addChild(buttonUpLight);
         downButtonGroup.addChild(buttonDown);
@@ -246,7 +191,7 @@ public class RenderHitachiVIB68Button extends BlockEntityRenderer<HitachiVIB68Bu
 
         if (buttonDescriptor.hasDownButton()) {
             if (buttonDescriptor.hasUpButton()) {
-                downButtonGroup.setMargin(0, 0.5F / 16, 0, 0);
+                downButtonGroup.setMargin(0, 0.75F / 16, 0, 0);
             }
             buttonContainer.addChild(downButtonGroup);
         }

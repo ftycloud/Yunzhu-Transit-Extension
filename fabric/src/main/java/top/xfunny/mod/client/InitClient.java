@@ -190,6 +190,8 @@ public final class InitClient {
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_GHI675_SCREEN_ODD, dispatcher -> new RenderHitachiGHI675Screen<>(dispatcher, true));
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_GHL820_LANTERN_EVEN, dispatcher -> new RenderHitachiGHL820Lantern1<>(dispatcher, false));
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_GHL820_LANTERN_ODD, dispatcher -> new RenderHitachiGHL820Lantern1<>(dispatcher, true));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_GHL673_LANTERN_EVEN, dispatcher -> new RenderHitachiGHL673Lantern1<>(dispatcher, false));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_GHL673_LANTERN_ODD, dispatcher -> new RenderHitachiGHL673Lantern1<>(dispatcher, true));
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_VIB628_BUTTON, RenderHitachiVIB628Button::new);
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_HB628_BUTTON, RenderHitachiHB628Button::new);
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_VIB668_BUTTON, RenderHitachiVIB668Button::new);
@@ -201,6 +203,7 @@ public final class InitClient {
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_VIB679_BUTTON, RenderHitachiVIB679Button::new);
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_VIB673_BUTTON, RenderHitachiVIB673Button::new);
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_VIB673_BUTTON_HIP43, RenderHitachiVIB673ButtonHIP43::new);
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_HB673_BUTTON, RenderHitachiHB673Button::new);
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_VIB181A_BUTTON, RenderHitachiVIB181AButton::new);
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_VIB182A_BUTTON, RenderHitachiVIB182AButton::new);
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.HITACHI_HB181A_BUTTON, RenderHitachiHB181AButton::new);
