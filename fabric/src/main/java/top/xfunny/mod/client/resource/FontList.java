@@ -48,12 +48,12 @@ public class FontList {
             loadFont("wqy-microhei", "font/wqy-microhei.ttc");
             loadFont("thyssenkrupp_lcd", "font/new-thyssenkrupp.ttf");
             loadFont("kone-kss", "font/kone-kss-800-signalization.ttf");
-            loadFont("hitachi-led-seg", "font/hitachi-led-segmented.ttf");
+            loadFont("hitachi-led-seg", "font/hitachi-cip71-led.ttf");
             loadFont("hitachi-led-seg-fix", "font/hitachi_led_segmented_fix.ttf");
             loadFont("hitachi-led-dot_matrix", "font/hitachi-dot-matrix-regular.ttf");
             loadFont("hitachi-led-dot_matrix_small", "font/hitachi-dot-matrix-small.ttf");
-            loadFont("hitachi-lcd-seg", "font/hitachi-lcd-segmented.ttf");
-            loadFont("hitachi-japan-lcd", "font/hitachi-japan-lcd.ttf");
+            loadFont("hitachi-lcd-seg", "font/hitachi-hip31-lcd.ttf");
+            loadFont("hitachi-japan-lcd", "font/hitachi-hip32-lcd.ttf");
             loadFont("hitachi-hip43", "font/hitachi-hip43-lcd.ttf");
             loadFont("schindler_m_series_segment", "font/schindler_m_series_segment.ttf");
             loadFont("tonic-led", "font/tonic-led.ttf");
