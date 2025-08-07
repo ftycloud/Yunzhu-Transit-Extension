@@ -40,7 +40,7 @@ public class HitachiVIB191Button extends LiftButtonsBase {
 
     @Override
     public void addTooltips(@NotNull ItemStack stack, @Nullable BlockView world, List<MutableText> tooltip, @NotNull TooltipContext options) {
-        tooltip.add(TextHelper.translatable("tooltip.hitachi_display_hip_43").formatted(TextFormatting.GRAY));
+        tooltip.add(TextHelper.translatable("tooltip.hitachi_display_scl_va_043").formatted(TextFormatting.GRAY));
         tooltip.add(TextHelper.translatable("tooltip.hitachi_button_yl_gw").formatted(TextFormatting.GRAY));
     }
 

@@ -67,7 +67,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
         final FrameLayout parentLayout = new FrameLayout();
         parentLayout.setBasicsAttributes(world, blockPos);
         parentLayout.setStoredMatrixTransformations(storedMatrixTransformations1);
-        parentLayout.setParentDimensions(15.5F / 16, 6.5F / 16);
+        parentLayout.setParentDimensions(15.5F / 16, 4.5F / 16);
         parentLayout.setPosition(isOdd ? -8.5F / 16 : -16.5F / 16, 5.875F / 16);
         parentLayout.setWidth(LayoutSize.MATCH_PARENT);
         parentLayout.setHeight(LayoutSize.MATCH_PARENT);
@@ -90,11 +90,10 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
         lanternGroupRight.setWidth(LayoutSize.WRAP_CONTENT);
         lanternGroupRight.setHeight(LayoutSize.WRAP_CONTENT);
         lanternGroupRight.setGravity(Gravity.CENTER_VERTICAL);
-
         final ButtonView downLanternLeft = new ButtonView();
         downLanternLeft.setBasicsAttributes(world, blockPos);
         downLanternLeft.setTexture(BUTTON_TEXTURE);
-        downLanternLeft.setDimension(1.5F / 16,16,24);
+        downLanternLeft.setDimension(1.5F / 16,2,3);
         downLanternLeft.setGravity(Gravity.CENTER);
         downLanternLeft.setLight(light);
         downLanternLeft.setDefaultColor(DEFAULT_COLOR);
@@ -103,7 +102,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
         final ButtonView downLanternRight = new ButtonView();
         downLanternRight.setBasicsAttributes(world, blockPos);
         downLanternRight.setTexture(BUTTON_TEXTURE);
-        downLanternLeft.setDimension(1.5F / 16,16,24);
+        downLanternRight.setDimension(1.5F / 16,2,3);
         downLanternRight.setGravity(Gravity.CENTER);
         downLanternRight.setLight(light);
         downLanternRight.setDefaultColor(DEFAULT_COLOR);
@@ -112,7 +111,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
         final ButtonView upLanternLeft = new ButtonView();
         upLanternLeft.setBasicsAttributes(world, blockPos);
         upLanternLeft.setTexture(BUTTON_TEXTURE);
-        downLanternLeft.setDimension(1.5F / 16,16,24);
+        upLanternLeft.setDimension(1.5F / 16,2,3);
         upLanternLeft.setGravity(Gravity.CENTER);
         upLanternLeft.setLight(light);
         upLanternLeft.setDefaultColor(DEFAULT_COLOR);
@@ -121,7 +120,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
         final ButtonView upLanternRight = new ButtonView();
         upLanternRight.setBasicsAttributes(world, blockPos);
         upLanternRight.setTexture(BUTTON_TEXTURE);
-        downLanternLeft.setDimension(1.5F / 16,16,24);
+        upLanternRight.setDimension(1.5F / 16,2,3);
         upLanternRight.setGravity(Gravity.CENTER);
         upLanternRight.setLight(light);
         upLanternRight.setDefaultColor(DEFAULT_COLOR);
@@ -202,7 +201,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
         });
 
         if (buttonDescriptor.hasDownButton() && buttonDescriptor.hasUpButton()) {
-            lanternGroupLeft.setMargin(0, 1.25F / 16, 0, 0);
+            lanternGroupLeft.setMargin(0, 0.01F / 16, 0, 0);
             lanternGroupRight.addChild(upLanternRight);
             lanternGroupLeft.addChild(downLanternLeft);
             linearLayout.addChild(lanternGroupRight);
