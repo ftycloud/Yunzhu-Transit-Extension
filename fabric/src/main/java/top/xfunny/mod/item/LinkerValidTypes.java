@@ -67,6 +67,8 @@ public class LinkerValidTypes {
             HitachiGHI675Screen1Even.class,
             HitachiGHL820Lantern1Odd.class,
             HitachiGHL820Lantern1Even.class,
+            HitachiGHL668Lantern1Odd.class,
+            HitachiGHL668Lantern1Even.class,
             HitachiGHL673Lantern1Odd.class,
             HitachiGHL673Lantern1Even.class,
             HitachiVIB628Button.class,

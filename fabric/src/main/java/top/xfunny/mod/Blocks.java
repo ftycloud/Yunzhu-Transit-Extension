@@ -177,6 +177,8 @@ public class Blocks {
     public static final BlockRegistryObject HITACHI_GHD820PRO_SCREEN_EVEN;
     public static final BlockRegistryObject HITACHI_GHI675_SCREEN_ODD;
     public static final BlockRegistryObject HITACHI_GHI675_SCREEN_EVEN;
+    public static final BlockRegistryObject HITACHI_GHL668_LANTERN_ODD;
+    public static final BlockRegistryObject HITACHI_GHL668_LANTERN_EVEN;
     public static final BlockRegistryObject HITACHI_GHL820_LANTERN_ODD;
     public static final BlockRegistryObject HITACHI_GHL820_LANTERN_EVEN;
     public static final BlockRegistryObject HITACHI_GHL673_LANTERN_ODD;
@@ -390,6 +392,8 @@ public class Blocks {
         HITACHI_HSB820_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_hsb820_button_1"), () -> new Block(new HitachiHSB820Button()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_GHL820_LANTERN_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_ghl820_lantern_1_odd"), () -> new Block(new HitachiGHL820Lantern1Odd()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_GHL820_LANTERN_EVEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_ghl820_lantern_1_even"), () -> new Block(new HitachiGHL820Lantern1Even()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_GHL668_LANTERN_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_ghl668_lantern_1_odd"), () -> new Block(new HitachiGHL668Lantern1Odd()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        HITACHI_GHL668_LANTERN_EVEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_ghl668_lantern_1_even"), () -> new Block(new HitachiGHL668Lantern1Even()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_GHL673_LANTERN_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_ghl673_lantern_1_odd"), () -> new Block(new HitachiGHL673Lantern1Odd()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_GHL673_LANTERN_EVEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_ghl673_lantern_1_even"), () -> new Block(new HitachiGHL673Lantern1Even()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         HITACHI_GHI675_SCREEN_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "hitachi_ghi675_screen_1_odd"), () -> new Block(new HitachiGHI675Screen1Odd()), CreativeModeTabs.YTE_LIFT_FIXTURES);

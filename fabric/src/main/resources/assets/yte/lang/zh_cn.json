@@ -32,6 +32,8 @@
   "block.yte.hitachi_hsb820_button_1": "日立HSB-820 & 820W呼梯面板",
   "block.yte.hitachi_ghl820_lantern_1_even": "日立GHL-8200到站灯（占两格）",
   "block.yte.hitachi_ghl820_lantern_1_odd": "日立GHL-820到站灯（占一格）",
+  "block.yte.hitachi_ghl668_lantern_1_even": "日立GHL-668到站灯（占两格）",
+  "block.yte.hitachi_ghl668_lantern_1_odd": "日立GHL-668到站灯（占一格）",
   "block.yte.hitachi_ghl673_lantern_1_even": "日立GHL-673到站灯（占两格）",
   "block.yte.hitachi_ghl673_lantern_1_odd": "日立GHL-673到站灯（占一格）",
   "block.yte.hitachi_vib820pro_button_1": "日立VIB-820pro & 820proW呼梯面板",

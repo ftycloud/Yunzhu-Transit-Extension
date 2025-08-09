@@ -37,6 +37,8 @@ public class BlockEntityTypes {
     public static final BlockEntityTypeRegistryObject<HitachiHSB820Button.BlockEntity> HITACHI_HSB820_BUTTON;
     public static final BlockEntityTypeRegistryObject<HitachiGHL820Lantern1Even.BlockEntity> HITACHI_GHL820_LANTERN_EVEN;
     public static final BlockEntityTypeRegistryObject<HitachiGHL820Lantern1Odd.BlockEntity> HITACHI_GHL820_LANTERN_ODD;
+    public static final BlockEntityTypeRegistryObject<HitachiGHL668Lantern1Even.BlockEntity> HITACHI_GHL668_LANTERN_EVEN;
+    public static final BlockEntityTypeRegistryObject<HitachiGHL668Lantern1Odd.BlockEntity> HITACHI_GHL668_LANTERN_ODD;
     public static final BlockEntityTypeRegistryObject<HitachiGHL673Lantern1Even.BlockEntity> HITACHI_GHL673_LANTERN_EVEN;
     public static final BlockEntityTypeRegistryObject<HitachiGHL673Lantern1Odd.BlockEntity> HITACHI_GHL673_LANTERN_ODD;
     public static final BlockEntityTypeRegistryObject<HitachiGHI675Screen1Even.BlockEntity> HITACHI_GHI675_SCREEN_EVEN;
@@ -370,6 +372,8 @@ public class BlockEntityTypes {
         HITACHI_HSB820_BUTTON = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_hsb820_button_1"), HitachiHSB820Button.BlockEntity::new, Blocks.HITACHI_HSB820_BUTTON::get);
         HITACHI_GHL820_LANTERN_ODD = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_ghl820_lantern_1_odd"), HitachiGHL820Lantern1Odd.BlockEntity::new, Blocks.HITACHI_GHL820_LANTERN_ODD::get);
         HITACHI_GHL820_LANTERN_EVEN = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_ghl820_lantern_1_even"), HitachiGHL820Lantern1Even.BlockEntity::new, Blocks.HITACHI_GHL820_LANTERN_EVEN::get);
+        HITACHI_GHL668_LANTERN_ODD = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_ghl668_lantern_1_odd"), HitachiGHL668Lantern1Odd.BlockEntity::new, Blocks.HITACHI_GHL668_LANTERN_ODD::get);
+        HITACHI_GHL668_LANTERN_EVEN = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_ghl668_lantern_1_even"), HitachiGHL668Lantern1Even.BlockEntity::new, Blocks.HITACHI_GHL668_LANTERN_EVEN::get);
         HITACHI_GHL673_LANTERN_ODD = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_ghl673_lantern_1_odd"), HitachiGHL673Lantern1Odd.BlockEntity::new, Blocks.HITACHI_GHL673_LANTERN_ODD::get);
         HITACHI_GHL673_LANTERN_EVEN = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_ghl673_lantern_1_even"), HitachiGHL673Lantern1Even.BlockEntity::new, Blocks.HITACHI_GHL673_LANTERN_EVEN::get);
         HITACHI_GHI675_SCREEN_ODD = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "hitachi_ghi675_screen_1_odd"), HitachiGHI675Screen1Odd.BlockEntity::new, Blocks.HITACHI_GHI675_SCREEN_ODD::get);
