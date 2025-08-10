@@ -61,10 +61,6 @@ public class UpdateCheckerUtil {
 //        LOGGER.info("Get the latest version here: https://modrinth.com/mod/yunzhu-transit-extension/versions");
     }
 
-    private static Map<String, Instant> getUpdateVersions(String Hash){
-        return Map.of();
-    }
-
     private static String getCurrentVersionHash(){
         try{
             File jarFile = new File(UpdateCheckerUtil.class.getProtectionDomain().getCodeSource().getLocation().toURI());

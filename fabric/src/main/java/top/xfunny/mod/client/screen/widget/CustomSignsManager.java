@@ -20,12 +20,30 @@ public class CustomSignsManager {
     private static ObjectArrayList<String> allSigns = new ObjectArrayList<>();
     private static ObjectArrayList<String> defaultSigns = new ObjectArrayList<>();
 
-    private static final Set<String> builtinFileNames = new HashSet<>(Set.of(""));
+    private static final Set<String> builtinFileNames;
+
+    static {
+        Set<String> strings = new HashSet<>();
+        strings.add("");
+        builtinFileNames = new HashSet<>(strings);
+    }
+
     // 内置非图标列表
-    private static final Set<String> NAFileNames = Set.of(
-            "seven_segment.png","qr_code.png","lift_arrow.png",
-            "exit_letter_blank.png","circle.png","door_not_in_use.png",
-            "gap_small.png","logo_grayscale.png","rubbish.png","spit.png");
+    private static final Set<String> NAFileNames;
+
+    static {
+        NAFileNames = new HashSet<>();
+        NAFileNames.add("seven_segment.png");
+        NAFileNames.add("qr_code.png");
+        NAFileNames.add("lift_arrow.png");
+        NAFileNames.add("exit_letter_blank.png");
+        NAFileNames.add("circle.png");
+        NAFileNames.add("door_not_in_use.png");
+        NAFileNames.add("gap_small.png");
+        NAFileNames.add("logo_grayscale.png");
+        NAFileNames.add("rubbish.png");
+        NAFileNames.add("spit.png");
+    }
 
     public static void loader() {
         defaultSigns.clear();
