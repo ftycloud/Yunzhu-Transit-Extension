@@ -52,7 +52,8 @@ public class CustomSignsManager {
 
         ResourceManagerHelper.readAllResources(new Identifier("mtr", "mtr_custom_resources.json"), (inputStream) -> {
             try (InputStreamReader reader = new InputStreamReader(inputStream)) {
-                JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
+                JsonParser parser = new JsonParser();
+                JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
                 JsonArray signsArray = jsonObject.getAsJsonArray("signs");
 
                 for (JsonElement signElement : signsArray) {
