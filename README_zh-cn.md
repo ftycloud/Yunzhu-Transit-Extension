@@ -1,9 +1,9 @@
-# 云竹交通拓展Mod
+# 云竹交通扩展Mod
 
 **[简体中文](./README_zh-cn.md)** | [English](./README.md)
 
-**云筑轨交扩展包**是 [Minecraft Transit Railway Mod](https://github.com/jonafanho/Minecraft-Transit-Railway)
-的装饰性附加组件，提供精美的**电梯**与**地铁站**元素，以美化您的轨交建造。
+**云竹交通扩展Mod**是 [Minecraft Transit Railway Mod](https://github.com/jonafanho/Minecraft-Transit-Railway)
+的装饰性附加模组，提供精美的**电梯**与**地铁站**元素，以美化您的轨交建造。
 
 <img src="http://image.yunzhu.host/i/2025/05/01/681363e498172.webp" style="width: 200px; height: auto;" />
 
