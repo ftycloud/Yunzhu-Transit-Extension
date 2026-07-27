@@ -222,163 +222,232 @@ public abstract class LiftDestinationDispatchTerminalBase extends BlockExtension
             trackPositions.forEach(consumer);
         }
 
+        // ======================== 代价函数参数 ========================
+        /** 电梯每运行一层的基础代价 */
+        private static final double COST_PER_FLOOR = 1.0;
+        /** 每次停站（开关门+加减速）的额外代价 */
+        private static final double STOP_COST = 4.0;
+        /** 折返（改变运行方向）的代价 */
+        private static final double DIRECTION_CHANGE_COST = 8.0;
+        /** 方向不匹配时的软惩罚（替代硬过滤） */
+        private static final double DIRECTION_PENALTY = 20.0;
+        /** 批量分组判定阈值：目的地与已有停站相差 ≤ 此值视为"邻近" */
+        private static final int BATCH_THRESHOLD = 2;
+        /** 批量分组基础奖励值 */
+        private static final double BATCH_BASE_BONUS = 5.0;
+
+        /**
+         * 统一调度入口：对每台可到达目的地的电梯计算综合代价，选最低的推荐给乘客。
+         * <p>
+         * 代价 = pickupCost（到达召唤层）+ deliveryCost（送达目的地）
+         *      + directionPenalty（方向惩罚，软约束）
+         *      - batchBonus（批量分组奖励）
+         */
         public String callLift(World world, BlockPos pos, String destination) {
             final BlockEntity blockEntity = world.getBlockEntity(pos);
             final BlockEntityBase data = (BlockEntityBase) blockEntity.data;
-            ObjectArrayList<ObjectObjectImmutablePair<BlockPos, Character>> trackPositionsAndChars = new ObjectArrayList<>();
-            ObjectArrayList<ObjectObjectImmutablePair<BlockPos, Character>> trackPositionsAndChars1 = new ObjectArrayList<>();
-            ObjectArrayList<ObjectObjectImmutablePair<BlockPos, Character>> trackPositionsAndChars2 = new ObjectArrayList<>();
 
-            ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+            // ---- Step 1: 收集所有候选电梯 ----
+            // (trackPosition, lift, callingFloorIndex, destFloorIndex, destPosition, label)
+            ObjectArrayList<LiftCandidate> candidates = new ObjectArrayList<>();
+            final int[] counter = {0};
 
-            final int[] minDistance = {Integer.MAX_VALUE};
-            final char[] minChar = {'?'}; // 用于记录最小距离对应的字母
-            final int[] counter = {0}; // 字母分配计数器
-            final BlockPos[] confirmTrackPosition = new BlockPos[1];
-            final Position[] destinationPosition = new Position[1];
-
-            //step1:将电梯进行编号
             trackPositions.forEach(trackPosition -> {
-                char currentChar = (char) ('A' + counter[0]);
-                trackPositionsAndChars.add(new ObjectObjectImmutablePair<>(trackPosition, currentChar));
+                final char label = (char) ('A' + counter[0]);
                 counter[0]++;
-            });
 
-            //step2:筛选能到达目的楼层的电梯
-            trackPositionsAndChars.forEach(trackPositionAndChar -> {
-                BlockPos currentTrackPosition = trackPositionAndChar.left();
-                char currentChar = trackPositionAndChar.right();
-                hasButtonsClient(currentTrackPosition, (floor, lift) -> {
-                    //todo:查询楼层是否存在
-                    if (locateFloor(world, lift, destination) != null) {
-                        trackPositionsAndChars1.add(new ObjectObjectImmutablePair<>(currentTrackPosition, currentChar));
-                    }
+                MinecraftClientData.getInstance().lifts.forEach(lift -> {
+                    final int callingFloorIdx = lift.getFloorIndex(Init.blockPosToPosition(trackPosition));
+                    if (callingFloorIdx < 0) return;
+
+                    final Position destPos = locateFloor(world, lift, destination);
+                    if (destPos == null) return;
+
+                    final int destFloorIdx = lift.getFloorIndex(destPos);
+                    candidates.add(new LiftCandidate(trackPosition, label, lift, callingFloorIdx, destFloorIdx, destPos));
                 });
             });
 
-            //step3：确定符合方向的电梯
-            trackPositionsAndChars1.forEach(trackPositionAndChar1 -> {
-                BlockPos currentTrackPosition = trackPositionAndChar1.left();
-                char currentChar = trackPositionAndChar1.right();
-                hasButtonsClient(currentTrackPosition, (floor, lift) -> {
-                    destinationPosition[0] = locateFloor(world, lift, destination);
-
-                    //判断每一个电梯的方向
-                    ObjectObjectImmutablePair<LiftDirection, ObjectObjectImmutablePair<String, String>> liftDetails =
-                            GetLiftDetails.getLiftDetails(world, lift, org.mtr.mod.Init.positionToBlockPos(lift.getCurrentFloor().getPosition()));
-                    final LiftDirection liftDirection = liftDetails.left();
-
-                    //判断前往目的楼层需要的方向
-                    int currentFloorNumber = lift.getFloorIndex(Init.blockPosToPosition(currentTrackPosition));
-                    int destinationFloorNumber = lift.getFloorIndex(destinationPosition[0]);
-
-                    String currentLiftFloor = liftDetails.right().left();
-
-                    if (!currentLiftFloor.isEmpty()) {//当电梯轨道只有一层时，currentLiftFloor为空
-                        Position currentLiftFloorPosition = locateFloor(world, lift, currentLiftFloor);
-                        int currentLiftFloorNumber = lift.getFloorIndex(currentLiftFloorPosition);
-                        LiftDirection confirmLiftDirection = determineDirection(currentFloorNumber, destinationFloorNumber);
-                        this.liftDirection = confirmLiftDirection;
-
-                        if (liftDirection == NONE) {
-                            trackPositionsAndChars2.add(new ObjectObjectImmutablePair<>(currentTrackPosition, currentChar));
-                        } else if (liftDirection == confirmLiftDirection) {
-                            if (confirmLiftDirection == LiftDirection.UP && currentLiftFloorNumber <= currentFloorNumber) {
-                                trackPositionsAndChars2.add(new ObjectObjectImmutablePair<>(currentTrackPosition, currentChar));
-                            } else if (confirmLiftDirection == LiftDirection.DOWN && currentLiftFloorNumber >= currentFloorNumber) {
-                                trackPositionsAndChars2.add(new ObjectObjectImmutablePair<>(currentTrackPosition, currentChar));
-                            }
-                        }
-                    }
-                });
-            });
-
-            if (trackPositionsAndChars2.isEmpty()) {
-                ArrayList<Triple<Integer, Character, BlockPos>> distanceGroup = new ArrayList<>();
-                trackPositionsAndChars1.forEach(trackPositionAndChar1 -> {
-                    BlockPos currentTrackPosition = trackPositionAndChar1.left();
-                    char currentChar = trackPositionAndChar1.right();
-                    hasButtonsClient(currentTrackPosition, (floor, lift) -> {
-                        destinationPosition[0] = locateFloor(world, lift, destination);
-                        int currentFloorNumber = lift.getFloorIndex(Init.blockPosToPosition(currentTrackPosition));
-
-                        // 查找上一个任务结束后距离乘客层最近的电梯
-                        ObjectArrayList<LiftInstruction> instructions = ((MixinLiftSchema) lift).getInstructions();
-                        LiftInstruction lastInstruction = instructions.isEmpty() ? null : instructions.get(instructions.size() - 1);
-                        int lastFloorNumber = lastInstruction.getFloor();
-                        int distance = Math.abs(currentFloorNumber - lastFloorNumber);
-                        distanceGroup.add(new Triple<>(distance, currentChar, currentTrackPosition));
-                    });
-                });
-
-                final int[] minDistance1 = {Integer.MAX_VALUE};
-                final char[] char1 = {'?'};
-                final BlockPos[] confirmTrackPosition1 = new BlockPos[1];
-
-                distanceGroup.forEach(distanceAndChar -> {
-                    if (distanceAndChar.getFirst() <= minDistance1[0]) {
-                        minDistance1[0] = distanceAndChar.getFirst();
-                        char1[0] = distanceAndChar.getSecond();
-                        confirmTrackPosition1[0] = distanceAndChar.getThird();
-                    }
-                });
-
-                trackPositionsAndChars2.add(new ObjectObjectImmutablePair<>(confirmTrackPosition1[0], char1[0]));
+            if (candidates.isEmpty()) {
+                liftIdentifier = '?';
+                return "?";
             }
 
-            //step4:确定最接近乘客的电梯
-            trackPositionsAndChars2.forEach(trackPositionAndChar2 -> {
-                BlockPos currentTrackPosition = trackPositionAndChar2.left();
-                char currentChar = trackPositionAndChar2.right();
+            // ---- Step 2: 用统一代价函数评估所有候选 ----
+            LiftCandidate bestCandidate = null;
+            double bestCost = Double.MAX_VALUE;
 
-                if (currentTrackPosition != null) {
-                    hasButtonsClient(currentTrackPosition, (floor, lift) -> {
-                        final Vector position = lift.getPosition((floorPosition1, floorPosition2) -> ItemLiftRefresher.findPath(new World(world.data), floorPosition1, floorPosition2));
-                        BlockPos liftPos = new BlockPos((int) position.x, (int) position.y, (int) position.z);
+            for (LiftCandidate candidate : candidates) {
+                final double cost = calculateLiftCost(candidate);
+                if (cost < bestCost) {
+                    bestCost = cost;
+                    bestCandidate = candidate;
+                }
+            }
 
-                        int distance = currentTrackPosition.getManhattanDistance(Vector3i.cast(liftPos));
+            // ---- Step 3: 执行 ----
+            if (bestCandidate == null) {
+                liftIdentifier = '?';
+                return "?";
+            }
 
-                        if (distance < minDistance[0]) {
-                            minDistance[0] = distance;
-                            minChar[0] = currentChar;
-                            liftIdentifier = currentChar;
-                            confirmTrackPosition[0] = currentTrackPosition;
-                            destinationPosition[0] = locateFloor(world, lift, destination);
-                        }
-                    });
+            final BlockPos confirmTrackPosition = bestCandidate.trackPosition;
+            final Position finalDestPosition = bestCandidate.destPosition;
+            final LiftDirection neededDirection = determineDirection(
+                    bestCandidate.callingFloorIndex, bestCandidate.destFloorIndex);
+            this.liftDirection = neededDirection;
+            liftIdentifier = bestCandidate.label;
+
+            final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
+            hasButtonsClient(confirmTrackPosition, (floor, lift) -> {
+                if (lift.getDoorValue() == 0) {
+                    final PressLift pressLift = new PressLift();
+                    pressLift.add(Init.blockPosToPosition(confirmTrackPosition), data.liftDirection);
+                    InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketPressLiftButton(pressLift));
                 }
             });
 
-            //step5:呼叫电梯
-            if (confirmTrackPosition[0] != null) {
-                hasButtonsClient(confirmTrackPosition[0], (floor, lift) -> {
-                    //避免重复开门
-                    if (lift.getDoorValue() == 0) {
-                        final PressLift pressLift = new PressLift();
-                        pressLift.add(Init.blockPosToPosition(confirmTrackPosition[0]), data.liftDirection);
-                        InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketPressLiftButton(pressLift));
+            scheduler.schedule(() -> {
+                liftButtonPositions.forEach(lanternPos -> {
+                    BlockEntity lanternBlockEntity = world.getBlockEntity(lanternPos);
+                    if (lanternBlockEntity != null && lanternBlockEntity.data instanceof LiftButtonsBase.BlockEntityBase) {
+                        LiftButtonsBase.BlockEntityBase lanternData = (LiftButtonsBase.BlockEntityBase) lanternBlockEntity.data;
+                        lanternData.setPressedButtonDirection(data.liftDirection);
                     }
                 });
 
+                final PressLift pressLift1 = new PressLift();
+                pressLift1.add(finalDestPosition, data.liftDirection);
+                InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketPressLiftButton(pressLift1));
+            }, 2, TimeUnit.SECONDS);
 
-                scheduler.schedule(() -> {
-                    liftButtonPositions.forEach(lanternPos -> {
-                        BlockEntity lanternBlockEntity = world.getBlockEntity(lanternPos);
-                        if (lanternBlockEntity != null && lanternBlockEntity.data instanceof LiftButtonsBase.BlockEntityBase) {
-                            LiftButtonsBase.BlockEntityBase lanternData = (LiftButtonsBase.BlockEntityBase) lanternBlockEntity.data;
-                            lanternData.setPressedButtonDirection(data.liftDirection);
-                        }
-                    });
+            return String.valueOf(liftIdentifier);
+        }
 
-                    final PressLift pressLift1 = new PressLift();
-                    pressLift1.add(destinationPosition[0], data.liftDirection);
-                    InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketPressLiftButton(pressLift1));
-                }, 2, TimeUnit.SECONDS);
-                return String.valueOf(liftIdentifier);
+        /**
+         * 计算单台电梯的综合调度代价（越低越好）。
+         */
+        private double calculateLiftCost(LiftCandidate c) {
+            final Lift lift = c.lift;
+            final int callingIdx = c.callingFloorIndex;
+            final int destIdx = c.destFloorIndex;
 
-            } else {
-                liftIdentifier = '?';
-                return String.valueOf(liftIdentifier);
+            final int currentFloorIdx = lift.getFloorIndex(lift.getCurrentFloor().getPosition());
+            final LiftDirection liftDirection = lift.getDirection();
+            final ObjectArrayList<LiftInstruction> instructions = ((MixinLiftSchema) lift).getInstructions();
+
+            final int currentDir = liftDirection == LiftDirection.UP ? 1
+                    : (liftDirection == LiftDirection.DOWN ? -1 : 0);
+            final int neededDir = callingIdx < destIdx ? 1 : (callingIdx > destIdx ? -1 : 0);
+
+            // 1) pickupCost: 从电梯当前位置到达召唤层的估算代价
+            final double pickupCost = estimateTravelCost(currentFloorIdx, callingIdx, instructions, currentDir);
+
+            // 2) deliveryCost: 从召唤层到目的地的纯楼层代价
+            final double deliveryCost = Math.abs(destIdx - callingIdx) * COST_PER_FLOOR;
+
+            // 3) directionPenalty: 软约束（替代硬过滤）
+            final double directionPenalty =
+                    (currentDir != 0 && neededDir != 0 && currentDir != neededDir)
+                            ? DIRECTION_PENALTY : 0.0;
+
+            // 4) batchBonus: 目的地与已有停站楼层邻近 → 倾向合并
+            double batchBonus = 0.0;
+            for (LiftInstruction inst : instructions) {
+                final int stopFloor = inst.getFloor();
+                final int dist = Math.abs(stopFloor - destIdx);
+                if (dist == 0) {
+                    batchBonus += BATCH_BASE_BONUS * 1.5;  // 同一楼层，最大奖励
+                } else if (dist <= BATCH_THRESHOLD) {
+                    batchBonus += BATCH_BASE_BONUS * (1.0 - (double) dist / (BATCH_THRESHOLD + 1));
+                }
+            }
+
+            return pickupCost + deliveryCost + directionPenalty - batchBonus;
+        }
+
+        /**
+         * 估算电梯从 fromIdx 到达 toIdx 的运行代价。
+         * <p>
+         * instructions 已按执行顺序排列（由 MTR 的 pressButton 保证），电梯总是先执行完
+         * 当前方向上的所有停站，再折返。
+         */
+        private double estimateTravelCost(int fromIdx, int toIdx,
+                                           ObjectArrayList<LiftInstruction> instructions,
+                                           int currentDir) {
+            if (fromIdx == toIdx) return 0.0;
+
+            final int neededDir = toIdx > fromIdx ? 1 : -1;
+
+            // 空闲或无指令：直接按楼层差估算
+            if (currentDir == 0 || instructions.isEmpty()) {
+                return Math.abs(toIdx - fromIdx) * COST_PER_FLOOR;
+            }
+
+            // 找到当前方向上的最远端停站
+            int furthestInDir = fromIdx;
+            for (LiftInstruction inst : instructions) {
+                final int floor = inst.getFloor();
+                if (currentDir == 1 && floor > furthestInDir) furthestInDir = floor;
+                if (currentDir == -1 && floor < furthestInDir) furthestInDir = floor;
+            }
+
+            if (currentDir == neededDir) {
+                // 同向：判断是否还没路过召唤层
+                final boolean passedCalling =
+                        (currentDir == 1 && fromIdx > toIdx) || (currentDir == -1 && fromIdx < toIdx);
+
+                if (!passedCalling) {
+                    final int floors = Math.abs(toIdx - fromIdx);
+                    final int stops = countStopsBetween(fromIdx, toIdx, instructions, currentDir);
+                    return floors * COST_PER_FLOOR + stops * STOP_COST;
+                }
+            }
+
+            // 反向或已路过：先走到最远端 → 折返 → 再到召唤层
+            final int floorsToFurthest = Math.abs(furthestInDir - fromIdx);
+            final int stopsToFurthest = countStopsBetween(fromIdx, furthestInDir, instructions, currentDir);
+            final int floorsBack = Math.abs(toIdx - furthestInDir);
+
+            return floorsToFurthest * COST_PER_FLOOR
+                    + stopsToFurthest * STOP_COST
+                    + floorsBack * COST_PER_FLOOR
+                    + DIRECTION_CHANGE_COST;
+        }
+
+        /**
+         * 统计在 [from, to] 区间内（含端点）且方向与 dir 一致的停站数。
+         */
+        private int countStopsBetween(int from, int to, ObjectArrayList<LiftInstruction> instructions, int dir) {
+            int count = 0;
+            for (LiftInstruction inst : instructions) {
+                final int floor = inst.getFloor();
+                if (dir == 1 && floor > from && floor <= to) count++;
+                if (dir == -1 && floor < from && floor >= to) count++;
+            }
+            return count;
+        }
+
+        /**
+         * 候选电梯数据容器。
+         */
+        private static class LiftCandidate {
+            final BlockPos trackPosition;
+            final char label;
+            final Lift lift;
+            final int callingFloorIndex;
+            final int destFloorIndex;
+            final Position destPosition;
+
+            LiftCandidate(BlockPos trackPosition, char label, Lift lift,
+                          int callingFloorIndex, int destFloorIndex, Position destPosition) {
+                this.trackPosition = trackPosition;
+                this.label = label;
+                this.lift = lift;
+                this.callingFloorIndex = callingFloorIndex;
+                this.destFloorIndex = destFloorIndex;
+                this.destPosition = destPosition;
             }
         }
 
