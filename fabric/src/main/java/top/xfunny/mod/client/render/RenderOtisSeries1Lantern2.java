@@ -17,12 +17,14 @@ import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.block.OtisSeries1Lantern2Even;
 import top.xfunny.mod.block.base.LiftButtonsBase;
+import top.xfunny.mod.client.InitClient;
 import top.xfunny.mod.client.view.ButtonView;
 import top.xfunny.mod.client.view.Gravity;
 import top.xfunny.mod.client.view.LayoutSize;
 import top.xfunny.mod.client.view.LineComponent;
 import top.xfunny.mod.client.view.view_group.FrameLayout;
 import top.xfunny.mod.client.view.view_group.LinearLayout;
+import top.xfunny.mod.packet.PacketLanternSoundInstruction;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
 import top.xfunny.mod.util.ClientGetLiftDetails;
@@ -89,7 +91,6 @@ public class RenderOtisSeries1Lantern2<T extends LiftButtonsBase.BlockEntityBase
         upLantern.setLight(light);
         upLantern.setDefaultColor(DEFAULT_COLOR);
         upLantern.setPressedColor(PRESSED_COLOR);
-        upLantern.setLanternSound("otis_series_1_lantern_up_2");
         upLantern.setMargin(0, 0.1F / 16, 0, -1.8F / 16);
 
         ButtonView downLantern = new ButtonView();
@@ -100,7 +101,6 @@ public class RenderOtisSeries1Lantern2<T extends LiftButtonsBase.BlockEntityBase
         downLantern.setDefaultColor(DEFAULT_COLOR);
         downLantern.setPressedColor(PRESSED_COLOR);
         downLantern.setFlip(false, true);
-        downLantern.setLanternSound("otis_series_1_lantern_down_2");
         downLantern.setMargin(0, -1.8F / 16, 0, 0.1F / 16);
 
         ButtonView middleLantern = new ButtonView();
@@ -123,67 +123,43 @@ public class RenderOtisSeries1Lantern2<T extends LiftButtonsBase.BlockEntityBase
             line.RenderLine(holdingLinker, trackPosition);
 
             OtisSeries1Lantern2Even.hasButtonsClient(
-                    trackPosition, buttonDescriptor, (floorIndex, lift) -> {
-
-                        LiftDirection pressedButtonDirection = blockEntity.getPressedButtonDirection();
-
-                        String floorNumber = ClientGetLiftDetails.getLiftDetails(world, lift, org.mtr.mod.Init.positionToBlockPos(lift.getCurrentFloor().getPosition())).right().left();
-
-                        String currentFloorNumber = RenderLifts
-                                .getLiftDetails(world, lift, trackPosition).right().left();
-
-                        final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
-
-                        // 门关 -> 重置声音状态
-                        if (lift.getDoorValue() == 0) {
-                            upLantern.resetLanternSound();
-                            downLantern.resetLanternSound();
-                            middleLantern.resetLanternSound();
-                        }
-
-                        if (instructionDirections.isEmpty() && pressedButtonDirection != null && lift.getDoorValue() != 0 && floorNumber.equals(currentFloorNumber)) {
-
-                            switch (pressedButtonDirection) {
-                                case DOWN:
-                                    downLantern.activate();
-                                    middleLantern.activate();
-                                    break;
-                                case UP:
-                                    upLantern.activate();
-                                    middleLantern.activate();
-                                    break;
-                            }
-                        }
-
-                        instructionDirections.forEach(liftDirection -> {
-                            if (lift.getDoorValue() != 0 && floorNumber.equals(currentFloorNumber)) {
-                                switch (liftDirection) {
-                                    case DOWN:
-                                        downLantern.activate();
-                                        middleLantern.activate();
-                                        break;
-                                    case UP:
-                                        upLantern.activate();
-                                        middleLantern.activate();
-                                        break;
-                                    case NONE:
-                                        if (pressedButtonDirection != null) {
-                                            switch (pressedButtonDirection) {
-                                                case DOWN:
-                                                    downLantern.activate();
-                                                    middleLantern.activate();
-                                                    break;
-                                                case UP:
-                                                    upLantern.activate();
-                                                    middleLantern.activate();
-                                                    break;
-                                            }
-                                        }
-                                }
-                            }
-                        });
-                    }
+                    trackPosition, buttonDescriptor, (floorIndex, lift) -> { }
             );
+
+            // Otis Series 1: 到站/呼叫登记亮灯+发声 + 距离≤3层预亮灯（不闪烁、不发声）
+            LiftButtonsBase.LanternState state = blockEntity.getLanternState(world, trackPosition);
+            final boolean shouldShow = state.phase == LiftButtonsBase.LanternPhase.ARRIVED
+                    || state.phase == LiftButtonsBase.LanternPhase.CALL_REGISTERED;
+            final boolean preLight = state.phase == LiftButtonsBase.LanternPhase.APPROACHING
+                    && state.distanceToNearestLift > 0 && state.distanceToNearestLift <= 3;
+
+            final boolean downOn = state.downActive && (shouldShow || preLight);
+            final boolean upOn = state.upActive && (shouldShow || preLight);
+
+            if (downOn) {
+                downLantern.activate();
+                middleLantern.activate();
+            } else {
+                downLantern.resetLanternSound();
+            }
+            if (upOn) {
+                upLantern.activate();
+                middleLantern.activate();
+            } else {
+                upLantern.resetLanternSound();
+            }
+            if (!downOn && !upOn) {
+                middleLantern.resetLanternSound();
+            }
+
+            if (state.justTriggered && shouldShow) {
+                if (state.downActive) {
+                    InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_down_2"));
+                }
+                if (state.upActive) {
+                    InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_up_2"));
+                }
+            }
         });
 
         blockEntity.forEachLiftButtonPosition(buttonPosition -> {

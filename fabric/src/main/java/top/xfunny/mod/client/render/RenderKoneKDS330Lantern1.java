@@ -120,20 +120,12 @@ public class RenderKoneKDS330Lantern1<T extends LiftButtonsBase.BlockEntityBase>
             line.RenderLine(holdingLinker, trackPosition);
 
             KoneKDS330Lantern1.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
-
-                final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
-
-                instructionDirections.forEach(liftDirection -> {
-                    switch (liftDirection) {
-                        case DOWN:
-                            buttonDownLight.activate();
-                            break;
-                        case UP:
-                            buttonUpLight.activate();
-                            break;
-                    }
-                });
+                // keep sortedPositionsAndLifts if needed - but this file doesn't seem to have one
             });
+
+            LiftButtonsBase.LanternState state = blockEntity.getLanternState(world, trackPosition);
+            if (state.downActive) buttonDownLight.activate();
+            if (state.upActive) buttonUpLight.activate();
         });
 
         blockEntity.forEachLiftButtonPosition(buttonPosition -> {

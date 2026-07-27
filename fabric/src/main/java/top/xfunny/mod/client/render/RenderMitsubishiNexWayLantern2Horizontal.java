@@ -141,7 +141,8 @@ public class RenderMitsubishiNexWayLantern2Horizontal<T extends LiftButtonsBase.
 
         final ObjectArrayList<ObjectObjectImmutablePair<BlockPos, Lift>> sortedPositionsAndLifts = new ObjectArrayList<>();
 
-        // Add a variable to control the flashing state
+        final boolean enableCallFlash = true;
+        final boolean enableApproachFlash = false;
         final boolean flash = (System.currentTimeMillis() % 1000) < 500;
 
         blockEntity.forEachTrackPosition(trackPosition -> {
@@ -149,102 +150,24 @@ public class RenderMitsubishiNexWayLantern2Horizontal<T extends LiftButtonsBase.
 
             MitsubishiNexWayScreen1Even.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
                 sortedPositionsAndLifts.add(new ObjectObjectImmutablePair<>(trackPosition, lift));
-
-                LiftDirection pressedButtonDirection = blockEntity.getPressedButtonDirection();
-
-                ObjectObjectImmutablePair<LiftDirection, ObjectObjectImmutablePair<String, String>> liftDetails = ClientGetLiftDetails.getLiftDetails(world, lift, org.mtr.mod.Init.positionToBlockPos(lift.getCurrentFloor().getPosition()));
-                String floorNumber = liftDetails.right().left();
-                String currentFloorNumber = RenderLifts.getLiftDetails(world, lift, trackPosition).right().left();
-
-                final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
-
-                if (lift.getDoorValue() == 0) {
-                    blockEntity.lastUpActive = false;
-                    blockEntity.lastDownActive = false;
-                }
-
-                if (instructionDirections.isEmpty() && pressedButtonDirection != null && lift.getDoorValue() != 0 && floorNumber.equals(currentFloorNumber)) {
-                    switch (pressedButtonDirection) {
-                        case DOWN:
-                            if (flash) {
-                                downLanternLeft.activate();
-                                downLanternRight.activate();
-                            }
-                            if (!blockEntity.lastDownActive) {
-                                InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_nexway_lantern_1_down"));
-                                blockEntity.lastDownActive = true;
-                                blockEntity.lastUpActive = true;
-                            }
-                            break;
-                        case UP:
-                            if (flash) {
-                                upLanternLeft.activate();
-                                upLanternRight.activate();
-                            }
-                            if (!blockEntity.lastDownActive) {
-                                InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_nexway_lantern_1_down"));
-                                blockEntity.lastDownActive = true;
-                                blockEntity.lastUpActive = true;
-                            }
-                            break;
-                    }
-                }
-
-                instructionDirections.forEach(liftDirection -> {
-                    if (lift.getDoorValue() != 0 && floorNumber.equals(currentFloorNumber)) {
-                        if (liftDirection == NONE) {
-                            if (pressedButtonDirection != null) {
-                                switch (pressedButtonDirection) {
-                                    case DOWN:
-                                        if (flash) {
-                                            downLanternLeft.activate();
-                                            downLanternRight.activate();
-                                        }
-                                        if (!blockEntity.lastDownActive) {
-                                            InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_nexway_lantern_1_down"));
-                                            blockEntity.lastDownActive = true;
-                                            blockEntity.lastUpActive = true;
-                                        }
-                                        break;
-                                    case UP:
-                                        if (flash) {
-                                            upLanternLeft.activate();
-                                            upLanternRight.activate();
-                                        }
-                                        if (!blockEntity.lastDownActive) {
-                                            InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_nexway_lantern_1_down"));
-                                            blockEntity.lastDownActive = true;
-                                            blockEntity.lastUpActive = true;
-                                        }
-                                        break;
-                                }
-                            }
-                        } else {
-                            switch (liftDirection) {
-                                case DOWN:
-                                    downLanternLeft.activate();
-                                    downLanternRight.activate();
-                                    if (!blockEntity.lastDownActive) {
-                                        InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_nexway_lantern_1_down"));
-                                        blockEntity.lastDownActive = true;
-                                        blockEntity.lastUpActive = true;
-                                    }
-                                    break;
-                                case UP:
-                                    upLanternLeft.activate();
-                                    upLanternRight.activate();
-                                    if (!blockEntity.lastDownActive) {
-                                        InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_nexway_lantern_1_down"));
-                                        blockEntity.lastDownActive = true;
-                                        blockEntity.lastUpActive = true;
-                                    }
-                                    break;
-                            }
-                        }
-                    }
-
-                });
             });
+
+            LiftButtonsBase.LanternState state = blockEntity.getLanternState(world, trackPosition);
+            final boolean useFlash = (state.phase == LiftButtonsBase.LanternPhase.CALL_REGISTERED && enableCallFlash)
+                    || ((state.phase == LiftButtonsBase.LanternPhase.APPROACHING
+                         || state.phase == LiftButtonsBase.LanternPhase.ARRIVED) && enableApproachFlash);
+
+            if (state.downActive && (!useFlash || flash)) {
+                downLanternLeft.activate();
+                downLanternRight.activate();
+            }
+            if (state.upActive && (!useFlash || flash)) {
+                upLanternLeft.activate();
+                upLanternRight.activate();
+            }
+            if (state.justTriggered) {
+                InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_nexway_lantern_1_down"));
+            }
         });
 
         sortedPositionsAndLifts.sort(Comparator.comparingInt(sortedPositionAndLift -> blockPos.getManhattanDistance(new Vector3i(sortedPositionAndLift.left().data))));

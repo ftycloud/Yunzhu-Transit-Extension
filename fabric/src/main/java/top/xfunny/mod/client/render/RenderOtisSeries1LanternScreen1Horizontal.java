@@ -133,116 +133,38 @@ public class RenderOtisSeries1LanternScreen1Horizontal<T extends LiftButtonsBase
             line.RenderLine(holdingLinker, trackPosition);
 
 
-            SchindlerMSeriesRoundLantern1Even.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
+            OtisSeries1LanternScreen1HorizontalEven.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
                 sortedPositionsAndLifts.add(new ObjectObjectImmutablePair<>(trackPosition, lift));
-
-                LiftDirection pressedButtonDirection = blockEntity.getPressedButtonDirection();
-
-                ObjectObjectImmutablePair<LiftDirection, ObjectObjectImmutablePair<String, String>> liftDetails = ClientGetLiftDetails.getLiftDetails(world, lift, org.mtr.mod.Init.positionToBlockPos(lift.getCurrentFloor().getPosition()));
-                String floorNumber = liftDetails.right().left();
-                String currentFloorNumber = RenderLifts.getLiftDetails(world, lift, trackPosition).right().left();
-
-                final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
-
-                if (lift.getDoorValue() == 0) {
-                    blockEntity.lastUpActive = false;
-                    blockEntity.lastDownActive = false;
-                }
-
-
-                if (instructionDirections.isEmpty() && pressedButtonDirection != null && lift.getDoorValue() != 0 && floorNumber.equals(currentFloorNumber)) {
-                    switch (pressedButtonDirection) {
-                        case DOWN:
-                            downLantern.activate();
-                            middleLantern.activate();
-                            if (!blockEntity.lastDownActive) {
-                                InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_down"));
-                                blockEntity.lastDownActive = true;
-                                blockEntity.lastUpActive = true;
-                            }
-
-                            break;
-                        case UP:
-                            upLantern.activate();
-                            middleLantern.activate();
-                            if (!blockEntity.lastUpActive) {
-                                InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_up"));
-                                blockEntity.lastUpActive = true;
-                                blockEntity.lastDownActive = true;
-                            }
-
-                            break;
-                    }
-                }
-
-                instructionDirections.forEach(liftDirection -> {
-                    if (lift.getDoorValue() != 0 && floorNumber.equals(currentFloorNumber)) {
-                        if (liftDirection == NONE) {
-                            if (pressedButtonDirection != null) {
-                                switch (pressedButtonDirection) {
-                                    case DOWN:
-                                        downLantern.activate();
-                                        middleLantern.activate();
-                                        if (!blockEntity.lastDownActive) {
-                                            InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_down"));
-                                            blockEntity.lastDownActive = true;
-                                            blockEntity.lastUpActive = true;
-                                        }
-
-                                        break;
-                                    case UP:
-                                        upLantern.activate();
-                                        middleLantern.activate();
-                                        if (!blockEntity.lastUpActive) {
-                                            InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_up"));
-                                            blockEntity.lastUpActive = true;
-                                            blockEntity.lastDownActive = true;
-                                        }
-
-                                        break;
-                                }
-                            }
-                        } else {
-                            switch (liftDirection) {
-                                case DOWN:
-                                    downLantern.activate();
-                                    middleLantern.activate();
-                                    if (!blockEntity.lastDownActive) {
-                                        InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_down"));
-                                        blockEntity.lastDownActive = true;
-                                        blockEntity.lastUpActive = true;
-                                    }
-
-                                    break;
-                                case UP:
-                                    upLantern.activate();
-                                    middleLantern.activate();
-                                    if (!blockEntity.lastUpActive) {
-                                        InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_up"));
-                                        blockEntity.lastUpActive = true;
-                                        blockEntity.lastDownActive = true;
-                                    }
-
-                                    break;
-                            }
-                        }
-                    }
-                });
             });
+
+            LiftButtonsBase.LanternState state = blockEntity.getLanternState(world, trackPosition);
+
+            // Otis Series 1 Screen: 到站/呼叫登记亮灯+发声 + 距离≤3层预亮灯（不闪烁、不发声）
+            final boolean shouldShow = state.phase == LiftButtonsBase.LanternPhase.ARRIVED
+                    || state.phase == LiftButtonsBase.LanternPhase.CALL_REGISTERED;
+            final boolean preLight = state.phase == LiftButtonsBase.LanternPhase.APPROACHING
+                    && state.distanceToNearestLift > 0 && state.distanceToNearestLift <= 3;
+
+            if (state.downActive && (shouldShow || preLight)) {
+                downLantern.activate();
+                middleLantern.activate();
+            }
+            if (state.upActive && (shouldShow || preLight)) {
+                upLantern.activate();
+                middleLantern.activate();
+            }
+            if (state.justTriggered && shouldShow) {
+                if (state.downActive) {
+                    InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_down"));
+                }
+                if (state.upActive) {
+                    InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_up"));
+                }
+            }
         });
 
         blockEntity.forEachLiftButtonPosition(buttonPosition -> {
             buttonLine.RenderLine(holdingLinker, buttonPosition, true);
-        });
-
-        final LineComponent line1 = new LineComponent();
-        line.setBasicsAttributes(world, blockPos);
-
-        blockEntity.forEachTrackPosition(trackPosition -> {
-            line.RenderLine(holdingLinker, trackPosition);
-            OtisSeries1LanternScreen1HorizontalEven.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
-                sortedPositionsAndLifts.add(new ObjectObjectImmutablePair<>(trackPosition, lift));
-            });
         });
 
         sortedPositionsAndLifts.sort(Comparator.comparingInt(sortedPositionAndLift -> blockPos.getManhattanDistance(new Vector3i(sortedPositionAndLift.left().data))));

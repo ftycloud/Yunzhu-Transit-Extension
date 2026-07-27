@@ -110,53 +110,11 @@ public class RenderTestLiftHallLanterns extends BlockEntityRenderer<TestLiftHall
 
             TestLiftHallLanterns.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
                 sortedPositionsAndLifts.add(new ObjectObjectImmutablePair<>(trackPosition, lift));
-
-                LiftDirection pressedButtonDirection = blockEntity.getPressedButtonDirection();
-
-                ObjectObjectImmutablePair<LiftDirection, ObjectObjectImmutablePair<String, String>> liftDetails = ClientGetLiftDetails.getLiftDetails(world, lift, org.mtr.mod.Init.positionToBlockPos(lift.getCurrentFloor().getPosition()));
-                String floorNumber = liftDetails.right().left();
-                String currentFloorNumber = RenderLifts.getLiftDetails(world, lift, trackPosition).right().left();
-
-                final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
-
-                if (instructionDirections.isEmpty() && pressedButtonDirection != null && lift.getDoorValue() != 0 && floorNumber.equals(currentFloorNumber)) {
-                    switch (pressedButtonDirection) {
-                        case DOWN:
-                            buttonDownLight.activate();
-                            break;
-                        case UP:
-                            buttonUpLight.activate();
-                            break;
-                    }
-                }
-
-                instructionDirections.forEach(liftDirection -> {
-                    if (lift.getDoorValue() != 0 && floorNumber.equals(currentFloorNumber)) {
-                        if (liftDirection == NONE) {
-                            if (pressedButtonDirection != null) {
-                                switch (pressedButtonDirection) {
-                                    case DOWN:
-                                        buttonDownLight.activate();
-                                        break;
-                                    case UP:
-                                        buttonUpLight.activate();
-                                        break;
-                                }
-                            }
-                        } else {
-                            switch (liftDirection) {
-                                case DOWN:
-                                    buttonDownLight.activate();
-                                    break;
-                                case UP:
-                                    buttonUpLight.activate();
-                                    break;
-                            }
-                        }
-                    }
-
-                });
             });
+
+            LiftButtonsBase.LanternState state = blockEntity.getLanternState(world, trackPosition);
+            if (state.downActive) buttonDownLight.activate();
+            if (state.upActive) buttonUpLight.activate();
         });
 
         blockEntity.forEachLiftButtonPosition(buttonPosition -> {

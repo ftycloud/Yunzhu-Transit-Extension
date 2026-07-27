@@ -4,6 +4,8 @@ import org.mtr.core.data.Lift;
 import org.mtr.core.data.LiftDirection;
 import org.mtr.core.operation.PressLift;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import org.mtr.mod.client.MinecraftClientData;
+import top.xfunny.mod.Init;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.holder.Blocks;
 import org.mtr.mapping.mapper.*;
@@ -183,6 +185,39 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
         public void setHasDownButton(boolean hasDownButton) { this.hasDownButton = hasDownButton; }
     }
 
+    // ======================== 到站灯状态类型 ========================
+
+    /** 到站灯阶段 */
+    public enum LanternPhase {
+        /** 空闲：无电梯将至 */
+        IDLE,
+        /** 呼叫已登记：按钮已按，但电梯尚未接近本层 */
+        CALL_REGISTERED,
+        /** 电梯接近中：已将本层加入指令列表，尚未到站 */
+        APPROACHING,
+        /** 电梯到站：在本层开门 */
+        ARRIVED
+    }
+
+    /** 到站灯状态，由 {@link BlockEntityBase#getLanternState} 计算，渲染类直接读取。 */
+    public static class LanternState {
+        public final boolean upActive;
+        public final boolean downActive;
+        public final LanternPhase phase;
+        /** 刚触发（仅一帧为 true），用于播放到站提示音 */
+        public final boolean justTriggered;
+        /** 最近一部已登记本层指令的电梯距离本层的楼层数，无相关电梯时为 -1 */
+        public final int distanceToNearestLift;
+
+        LanternState(boolean upActive, boolean downActive, LanternPhase phase, boolean justTriggered, int distanceToNearestLift) {
+            this.upActive = upActive;
+            this.downActive = downActive;
+            this.phase = phase;
+            this.justTriggered = justTriggered;
+            this.distanceToNearestLift = distanceToNearestLift;
+        }
+    }
+
     public static class BlockEntityBase extends BlockEntityExtension implements LiftFloorRegistry, ButtonRegistry, LiftLanternController {
         private static final String KEY_TRACK_FLOOR_POS = "track_floor_pos";
         private static final String KEY_LIFT_BUTTON_POSITIONS = "lift_button_position";
@@ -191,8 +226,14 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
         public LiftDirection liftDirection = NONE;
 
         public BlockPos selfPos;
+        /** @deprecated 请使用 {@link #getLanternState} 的 justTriggered 替代。保留以兼容未迁移的 Screen 渲染类。 */
+        @Deprecated
         public boolean lastUpActive = false;
+        /** @deprecated 请使用 {@link #getLanternState} 的 justTriggered 替代。保留以兼容未迁移的 Screen 渲染类。 */
+        @Deprecated
         public boolean lastDownActive = false;
+        /** 用于边沿检测的上一帧状态，按 trackPosition 独立存储（避免多楼层共享导致声音重叠） */
+        private final java.util.Map<BlockPos, boolean[]> lanternPrevState = new java.util.HashMap<>();
         private LiftDirection pressedButtonDirection;
         private DefaultButtonsKeyMapping keyMapping = new DefaultButtonsKeyMapping();
 
@@ -267,6 +308,67 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
                 }
             }
             markDirty2();
+        }
+
+        /**
+         * 计算指定轨道位置的到站灯状态。渲染每帧调用一次。
+         * <p>
+         * 内部更新 {@link #lastUpActive}/{@link #lastDownActive} 用于边沿检测。
+         * <p>
+         * 渲染类根据返回的 {@link LanternPhase} 自行决定闪烁策略：
+         * <ul>
+         *   <li>{@link LanternPhase#CALL_REGISTERED} → 可选慢闪（enableCallFlash）</li>
+         *   <li>{@link LanternPhase#APPROACHING}     → 可选快闪/常亮（enableApproachFlash）</li>
+         *   <li>{@link LanternPhase#ARRIVED}         → 常亮</li>
+         * </ul>
+         *
+         * @param world         当前世界
+         * @param trackPosition 关联的电梯轨道楼层位置
+         * @return 到站灯状态，绝不会为 null
+         */
+        public LanternState getLanternState(World world, BlockPos trackPosition) {
+            boolean upActive = false;
+            boolean downActive = false;
+            LanternPhase phase = LanternPhase.IDLE;
+            int minDistance = Integer.MAX_VALUE;
+
+            for (Lift lift : MinecraftClientData.getInstance().lifts) {
+                final int floorIndex = lift.getFloorIndex(Init.blockPosToPosition(trackPosition));
+                if (floorIndex < 0) continue;
+
+                final boolean doorOpen = lift.getDoorValue() != 0;
+                final int currentLiftFloorIdx = lift.getFloorIndex(lift.getCurrentFloor().getPosition());
+                final boolean atThisFloor = (currentLiftFloorIdx == floorIndex);
+                final int distance = Math.abs(currentLiftFloorIdx - floorIndex);
+
+                boolean hasUp = false;
+                boolean hasDown = false;
+                for (LiftDirection dir : lift.hasInstruction(floorIndex)) {
+                    if (dir == LiftDirection.UP) hasUp = true;
+                    if (dir == LiftDirection.DOWN) hasDown = true;
+                }
+
+                if (hasUp || hasDown) {
+                    phase = (doorOpen && atThisFloor) ? LanternPhase.ARRIVED : LanternPhase.APPROACHING;
+                    upActive = upActive || hasUp;
+                    downActive = downActive || hasDown;
+                    minDistance = Math.min(minDistance, distance);
+                } else if (pressedButtonDirection != null && doorOpen && atThisFloor) {
+                    if (phase.ordinal() < LanternPhase.CALL_REGISTERED.ordinal()) {
+                        phase = LanternPhase.CALL_REGISTERED;
+                    }
+                    if (pressedButtonDirection == LiftDirection.UP) upActive = true;
+                    if (pressedButtonDirection == LiftDirection.DOWN) downActive = true;
+                }
+            }
+
+            // 边沿检测：按 trackPosition 独立追踪，避免多轨道楼层共享状态导致声音重叠
+            final boolean[] prev = lanternPrevState.computeIfAbsent(trackPosition, k -> new boolean[]{false, false});
+            final boolean justTriggered = (upActive && !prev[0]) || (downActive && !prev[1]);
+            prev[0] = upActive;
+            prev[1] = downActive;
+
+            return new LanternState(upActive, downActive, phase, justTriggered, minDistance == Integer.MAX_VALUE ? -1 : minDistance);
         }
 
         public void forEachTrackPosition(Consumer<BlockPos> consumer) { trackPositions.forEach(consumer); }
