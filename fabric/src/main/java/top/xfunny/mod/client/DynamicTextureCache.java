@@ -14,7 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 public class DynamicTextureCache {// 使用AI优化
-    private static final int COOLDOWN_TIME = 10000; // 10s
+    private static final int COOLDOWN_TIME = 300_000; // 5min，避免楼层号纹理频繁淘汰重建
+    private static final int MAX_TEXTURES = 2000; // 动态纹理总数上限，超出时按插入序淘汰最旧条目
     private static final Identifier DEFAULT_TRANSPARENT_RESOURCE = new Identifier(Init.MOD_ID, "textures/block/transparent.png");
     public static DynamicTextureCache instance = new DynamicTextureCache();
     private final Object2ObjectLinkedOpenHashMap<String, DynamicResource> dynamicResources = new Object2ObjectLinkedOpenHashMap<>();
@@ -27,6 +28,10 @@ public class DynamicTextureCache {// 使用AI优化
 
     private final Set<String> generatingScreens = ConcurrentHashMap.newKeySet();
     private final MessageQueue<Runnable> resourceRegistryQueue = new MessageQueue<>();
+
+    // 快查：当前有哪些资源被 lastSuccessfulResource 引用，替代 O(n) 的 containsValue
+    private final Set<DynamicResource> aliveResources = ConcurrentHashMap.newKeySet();
+    private long lastCleanupTime;
 
     public DynamicResource getResource(String textureId, Long blockPos, Supplier<NativeImage> supplier) {
         resourceRegistryQueue.process(Runnable::run);
@@ -45,11 +50,12 @@ public class DynamicTextureCache {// 使用AI优化
         if (currentRes != null && !currentRes.needsRefresh) {
             currentRes.expiryTime = System.currentTimeMillis() + COOLDOWN_TIME;
             lastSuccessfulResource.put(screenUniqueId, currentRes);
+            aliveResources.add(currentRes);
             return currentRes;
         }
 
-        // 2. 触发生成 (限制队列长度防止溢出，但给足空间)
-        if (!generatingScreens.contains(screenUniqueId) && generatingScreens.size() <= 1000) {
+        // 2. 触发生成 (以 textureId 去重，同一文字内容只生成一次)
+        if (!generatingScreens.contains(textureId) && generatingScreens.size() <= 1000) {
             registerResource(supplier, textureId, screenUniqueId);
         }
 
@@ -58,6 +64,7 @@ public class DynamicTextureCache {// 使用AI优化
         DynamicResource fallback = lastSuccessfulResource.get(screenUniqueId);
         if (fallback != null) {
             fallback.expiryTime = System.currentTimeMillis() + COOLDOWN_TIME; // 续命
+            aliveResources.add(fallback);
             return fallback;
         }
 
@@ -71,7 +78,7 @@ public class DynamicTextureCache {// 使用AI优化
     }
 
     private void registerResource(Supplier<NativeImage> supplier, String textureId, String screenUniqueId) {
-        generatingScreens.add(screenUniqueId);
+        generatingScreens.add(textureId);
 
         MainRenderer.WORKER_THREAD.scheduleDynamicTextures(() -> {
             final NativeImage nativeImage = supplier.get();
@@ -98,11 +105,12 @@ public class DynamicTextureCache {// 使用AI优化
 
                         // 更新兜底
                         lastSuccessfulResource.put(screenUniqueId, dynamicResourceNew);
+                        aliveResources.add(dynamicResourceNew);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
-                    generatingScreens.remove(screenUniqueId);
+                    generatingScreens.remove(textureId);
                 }
             });
         });
@@ -117,39 +125,52 @@ public class DynamicTextureCache {// 使用AI优化
     public void tick() {
         long now = System.currentTimeMillis();
 
-        // 1. 清理主缓存中的过期逻辑
+        // 1. 清理过期资源（不再检查 lastSuccessfulResource，改用 aliveResources O(1) 判断）
         final ObjectArrayList<String> keysToRemove = new ObjectArrayList<>();
         dynamicResources.forEach((key, res) -> {
-            // 如果过期了，且不是当前该屏幕的“最新成功资源”，则移出主缓存
-            // (如果是最新成功资源，即使过期了也不移出，直到新图生成替换它)
-            if (res.expiryTime < now && !lastSuccessfulResource.containsValue(res)) {
+            if (res.expiryTime < now && !aliveResources.contains(res)) {
                 keysToRemove.add(key);
-                // 放入死亡队列，等待物理销毁
                 resourcesToDispose.put(res, now + COOLDOWN_TIME);
             }
         });
         keysToRemove.forEach(dynamicResources::remove);
 
-        // 2. 处理过期队列（真正的物理销毁）
+        // 2. 物理销毁到期资源
         final ObjectArrayList<DynamicResource> toActuallyDispose = new ObjectArrayList<>();
-
         resourcesToDispose.forEach((res, disposeTime) -> {
-            if (disposeTime < now) {
-                // 双重保险：如果这个资源竟然又是“最新成功资源”（极小概率），先别杀
-                if (!lastSuccessfulResource.containsValue(res)) {
-                    toActuallyDispose.add(res);
-                } else {
-                    // 这种情况给它续命一下，虽然逻辑上不该发生
-                    // res.expiryTime = now + COOLDOWN_TIME;
-                }
+            if (disposeTime < now && !aliveResources.contains(res)) {
+                toActuallyDispose.add(res);
             }
         });
-
-        // 执行物理销毁
         toActuallyDispose.forEach(res -> {
-            res.dispose(); // 关闭 NativeImage, Destroy Texture
+            res.dispose();
             resourcesToDispose.remove(res);
+            aliveResources.remove(res);
         });
+
+        // 3. 大小上限淘汰
+        while (dynamicResources.size() > MAX_TEXTURES) {
+            final String oldestKey = dynamicResources.firstKey();
+            final DynamicResource oldestRes = dynamicResources.remove(oldestKey);
+            if (oldestRes != null && !aliveResources.contains(oldestRes)) {
+                resourcesToDispose.put(oldestRes, now + COOLDOWN_TIME);
+            } else {
+                break;
+            }
+        }
+
+        // 4. 定期清理 lastSuccessfulResource 中的过期条目（每 30 秒一次）
+        if (now - lastCleanupTime > 30_000) {
+            lastSuccessfulResource.entrySet().removeIf(entry -> {
+                final DynamicResource res = entry.getValue();
+                if (res.expiryTime + COOLDOWN_TIME * 2 < now) {
+                    aliveResources.remove(res);
+                    return true;
+                }
+                return false;
+            });
+            lastCleanupTime = now;
+        }
     }
 
     private enum DefaultRenderingColor {
