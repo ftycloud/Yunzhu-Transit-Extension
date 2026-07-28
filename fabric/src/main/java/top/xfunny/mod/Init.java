@@ -40,11 +40,11 @@ public final class Init {
         long startTime = System.currentTimeMillis();
         Map<String, Runnable> initSteps = new LinkedHashMap<>();
 
+        initSteps.put("Creative Mode Tabs", CreativeModeTabs::init);
         initSteps.put("Sound Events", SoundEvents::init);
         initSteps.put("Blocks", Blocks::init);
         initSteps.put("Block Entity Types", BlockEntityTypes::init);
         initSteps.put("Items", Items::init);
-        initSteps.put("Creative Mode Tabs", CreativeModeTabs::init);
         initSteps.put("MTR Packet", () -> {
             REGISTRY.setupPackets(new Identifier(MOD_ID, "packet"));
             REGISTRY.registerPacket(PacketYTEOpenBlockEntityScreen.class, PacketYTEOpenBlockEntityScreen::new);
