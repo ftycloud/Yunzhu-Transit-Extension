@@ -13,6 +13,7 @@ import org.mtr.mod.render.QueuedRenderLayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import top.xfunny.mod.client.hint.ConnectionHintRenderer;
 
 import java.util.function.Consumer;
@@ -29,6 +30,20 @@ public class MixinBlockEntityRenderer {
 
     private static final String HINT_RENDER_KEY = "yte_connection_hint";
 
+    /** 距离裁剪：32 格以外的方块跳过渲染 */
+    private static final float MAX_RENDER_DISTANCE_SQ = 32 * 32;
+
+    /** ThreadLocal 不好跨 @ModifyVariable → @ModifyArg 传递，直接用实例字段（渲染单线程） */
+    private org.mtr.mapping.mapper.BlockEntityExtension currentEntity;
+
+    @ModifyVariable(method = "render",
+            at = @At(value = "INVOKE", target = "Lorg/mtr/mapping/mapper/GraphicsHolder;createInstanceSafe", remap = false),
+            index = 1, remap = false)
+    private org.mtr.mapping.mapper.BlockEntityExtension captureEntity(org.mtr.mapping.mapper.BlockEntityExtension entity) {
+        this.currentEntity = entity;
+        return entity;
+    }
+
     @ModifyArg(
             method = "render",
             at = @At(
@@ -40,6 +55,23 @@ public class MixinBlockEntityRenderer {
             remap = false
     )
     private Consumer<GraphicsHolder> wrapConsumer(Consumer<GraphicsHolder> original) {
+        // 距离裁剪：32 格外不渲染
+        final org.mtr.mapping.mapper.BlockEntityExtension entity = this.currentEntity;
+        if (entity != null) {
+            final BlockPos pos = entity.getPos2();
+            if (pos != null) {
+                final ClientPlayerEntity player = MinecraftClient.getInstance().getPlayerMapped();
+                if (player != null) {
+                    final double dx = pos.getX() + 0.5 - player.getPos().getXMapped();
+                    final double dy = pos.getY() + 0.5 - player.getPos().getYMapped();
+                    final double dz = pos.getZ() + 0.5 - player.getPos().getZMapped();
+                    if (dx * dx + dy * dy + dz * dz > MAX_RENDER_DISTANCE_SQ) {
+                        return gh -> {}; // no-op
+                    }
+                }
+            }
+        }
+
         return gh -> {
             original.accept(gh);
 
