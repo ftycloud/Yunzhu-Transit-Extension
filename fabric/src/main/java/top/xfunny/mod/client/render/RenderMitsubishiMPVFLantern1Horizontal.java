@@ -1,9 +1,7 @@
 package top.xfunny.mod.client.render;
 
 import org.mtr.core.data.Lift;
-import org.mtr.core.data.LiftDirection;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.BlockEntityRenderer;
@@ -12,7 +10,6 @@ import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.PlayerHelper;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
-import org.mtr.mod.render.RenderLifts;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.block.MitsubishiNexWayScreen1Even;
@@ -27,11 +24,8 @@ import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
 import top.xfunny.mod.packet.PacketLanternSoundInstruction;
-import top.xfunny.mod.util.ClientGetLiftDetails;
 
 import java.util.Comparator;
-
-import static org.mtr.core.data.LiftDirection.NONE;
 
 public class RenderMitsubishiMPVFLantern1Horizontal<T extends LiftButtonsBase.BlockEntityBase> extends BlockEntityRenderer<T> implements DirectionHelper, IGui, IBlock {
     private static final int PRESSED_COLOR = 0xFFEFC2A3;
@@ -151,7 +145,7 @@ public class RenderMitsubishiMPVFLantern1Horizontal<T extends LiftButtonsBase.Bl
                 sortedPositionsAndLifts.add(new ObjectObjectImmutablePair<>(trackPosition, lift));
             });
 
-            LiftButtonsBase.LanternState state = blockEntity.getLanternState(world, trackPosition);
+            LiftButtonsBase.LanternState state = blockEntity.getLanternState(trackPosition);
 
             if (state.downActive) {
                 downLanternLeft.activate();

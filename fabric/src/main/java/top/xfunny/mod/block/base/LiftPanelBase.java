@@ -192,8 +192,8 @@ public abstract class LiftPanelBase extends BlockExtension implements DirectionH
             trackPositions.forEach(consumer);
         }
 
-        @Nullable
-        public ObjectOpenHashSet<BlockPos> getTrackPosition() {
+        @Override
+        public ObjectOpenHashSet<BlockPos> getTrackPositions() {
             return trackPositions;
         }
     }

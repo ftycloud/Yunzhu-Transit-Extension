@@ -1,9 +1,7 @@
 package top.xfunny.mod.client.render;
 
 import org.mtr.core.data.Lift;
-import org.mtr.core.data.LiftDirection;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.BlockEntityRenderer;
@@ -12,11 +10,9 @@ import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.PlayerHelper;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
-import org.mtr.mod.render.RenderLifts;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.block.OtisSeries1LanternScreen1Even;
-import top.xfunny.mod.block.SchindlerMSeriesRoundLantern1Even;
 import top.xfunny.mod.block.base.LiftButtonsBase;
 import top.xfunny.mod.client.InitClient;
 import top.xfunny.mod.client.resource.FontList;
@@ -25,11 +21,8 @@ import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
 import top.xfunny.mod.packet.PacketLanternSoundInstruction;
-import top.xfunny.mod.util.ClientGetLiftDetails;
 
 import java.util.Comparator;
-
-import static org.mtr.core.data.LiftDirection.NONE;
 
 public class RenderOtisSeries1LanternScreen1<T extends LiftButtonsBase.BlockEntityBase> extends BlockEntityRenderer<T> implements DirectionHelper, IGui, IBlock {
     private static final int PRESSED_COLOR = 0xFF1D953F;
@@ -137,7 +130,7 @@ public class RenderOtisSeries1LanternScreen1<T extends LiftButtonsBase.BlockEnti
                 sortedPositionsAndLifts.add(new ObjectObjectImmutablePair<>(trackPosition, lift));
             });
 
-            LiftButtonsBase.LanternState state = blockEntity.getLanternState(world, trackPosition);
+            LiftButtonsBase.LanternState state = blockEntity.getLanternState(trackPosition);
 
             // Otis Series 1 Screen: 到站/呼叫登记亮灯+发声 + 距离≤3层预亮灯（不闪烁、不发声）
             final boolean shouldShow = state.phase == LiftButtonsBase.LanternPhase.ARRIVED

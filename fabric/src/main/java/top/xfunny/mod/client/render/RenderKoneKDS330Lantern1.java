@@ -1,9 +1,7 @@
 package top.xfunny.mod.client.render;
 
 import org.mtr.core.data.Lift;
-import org.mtr.core.data.LiftDirection;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.BlockEntityRenderer;
@@ -123,7 +121,7 @@ public class RenderKoneKDS330Lantern1<T extends LiftButtonsBase.BlockEntityBase>
                 // keep sortedPositionsAndLifts if needed - but this file doesn't seem to have one
             });
 
-            LiftButtonsBase.LanternState state = blockEntity.getLanternState(world, trackPosition);
+            LiftButtonsBase.LanternState state = blockEntity.getLanternState(trackPosition);
             if (state.downActive) buttonDownLight.activate();
             if (state.upActive) buttonUpLight.activate();
         });

@@ -218,6 +218,11 @@ public abstract class LiftDestinationDispatchTerminalBase extends BlockExtension
             return screenId;
         }
 
+        @Override
+        public ObjectOpenHashSet<BlockPos> getTrackPositions() {
+            return new ObjectOpenHashSet<>(trackPositions);
+        }
+
         public void forEachTrackPosition(Consumer<BlockPos> consumer) {
             trackPositions.forEach(consumer);
         }

@@ -11,7 +11,6 @@ import org.mtr.mapping.holder.Blocks;
 import org.mtr.mapping.mapper.*;
 import org.mtr.mod.InitClient;
 import org.mtr.mod.block.IBlock;
-import org.mtr.mod.client.MinecraftClientData;
 import org.mtr.mod.packet.PacketPressLiftButton;
 import top.xfunny.mod.*;
 import top.xfunny.mod.Items;
@@ -322,11 +321,10 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
          *   <li>{@link LanternPhase#ARRIVED}         → 常亮</li>
          * </ul>
          *
-         * @param world         当前世界
          * @param trackPosition 关联的电梯轨道楼层位置
          * @return 到站灯状态，绝不会为 null
          */
-        public LanternState getLanternState(World world, BlockPos trackPosition) {
+        public LanternState getLanternState(BlockPos trackPosition) {
             boolean upActive = false;
             boolean downActive = false;
             LanternPhase phase = LanternPhase.IDLE;
@@ -371,8 +369,11 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
             return new LanternState(upActive, downActive, phase, justTriggered, minDistance == Integer.MAX_VALUE ? -1 : minDistance);
         }
 
+        @Override
+        public ObjectOpenHashSet<BlockPos> getTrackPositions() { return trackPositions; }
         public void forEachTrackPosition(Consumer<BlockPos> consumer) { trackPositions.forEach(consumer); }
         public void forEachLiftButtonPosition(Consumer<BlockPos> consumer) { liftButtonPositions.forEach(consumer); }
+        @Override
         public ObjectOpenHashSet<BlockPos> getLiftButtonPositions() { return liftButtonPositions; }
         public LiftDirection getPressedButtonDirection() { return pressedButtonDirection; }
         public void setPressedButtonDirection(LiftDirection direction) { this.pressedButtonDirection = direction; }

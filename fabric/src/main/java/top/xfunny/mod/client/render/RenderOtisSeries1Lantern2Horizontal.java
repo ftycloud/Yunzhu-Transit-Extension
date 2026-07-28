@@ -1,9 +1,7 @@
 package top.xfunny.mod.client.render;
 
 import org.mtr.core.data.Lift;
-import org.mtr.core.data.LiftDirection;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.BlockEntityRenderer;
@@ -12,7 +10,6 @@ import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.PlayerHelper;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
-import org.mtr.mod.render.RenderLifts;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.block.OtisSeries1Lantern2Even;
@@ -27,7 +24,6 @@ import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.packet.PacketLanternSoundInstruction;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
-import top.xfunny.mod.util.ClientGetLiftDetails;
 
 public class RenderOtisSeries1Lantern2Horizontal<T extends LiftButtonsBase.BlockEntityBase> extends BlockEntityRenderer<T> implements DirectionHelper, IGui, IBlock {
 
@@ -127,7 +123,7 @@ public class RenderOtisSeries1Lantern2Horizontal<T extends LiftButtonsBase.Block
             );
 
             // Otis Series 1: 到站/呼叫登记亮灯+发声 + 距离≤3层预亮灯（不闪烁、不发声）
-            LiftButtonsBase.LanternState state = blockEntity.getLanternState(world, trackPosition);
+            LiftButtonsBase.LanternState state = blockEntity.getLanternState(trackPosition);
             final boolean shouldShow = state.phase == LiftButtonsBase.LanternPhase.ARRIVED
                     || state.phase == LiftButtonsBase.LanternPhase.CALL_REGISTERED;
             final boolean preLight = state.phase == LiftButtonsBase.LanternPhase.APPROACHING

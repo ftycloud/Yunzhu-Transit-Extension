@@ -14,39 +14,38 @@ import static org.mtr.mapping.mapper.DirectionHelper.FACING;
 public class LineComponent {
     private World world;
     private BlockPos blockPos;
-    private BlockState blockState;
-    private Direction facing;
-
 
     public void RenderLine(Boolean holdingLinker, BlockPos trackPosition) {
-        this.blockState = world.getBlockState(blockPos);
-        this.facing = IBlock.getStatePropertySafe(blockState, FACING);
-
-        StoredMatrixTransformations storedMatrixTransformations = new StoredMatrixTransformations(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5);
+        final StoredMatrixTransformations storedMatrixTransformations =
+                new StoredMatrixTransformations(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5);
 
         if (world.getBlockState(trackPosition).getBlock().data instanceof BlockLiftTrackFloor) {
-            final Direction trackFacing = IBlock.getStatePropertySafe(world, trackPosition, FACING);
+            final Vector3d srcCenter = getCollisionBoxCenter(blockPos);
+            final Vector3d tgtCenter = getCollisionBoxCenter(trackPosition);
+
             RenderLiftObjectLink(
                     storedMatrixTransformations,
-                    new Vector3d(facing.getOffsetX() / 2F, 0.5, facing.getOffsetZ() / 2F),
-                    new Vector3d(trackPosition.getX() - blockPos.getX() + trackFacing.getOffsetX() / 2F, trackPosition.getY() - blockPos.getY() + 0.5, trackPosition.getZ() - blockPos.getZ() + trackFacing.getOffsetZ() / 2F),
+                    toRelative(srcCenter),
+                    toRelative(tgtCenter),
                     holdingLinker
             );
         }
     }
 
     public void RenderLine(Boolean holdingLinker, BlockPos buttonPosition, Boolean isLantern) {
-        this.blockState = world.getBlockState(blockPos);
-        this.facing = IBlock.getStatePropertySafe(blockState, FACING);
+        final StoredMatrixTransformations storedMatrixTransformations =
+                new StoredMatrixTransformations(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5);
 
-        StoredMatrixTransformations storedMatrixTransformations = new StoredMatrixTransformations(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5);
+        final Block targetBlock = world.getBlockState(buttonPosition).getBlock();
+        if (targetBlock.data instanceof LiftButtonsBase
+                || targetBlock.data instanceof LiftDestinationDispatchTerminalBase) {
+            final Vector3d srcCenter = getCollisionBoxCenter(blockPos);
+            final Vector3d tgtCenter = getCollisionBoxCenter(buttonPosition);
 
-        if (world.getBlockState(buttonPosition).getBlock().data instanceof LiftButtonsBase || world.getBlockState(buttonPosition).getBlock().data instanceof LiftDestinationDispatchTerminalBase) {
-            final Direction trackFacing = IBlock.getStatePropertySafe(world, buttonPosition, FACING);
             RenderButtonObjectLink(
                     storedMatrixTransformations,
-                    new Vector3d(facing.getOffsetX() / 2F, 0.5, facing.getOffsetZ() / 2F),
-                    new Vector3d(buttonPosition.getX() - blockPos.getX() + trackFacing.getOffsetX() / 2F, buttonPosition.getY() - blockPos.getY() + 0.5, buttonPosition.getZ() - blockPos.getZ() + trackFacing.getOffsetZ() / 2F),
+                    toRelative(srcCenter),
+                    toRelative(tgtCenter),
                     holdingLinker
             );
         }
@@ -57,7 +56,47 @@ public class LineComponent {
         this.blockPos = blockPos;
     }
 
-    public void RenderLiftObjectLink(StoredMatrixTransformations storedMatrixTransformations, Vector3d position1, Vector3d position2, boolean holdingLinker) {
+    // ======================== helpers ========================
+
+    /** 获取方块碰撞箱的世界坐标中心 */
+    private Vector3d getCollisionBoxCenter(BlockPos pos) {
+        try {
+            final BlockState state = world.getBlockState(pos);
+            final BlockView blockView = new BlockView(world.data);
+            final VoxelShape shape = state.getOutlineShape(blockView, pos);
+            if (shape == null || shape.isEmpty()) {
+                return fallbackCenter(pos);
+            }
+            final Box box = shape.getBoundingBox();
+            final Vector3d local = box.getCenter();
+            return new Vector3d(
+                    pos.getX() + local.getXMapped(),
+                    pos.getY() + local.getYMapped(),
+                    pos.getZ() + local.getZMapped()
+            );
+        } catch (Exception ignored) {
+            return fallbackCenter(pos);
+        }
+    }
+
+    /** 方块中心兜底 */
+    private Vector3d fallbackCenter(BlockPos pos) {
+        return new Vector3d(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+    }
+
+    /** 世界坐标 → 相对于 StoredMatrixTransformations 原点的坐标 */
+    private Vector3d toRelative(Vector3d worldPos) {
+        return new Vector3d(
+                worldPos.getXMapped() - (blockPos.getX() + 0.5),
+                worldPos.getYMapped() - blockPos.getY(),
+                worldPos.getZMapped() - (blockPos.getZ() + 0.5)
+        );
+    }
+
+    // ======================== rendering ========================
+
+    public void RenderLiftObjectLink(StoredMatrixTransformations storedMatrixTransformations,
+                                     Vector3d position1, Vector3d position2, boolean holdingLinker) {
         if (holdingLinker) {
             MainRenderer.scheduleRender(QueuedRenderLayer.LINES, (graphicsHolder, offset) -> {
                 storedMatrixTransformations.transform(graphicsHolder, offset);
@@ -75,7 +114,8 @@ public class LineComponent {
         }
     }
 
-    public void RenderButtonObjectLink(StoredMatrixTransformations storedMatrixTransformations, Vector3d position1, Vector3d position2, boolean holdingLinker) {
+    public void RenderButtonObjectLink(StoredMatrixTransformations storedMatrixTransformations,
+                                        Vector3d position1, Vector3d position2, boolean holdingLinker) {
         if (holdingLinker) {
             MainRenderer.scheduleRender(QueuedRenderLayer.LINES, (graphicsHolder, offset) -> {
                 storedMatrixTransformations.transform(graphicsHolder, offset);
@@ -92,5 +132,4 @@ public class LineComponent {
             });
         }
     }
-
 }

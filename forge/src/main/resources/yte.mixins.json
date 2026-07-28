@@ -10,6 +10,7 @@
     "MixinLiftSchema"
   ],
   "client": [
+    "MixinBlockEntityRenderer",
     "MixinDynamicTextureCache",
     "MixinRenderLiftButtons",
     "MixinRenderLiftPanel"
