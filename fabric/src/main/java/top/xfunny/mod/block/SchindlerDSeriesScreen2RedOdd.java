@@ -31,6 +31,7 @@ public class SchindlerDSeriesScreen2RedOdd extends LiftPanelBase {
     public void addBlockProperties(List<HolderBase<?>> properties) {
         // 添加块的方向属性
         properties.add(FACING);
+        properties.add(UNLOCKED);
     }
 
     public static class BlockEntity extends BlockEntityBase {

@@ -6,7 +6,9 @@ import org.mtr.core.data.Position;
 import org.mtr.mapping.holder.BlockPos;
 import org.mtr.mapping.holder.Identifier;
 import org.mtr.mapping.registry.Registry;
+import org.mtr.mapping.holder.World;
 import top.xfunny.mod.packet.PacketLanternSoundInstruction;
+import top.xfunny.mod.packet.PacketSyncLiftDestinationDispatchTerminal;
 import top.xfunny.mod.packet.PacketUpdatePATRS01RailwaySignConfig;
 import top.xfunny.mod.packet.PacketYTEOpenBlockEntityScreen;
 
@@ -50,6 +52,7 @@ public final class Init {
             REGISTRY.registerPacket(PacketYTEOpenBlockEntityScreen.class, PacketYTEOpenBlockEntityScreen::new);
             REGISTRY.registerPacket(PacketUpdatePATRS01RailwaySignConfig.class, PacketUpdatePATRS01RailwaySignConfig::new);
             REGISTRY.registerPacket(PacketLanternSoundInstruction.class, PacketLanternSoundInstruction::new);
+            REGISTRY.registerPacket(PacketSyncLiftDestinationDispatchTerminal.class, PacketSyncLiftDestinationDispatchTerminal::new);
         });
 
         int currentStep = 1;
@@ -69,6 +72,10 @@ public final class Init {
 
     public static BlockPos positionToBlockPos(Position position) {
         return new BlockPos((int) position.getX(), (int) position.getY(), (int) position.getZ());
+    }
+
+    public static boolean isChunkLoaded(World world, BlockPos blockPos) {
+        return world.isChunkLoaded(blockPos.getX() >> 4, blockPos.getZ() >> 4);
     }
 }
 

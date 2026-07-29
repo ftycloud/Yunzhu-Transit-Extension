@@ -69,7 +69,7 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
         final ActionResult result = IBlock.checkHoldingBrush(world, player, () -> {
             final boolean unlocked = !IBlock.getStatePropertySafe(state, UNLOCKED);
             world.setBlockState(pos, state.with(new Property<>(UNLOCKED.data), unlocked));
-            player.sendMessage(Text.of((unlocked ? "已解锁" : "已锁定")), true);
+            player.sendMessage(Text.cast(TextHelper.translatable(unlocked ? "hint.yte.unlocked" : "hint.yte.locked")), true);
         });
 
         if (result == ActionResult.SUCCESS) {

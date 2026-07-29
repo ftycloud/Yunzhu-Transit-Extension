@@ -39,6 +39,7 @@ public class MitsubishiNexWayScreen3SegmentedEven extends LiftPanelBase {
     public void addBlockProperties(List<HolderBase<?>> properties) {
         // 添加块的方向属性
         properties.add(FACING);
+        properties.add(UNLOCKED);
         properties.add(SIDE);
     }
 

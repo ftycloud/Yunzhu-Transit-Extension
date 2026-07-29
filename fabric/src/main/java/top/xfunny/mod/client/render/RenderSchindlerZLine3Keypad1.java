@@ -18,9 +18,6 @@ import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
 import top.xfunny.mod.keymapping.DefaultButtonsKeyMapping;
-import top.xfunny.mod.util.ArrayListToString;
-
-import java.util.ArrayList;
 
 public class RenderSchindlerZLine3Keypad1 extends BlockEntityRenderer<SchindlerZLine3Keypad1.BlockEntity> implements DirectionHelper, IGui, IBlock {
     private static final int HOVER_COLOR = 0xFFFFFFFF;
@@ -67,9 +64,13 @@ public class RenderSchindlerZLine3Keypad1 extends BlockEntityRenderer<SchindlerZ
 
         final boolean holdingLinker = PlayerHelper.isHolding(PlayerEntity.cast(clientPlayerEntity), item -> item.data instanceof YteLiftButtonsLinker || item.data instanceof YteGroupLiftButtonsLinker);
         final BlockPos blockPos = blockEntity.getPos2();
+
+        // 每帧检查并执行到期定时器（自动呼叫 / 熄屏）
+        blockEntity.processTimers(world, blockPos);
+
         final BlockState blockState = world.getBlockState(blockPos);
         final Direction facing = IBlock.getStatePropertySafe(blockState, FACING);
-        final ArrayList<Object> inputNumber = blockEntity.getInputString();
+        final String displayText = blockEntity.getDisplayText();
 
         final StoredMatrixTransformations storedMatrixTransformations = new StoredMatrixTransformations(blockPos.getX() + 0.5, blockPos.getY(), blockPos.getZ() + 0.5);
         StoredMatrixTransformations storedMatrixTransformations1 = storedMatrixTransformations.copy();
@@ -139,7 +140,7 @@ public class RenderSchindlerZLine3Keypad1 extends BlockEntityRenderer<SchindlerZ
             textView.setBasicsAttributes(world, blockPos, FontList.instance.getFont("Arial"), 6, 0xFF212121);
             textView.setDisplayLength(6, 0.005F);
             textView.setTextureId("schindler_z_line_3_keypad_1_display");
-            textView.setText(ArrayListToString.arrayListToString(inputNumber));
+            textView.setText(displayText);
             textView.setWidth(2F / 16);
             textView.setHeight(2F / 16);
             textView.setTextAlign(TextView.HorizontalTextAlign.CENTER);

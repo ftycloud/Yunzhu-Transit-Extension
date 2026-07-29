@@ -1,0 +1,8 @@
+{"lifts":[
+		{
+			"id": "test",
+			"name": "Orange Lift",
+			"color": "FFFF99",
+			"textureResource": "mtr:orange_lift.png"
+		}
+]}

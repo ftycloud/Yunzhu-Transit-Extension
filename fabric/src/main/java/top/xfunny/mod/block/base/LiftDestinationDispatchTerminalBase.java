@@ -17,16 +17,17 @@ import org.mtr.mod.block.IBlock;
 import org.mtr.mod.client.MinecraftClientData;
 import org.mtr.mod.item.ItemLiftRefresher;
 import org.mtr.mod.packet.PacketPressLiftButton;
-import top.xfunny.mixin.MixinLiftSchema;
 import top.xfunny.mod.ButtonRegistry;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.LiftFloorRegistry;
 import top.xfunny.mod.LiftLanternController;
 import top.xfunny.mod.keymapping.DefaultButtonsKeyMapping;
+import top.xfunny.mod.packet.PacketSyncLiftDestinationDispatchTerminal;
 import top.xfunny.mod.util.GetLiftDetails;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -108,14 +109,92 @@ public abstract class LiftDestinationDispatchTerminalBase extends BlockExtension
         private static final String KEY_TRACK_FLOOR_POS = "track_floor_pos";
         private static final String KEY_LIFT_BUTTON_POSITIONS = "lift_button_position";
         private static final String KEY_SCREEN_ID = "screen_id";
+
+        // ====== 反射访问 LiftSchema 的 protected 字段，避免 Mixin 跨类加载器问题 ======
+        private static final Field FIELD_INSTRUCTIONS;
+        private static final Field FIELD_SPEED;
+        static {
+            try {
+                FIELD_INSTRUCTIONS = org.mtr.core.generated.data.LiftSchema.class.getDeclaredField("instructions");
+                FIELD_INSTRUCTIONS.setAccessible(true);
+                FIELD_SPEED = org.mtr.core.generated.data.LiftSchema.class.getDeclaredField("speed");
+                FIELD_SPEED.setAccessible(true);
+            } catch (NoSuchFieldException e) {
+                throw new RuntimeException("Failed to access LiftSchema fields via reflection", e);
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        private static ObjectArrayList<LiftInstruction> getLiftInstructions(Lift lift) {
+            try {
+                return (ObjectArrayList<LiftInstruction>) FIELD_INSTRUCTIONS.get(lift);
+            } catch (IllegalAccessException e) {
+                return new ObjectArrayList<>();
+            }
+        }
+
+        @SuppressWarnings("unused")
+        private static double getLiftSpeed(Lift lift) {
+            try {
+                return FIELD_SPEED.getDouble(lift);
+            } catch (IllegalAccessException e) {
+                return 0.0;
+            }
+        }
+        // ====== 反射访问结束 ======
+
         public final ObjectOpenHashSet<BlockPos> liftButtonPositions = new ObjectOpenHashSet<>();
         private final LinkedHashSet<BlockPos> trackPositions = new LinkedHashSet<>();
         public LiftDirection liftDirection = NONE;
         public BlockPos selfPos;
         private DefaultButtonsKeyMapping keyMapping = new DefaultButtonsKeyMapping();
         private String screenId;
+        /** 屏幕上当前显示的文字（对所有玩家可见） */
+        private String displayText = "";
+        /** 被选中电梯相对于本终端的位置 */
+        private LiftRelativePosition liftRelativePosition = LiftRelativePosition.UNKNOWN;
 
         private char liftIdentifier;
+
+        // ====== 统一定时器（子类通过 onTimerFired 处理到期动作） ======
+        /** 定时器到期时间戳（毫秒），0 = 无定时器 */
+        protected long timerEndMillis;
+        /** 定时器动作 ID，由子类定义 */
+        protected byte timerActionId;
+
+        /**
+         * 由渲染器每帧调用，检查并执行到期定时器。
+         * 子类不应重写此方法；如需自定义行为请重写 {@link #onTimerFired}。
+         */
+        public void processTimers(World world, BlockPos pos) {
+            if (timerEndMillis == 0 || System.currentTimeMillis() < timerEndMillis) {
+                return;
+            }
+            final byte action = timerActionId;
+            timerEndMillis = 0;
+            timerActionId = 0;
+            onTimerFired(world, pos, action);
+        }
+
+        /**
+         * 子类重写此方法处理定时器到期。
+         * @param actionId 启动定时器时传入的动作 ID
+         */
+        protected void onTimerFired(World world, BlockPos pos, byte actionId) {
+        }
+
+        /** 启动定时器，自动取消旧定时器 */
+        public void startTimer(long delayMs, byte actionId) {
+            timerEndMillis = System.currentTimeMillis() + delayMs;
+            timerActionId = actionId;
+        }
+
+        /** 取消当前定时器 */
+        public void cancelTimer() {
+            timerEndMillis = 0;
+            timerActionId = 0;
+        }
+        // ====== 统一定时器结束 ======
 
         public BlockEntityBase(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {
             super(type, blockPos, blockState);
@@ -144,6 +223,8 @@ public abstract class LiftDestinationDispatchTerminalBase extends BlockExtension
             for (final long position : compoundTag.getLongArray(KEY_LIFT_BUTTON_POSITIONS)) {
                 liftButtonPositions.add(BlockPos.fromLong(position));
             }
+
+            screenId = compoundTag.getString(KEY_SCREEN_ID);
         }
 
         @Override
@@ -216,6 +297,46 @@ public abstract class LiftDestinationDispatchTerminalBase extends BlockExtension
 
         public String getScreenId() {
             return screenId;
+        }
+
+        /**
+         * 获取当前屏幕显示文字。所有 Screen 渲染类通过此方法读取，保证多玩家同步。
+         * 返回 " " 而非 "" 以避免空字符串触发字体纹理生成异常。
+         */
+        public String getDisplayText() {
+            return displayText.isEmpty() ? " " : displayText;
+        }
+
+        /**
+         * 设置屏幕显示文字（通常由输入处理逻辑调用）。
+         */
+        public void setDisplayText(String displayText) {
+            this.displayText = displayText;
+        }
+
+        /**
+         * 从数据包或服务端同步应用显示状态。
+         * 只更新 screenId 和 displayText，不触发副作用。
+         * 收到他玩家同步时取消本地定时器（被抢占）。
+         */
+        public void applyDisplayState(String screenId, String displayText) {
+            this.screenId = screenId;
+            this.displayText = displayText;
+            // 他玩家接管终端时取消本客户端定时器
+            cancelTimer();
+        }
+
+        /**
+         * 将当前显示状态同步到服务端并广播给所有玩家。
+         * <p>
+         * 仅在客户端调用有效：发送 C2S 包。
+         * 调用时机：每次 screenId 或 displayText 发生变化之后。
+         */
+        public void syncDisplayState(World world, BlockPos pos) {
+            if (world.isClient()) {
+                top.xfunny.mod.client.InitClient.REGISTRY_CLIENT.sendPacketToServer(
+                        new PacketSyncLiftDestinationDispatchTerminal(pos, screenId, displayText));
+            }
         }
 
         @Override
@@ -302,6 +423,8 @@ public abstract class LiftDestinationDispatchTerminalBase extends BlockExtension
                     bestCandidate.callingFloorIndex, bestCandidate.destFloorIndex);
             this.liftDirection = neededDirection;
             liftIdentifier = bestCandidate.label;
+            // 计算电梯相对于终端的位置
+            this.liftRelativePosition = computeLiftRelativePosition(world, pos, confirmTrackPosition);
 
             final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
@@ -340,7 +463,7 @@ public abstract class LiftDestinationDispatchTerminalBase extends BlockExtension
 
             final int currentFloorIdx = lift.getFloorIndex(lift.getCurrentFloor().getPosition());
             final LiftDirection liftDirection = lift.getDirection();
-            final ObjectArrayList<LiftInstruction> instructions = ((MixinLiftSchema) lift).getInstructions();
+            final ObjectArrayList<LiftInstruction> instructions = getLiftInstructions(lift);
 
             final int currentDir = liftDirection == LiftDirection.UP ? 1
                     : (liftDirection == LiftDirection.DOWN ? -1 : 0);
@@ -477,6 +600,60 @@ public abstract class LiftDestinationDispatchTerminalBase extends BlockExtension
         public String getLiftIdentifier() {
             return String.valueOf(liftIdentifier);
 
+        }
+
+        /**
+         * 获取被选中电梯相对于本终端的位置。
+         */
+        public LiftRelativePosition getLiftRelativePosition() {
+            return liftRelativePosition;
+        }
+
+        /**
+         * 将电梯编号格式化为带方向指示的显示字符串。
+         * <p>
+         * 例如 FRONT_LEFT + "A" → "&lt;A"
+         */
+        public String formatLiftAssignment() {
+            if (liftIdentifier == '?') return "??";
+            return liftRelativePosition.format(String.valueOf(liftIdentifier));
+        }
+
+        /**
+         * 计算电梯轨道位置相对于终端（面向方向）的方位。
+         * <p>
+         * 以终端面向为"前"，右手边为"右"。
+         */
+        private LiftRelativePosition computeLiftRelativePosition(World world, BlockPos terminalPos, BlockPos trackPosition) {
+            final BlockState state = world.getBlockState(terminalPos);
+            if (state == null) return LiftRelativePosition.UNKNOWN;
+
+            final Direction facing = IBlock.getStatePropertySafe(state, FACING);
+            if (facing == null) return LiftRelativePosition.UNKNOWN;
+
+            final int dx = trackPosition.getX() - terminalPos.getX();
+            final int dz = trackPosition.getZ() - terminalPos.getZ();
+
+            // 前向量（终端面向）
+            final int fwdX = facing.getOffsetX();
+            final int fwdZ = facing.getOffsetZ();
+
+            // 右向量
+            final Direction rightDir = facing.rotateYClockwise();
+            final int rightX = rightDir.getOffsetX();
+            final int rightZ = rightDir.getOffsetZ();
+
+            // 将位移投影到前、右两个轴上
+            final int forward = dx * fwdX + dz * fwdZ;
+            final int right = dx * rightX + dz * rightZ;
+
+            final boolean isFront = forward >= 0;
+            final boolean isRightSide = right >= 0;
+
+            if (isFront && isRightSide) return LiftRelativePosition.FRONT_RIGHT;
+            if (isFront) return LiftRelativePosition.FRONT_LEFT;
+            if (isRightSide) return LiftRelativePosition.BACK_RIGHT;
+            return LiftRelativePosition.BACK_LEFT;
         }
 
         public LiftDirection determineDirection(int currentFloorNumber, int destinationFloorNumber) {

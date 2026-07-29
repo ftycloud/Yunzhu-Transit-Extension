@@ -2,6 +2,7 @@ package top.xfunny.mod.block;
 
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.BlockEntityExtension;
+import org.mtr.mapping.mapper.TextHelper;
 import org.mtr.mapping.tool.HolderBase;
 import org.mtr.mod.block.IBlock;
 import top.xfunny.mod.BlockEntityTypes;
@@ -16,11 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.function.BiConsumer;
 
 public class SchindlerZLine3Keypad1 extends LiftDestinationDispatchTerminalBase {
 
@@ -41,7 +37,7 @@ public class SchindlerZLine3Keypad1 extends LiftDestinationDispatchTerminalBase 
     @Nonnull
     @Override
     public BlockEntityExtension createBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new SchindlerZLine3Keypad1.BlockEntity(blockPos, blockState);
+        return new BlockEntity(blockPos, blockState);
     }
 
     @Override
@@ -53,6 +49,29 @@ public class SchindlerZLine3Keypad1 extends LiftDestinationDispatchTerminalBase 
     @Nonnull
     @Override
     public ActionResult onUse2(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        // 手持刷子切换锁定
+        final ActionResult brushResult = IBlock.checkHoldingBrush(world, player, () -> {
+            final boolean unlocked = !IBlock.getStatePropertySafe(state, UNLOCKED);
+            world.setBlockState(pos, state.with(new Property<>(UNLOCKED.data), unlocked));
+            player.sendMessage(Text.cast(TextHelper.translatable(unlocked ? "hint.yte.unlocked" : "hint.yte.locked")), true);
+        });
+        if (brushResult == ActionResult.SUCCESS) {
+            return ActionResult.SUCCESS;
+        }
+
+        // 手持 linker 工具时优先交给 MTR 连接系统处理（客户端+服务端都需要）
+        if (player.isHolding(Items.YTE_LIFT_BUTTONS_LINK_CONNECTOR.get())
+                || player.isHolding(Items.YTE_LIFT_BUTTONS_LINK_REMOVER.get())
+                || player.isHolding(Items.YTE_GROUP_LIFT_BUTTONS_LINK_CONNECTOR.get())
+                || player.isHolding(Items.YTE_GROUP_LIFT_BUTTONS_LINK_REMOVER.get())) {
+            return ActionResult.PASS;
+        }
+
+        // 按键处理仅在客户端执行
+        if (!world.isClient()) {
+            return ActionResult.SUCCESS;
+        }
+
         final double hitY = MathHelper.fractionalPart(hit.getPos().getYMapped());
 
         final org.mtr.mapping.holder.BlockEntity blockEntity = world.getBlockEntity(pos);
@@ -66,146 +85,189 @@ public class SchindlerZLine3Keypad1 extends LiftDestinationDispatchTerminalBase 
         }
         BlockEntity data1 = (BlockEntity) blockEntity.data;
 
-
-        // 获取按键映射
         final DefaultButtonsKeyMapping keyMapping = data.getKeyMapping();
-        final String output = keyMapping.mapping(TransformPositionX.transform(MathHelper.fractionalPart(hit.getPos().getXMapped()), MathHelper.fractionalPart(hit.getPos().getZMapped()), IBlock.getStatePropertySafe(state, FACING)), hitY);
+        final String output = keyMapping.mapping(
+                TransformPositionX.transform(
+                        MathHelper.fractionalPart(hit.getPos().getXMapped()),
+                        MathHelper.fractionalPart(hit.getPos().getZMapped()),
+                        IBlock.getStatePropertySafe(state, FACING)),
+                hitY);
 
-
-        if (player.isHolding(top.xfunny.mod.Items.YTE_LIFT_BUTTONS_LINK_CONNECTOR.get()) || player.isHolding(top.xfunny.mod.Items.YTE_LIFT_BUTTONS_LINK_REMOVER.get()) || player.isHolding(top.xfunny.mod.Items.YTE_GROUP_LIFT_BUTTONS_LINK_CONNECTOR.get()) || player.isHolding(Items.YTE_GROUP_LIFT_BUTTONS_LINK_REMOVER.get())) {
-            return ActionResult.PASS;
-        } else {
-            processKeyInput(world, pos, data1, data, data.getScreenId(), output);
-
-            //player.sendMessage(Text.of("screenId: " + data.getScreenId() + " 您点击了：" + output), true);
-
-        }
+        processKeyInput(world, pos, data1, data, output);
         return ActionResult.SUCCESS;
     }
 
-    private void processKeyInput(World world, BlockPos pos, SchindlerZLine3Keypad1.BlockEntity data1, LiftDestinationDispatchTerminalBase.BlockEntityBase data, String screenId, String output) {
-        Map<String, Integer> numberKeys = new HashMap<String, Integer>() {{
-            put("number1", 1);
-            put("number2", 2);
-            put("number3", 3);
-            put("number4", 4);
-            put("number5", 5);
-            put("number6", 6);
-            put("number7", 7);
-            put("number8", 8);
-            put("number9", 9);
-            put("number0", 0);
-        }};
+    // ======================== 按键处理（状态机） ========================
 
-        BiConsumer<String, String> handleScreenAndInput = (screen, input) -> {
-            data1.switchScreen(screen);
-            data1.addInputString(world, pos, input, true, data1, data);
-        };
+    private static final Map<String, Integer> NUMBER_KEYS = new HashMap<String, Integer>() {{
+        put("number1", 1); put("number2", 2); put("number3", 3);
+        put("number4", 4); put("number5", 5); put("number6", 6);
+        put("number7", 7); put("number8", 8); put("number9", 9);
+        put("number0", 0);
+    }};
 
-        BiConsumer<String, String> handleLiftCall = (screen, callResult) -> {
-            ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-            data1.switchScreen("schindler_z_line_3_keypad_1_key_mapping_identifier");
-            if (!callResult.equals("?")) {
-                data1.addInputString(world, pos, ">" + callResult, false, data1, data);
-            } else {
-                data1.addInputString(world, pos, "??", false, data1, data);
-            }
-            scheduler.schedule(() -> {
-                data1.switchScreen(screen);
-                data1.clearInputString();
-            }, 3, TimeUnit.SECONDS);
-            scheduler.shutdown();
-        };
+    private void processKeyInput(World world, BlockPos pos, BlockEntity be,
+                                 BlockEntityBase data, String output) {
+        final String screenId = data.getScreenId();
 
         switch (screenId) {
+            // ---- 首页 / 无障碍页 ----
             case "schindler_z_line_3_keypad_1_key_mapping_home":
             case "schindler_z_line_3_keypad_1_key_mapping_accessibility":
-                if (numberKeys.containsKey(output)) {
-                    handleScreenAndInput.accept("schindler_z_line_3_keypad_1_key_mapping_input", String.valueOf(numberKeys.get(output)));
+                if (NUMBER_KEYS.containsKey(output)) {
+                    be.startNewInput(world, pos, String.valueOf(NUMBER_KEYS.get(output)));
                 } else if ("basement".equals(output)) {
-                    handleScreenAndInput.accept("schindler_z_line_3_keypad_1_key_mapping_input", "-");
+                    be.startNewInput(world, pos, "-");
                 } else if ("accessibility".equals(output)) {
-                    data1.switchScreen("schindler_z_line_3_keypad_1_key_mapping_accessibility");
+                    be.switchScreen("schindler_z_line_3_keypad_1_key_mapping_accessibility");
                 } else if ("lobby".equals(output)) {
-                    String callResult = data.callLift(world, pos, "1");
-                    callResult = callResult.equals("?") ? data.callLift(world, pos, "G") : callResult;
-                    handleLiftCall.accept("schindler_z_line_3_keypad_1_key_mapping_home", callResult);
+                    String result = data.callLift(world, pos, "1");
+                    if (result.equals("?")) result = data.callLift(world, pos, "G");
+                    be.showAssignment(world, pos, data, result,
+                            "schindler_z_line_3_keypad_1_key_mapping_home");
                 }
                 break;
+
+            // ---- 输入页 ----
             case "schindler_z_line_3_keypad_1_key_mapping_input":
-                if (numberKeys.containsKey(output)) {
-                    data1.addInputString(world, pos, numberKeys.get(output), true, data1, data);
+                if (NUMBER_KEYS.containsKey(output)) {
+                    be.continueInput(world, pos, NUMBER_KEYS.get(output));
                 } else if ("basement".equals(output)) {
-                    data1.addInputString(world, pos, "-", true, data1, data);
+                    be.continueInput(world, pos, "-");
                 } else if ("accessibility".equals(output)) {
-                    data1.addInputString(world, pos, "1", true, data1, data);
+                    be.continueInput(world, pos, "1");
                 } else if ("lobby".equals(output)) {
-                    String callResult = data.callLift(world, pos, "1");
-                    callResult = callResult.equals("?") ? data.callLift(world, pos, "G") : callResult;
-                    handleLiftCall.accept("schindler_z_line_3_keypad_1_key_mapping_home", callResult);
+                    String result = data.callLift(world, pos, "1");
+                    if (result.equals("?")) result = data.callLift(world, pos, "G");
+                    be.showAssignment(world, pos, data, result,
+                            "schindler_z_line_3_keypad_1_key_mapping_home");
                 }
                 break;
+
+            // ---- 分配结果显示页 ----
             case "schindler_z_line_3_keypad_1_key_mapping_identifier":
-                if (numberKeys.containsKey(output)) {
-                    data1.clearInputString();
-                    handleScreenAndInput.accept("schindler_z_line_3_keypad_1_key_mapping_input", String.valueOf(numberKeys.get(output)));
+                if (NUMBER_KEYS.containsKey(output)) {
+                    be.startNewInput(world, pos, String.valueOf(NUMBER_KEYS.get(output)));
                 } else if ("basement".equals(output)) {
-                    data1.clearInputString();
-                    handleScreenAndInput.accept("schindler_z_line_3_keypad_1_key_mapping_input", "-");
+                    be.startNewInput(world, pos, "-");
                 } else if ("accessibility".equals(output)) {
-                    data1.clearInputString();
-                    data1.switchScreen("schindler_z_line_3_keypad_1_key_mapping_accessibility");
+                    be.clearInputString();
+                    be.switchScreen("schindler_z_line_3_keypad_1_key_mapping_accessibility");
                 } else if ("lobby".equals(output)) {
-                    String callResult = data.callLift(world, pos, "1");
-                    callResult = callResult.equals("?") ? data.callLift(world, pos, "G") : callResult;
-                    handleLiftCall.accept("schindler_z_line_3_keypad_1_key_mapping_home", callResult);
+                    String result = data.callLift(world, pos, "1");
+                    if (result.equals("?")) result = data.callLift(world, pos, "G");
+                    be.showAssignment(world, pos, data, result,
+                            "schindler_z_line_3_keypad_1_key_mapping_home");
                 }
                 break;
         }
-
     }
 
+    // ======================== BlockEntity（统一定时器） ========================
+
     public static class BlockEntity extends LiftDestinationDispatchTerminalBase.BlockEntityBase {
+
         public ArrayList<Object> inputString = new ArrayList<>();
 
-        private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-        private ScheduledFuture<?> scheduledTask;
+        /** RETURN_HOME 动作的返回目标屏幕 */
+        private String returnScreen = "schindler_z_line_3_keypad_1_key_mapping_home";
+
+        private static final long AUTO_CALL_DELAY_MS = 3000;   // 3 秒无输入自动呼叫
+        private static final long DISPLAY_DURATION_MS = 3000;  // 结果显示 3 秒后熄屏
+
+        private static final byte ACT_AUTO_CALL = 1;
+        private static final byte ACT_RETURN_HOME = 2;
 
         public BlockEntity(BlockPos pos, BlockState state) {
             super(BlockEntityTypes.SCHINDLER_Z_LINE_3_KEYPAD_1.get(), pos, state);
-            super.registerScreenId("schindler_z_line_3_keypad_1_key_mapping_home");//初始化screen
+            super.registerScreenId("schindler_z_line_3_keypad_1_key_mapping_home");
         }
 
-        public void addInputString(World world, BlockPos pos, Object number, boolean callLift, SchindlerZLine3Keypad1.BlockEntity data1, LiftDestinationDispatchTerminalBase.BlockEntityBase data) {
-            if (callLift) {
-                inputString.add(number);
-                if (scheduledTask != null && !scheduledTask.isDone()) {
-                    scheduledTask.cancel(false);
-                }
+        // ========== 定时器回调 ==========
 
-                Runnable task = () -> {
+        @Override
+        protected void onTimerFired(World world, BlockPos pos, byte actionId) {
+            switch (actionId) {
+                case ACT_AUTO_CALL: {
+                    final String floorNumber = ArrayListToString.arrayListToString(inputString);
+                    final String ident = callLift(world, pos, floorNumber);
                     switchScreen("schindler_z_line_3_keypad_1_key_mapping_identifier");
-                    callLift(world, pos, ArrayListToString.arrayListToString(data1.getInputString()));
-                    String liftIdentifier = data.getLiftIdentifier();
-                    data1.addInputString(world, pos, liftIdentifier.equals("?") ? "??" : "<" + liftIdentifier, false, data1, data);
-
-                    ScheduledExecutorService scheduler1 = Executors.newSingleThreadScheduledExecutor();
-                    scheduler1.schedule(() -> {
-                        data1.clearInputString();
-                        data1.switchScreen("schindler_z_line_3_keypad_1_key_mapping_home");
-                    }, 3, TimeUnit.SECONDS);
-                    scheduler1.shutdown();
-                };
-
-                scheduledTask = scheduler.schedule(task, 3, TimeUnit.SECONDS);
-            } else {
-                inputString.clear();
-                inputString.add(number);
+                    inputString.clear();
+                    if (!ident.equals("?")) {
+                        inputString.add(formatLiftAssignment());
+                        setDisplayText(formatLiftAssignment());
+                    } else {
+                        inputString.add("??");
+                        setDisplayText("??");
+                    }
+                    startTimer(DISPLAY_DURATION_MS, ACT_RETURN_HOME);
+                    returnScreen = "schindler_z_line_3_keypad_1_key_mapping_home";
+                    syncDisplayState(world, pos);
+                    break;
+                }
+                case ACT_RETURN_HOME: {
+                    clearInputString();
+                    switchScreen(returnScreen);
+                    break;
+                }
             }
         }
 
+        // ========== 用户操作 ==========
+
+        /**
+         * 开始新输入（从 home/accessibility/identifier 页按数字键）。
+         * 清空旧输入，取消所有定时器，开始输入。
+         */
+        void startNewInput(World world, BlockPos pos, String digit) {
+            cancelTimer();
+            clearInputString();
+            inputString.add(digit);
+            setDisplayText(digit);
+            switchScreen("schindler_z_line_3_keypad_1_key_mapping_input");
+            startTimer(AUTO_CALL_DELAY_MS, ACT_AUTO_CALL);
+            syncDisplayState(world, pos);
+        }
+
+        /**
+         * 继续输入（在输入页按数字键）。
+         * 追加数字，重置自动呼叫定时器。
+         */
+        void continueInput(World world, BlockPos pos, Object digit) {
+            cancelTimer();
+            inputString.add(digit);
+            setDisplayText(ArrayListToString.arrayListToString(inputString));
+            startTimer(AUTO_CALL_DELAY_MS, ACT_AUTO_CALL);
+            syncDisplayState(world, pos);
+        }
+
+        /**
+         * 显示分配结果（lobby 键或自动呼叫后）。
+         * 切换到 identifier 屏幕，启动熄屏定时器。
+         */
+        void showAssignment(World world, BlockPos pos, BlockEntityBase data,
+                            String callResult, String returnToScreen) {
+            cancelTimer();
+            switchScreen("schindler_z_line_3_keypad_1_key_mapping_identifier");
+            clearInputString();
+            if (!callResult.equals("?")) {
+                final String assignment = data.formatLiftAssignment();
+                inputString.add(assignment);
+                setDisplayText(assignment);
+            } else {
+                inputString.add("??");
+                setDisplayText("??");
+            }
+            this.returnScreen = returnToScreen;
+            startTimer(DISPLAY_DURATION_MS, ACT_RETURN_HOME);
+            syncDisplayState(world, pos);
+        }
+
+        // ========== 屏幕 & 输入管理 ==========
+
         public void clearInputString() {
             inputString.clear();
+            setDisplayText(" ");
         }
 
         public ArrayList<Object> getInputString() {
@@ -215,8 +277,12 @@ public class SchindlerZLine3Keypad1 extends LiftDestinationDispatchTerminalBase 
             return inputString;
         }
 
-        public void switchScreen(Object screenId) {
-            super.registerScreenId((String) screenId);
+        public void switchScreen(String screenId) {
+            super.registerScreenId(screenId);
+            final World world = getWorld2();
+            if (world != null) {
+                syncDisplayState(world, getPos2());
+            }
         }
     }
 }

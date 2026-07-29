@@ -9,6 +9,7 @@ import org.mtr.mapping.mapper.PlayerHelper;
 import org.mtr.mod.block.IBlock;
 import top.xfunny.mod.ButtonRegistry;
 import top.xfunny.mod.LiftFloorRegistry;
+import org.mtr.mapping.mapper.TextHelper;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
 
@@ -99,7 +100,7 @@ public final class ConnectionHintRenderer {
 
     public static void renderLabel(GraphicsHolder g, Vector3d cameraOffset,
                                    BlockPos targetPos, HintInfo info) {
-        final String[] lines = buildLines(info);
+        final LineWithColor[] lines = buildLines(info);
         if (lines.length == 0) return;
 
         // 以碰撞箱中心为锚点
@@ -132,8 +133,8 @@ public final class ConnectionHintRenderer {
         final int padding = 4;
 
         int maxWidth = 0;
-        for (String line : lines) {
-            final int w = GraphicsHolder.getTextWidth(line);
+        for (LineWithColor line : lines) {
+            final int w = GraphicsHolder.getTextWidth(line.text);
             if (w > maxWidth) maxWidth = w;
         }
         final int bgW = maxWidth + padding * 2;
@@ -147,49 +148,66 @@ public final class ConnectionHintRenderer {
         for (int i = 0; i < lines.length; i++) {
             final int textX = bgX + padding;
             final int textY = bgY + padding + i * lineHeight + lineHeight - 2;
-            final int color = getLineColor(lines[i]);
+            final LineWithColor line = lines[i];
 
-            g.drawText(lines[i], textX + 1, textY + 1, SHADOW_COLOR, false, defaultLight);
-            g.drawText(lines[i], textX, textY, color, false, defaultLight);
+            g.drawText(line.text, textX + 1, textY + 1, SHADOW_COLOR, false, defaultLight);
+            g.drawText(line.text, textX, textY, line.color, false, defaultLight);
         }
 
         g.pop();
     }
 
+    // ======================== 行数据 ========================
+
+    private static class LineWithColor {
+        final String text;
+        final int color;
+        LineWithColor(String text, int color) {
+            this.text = text;
+            this.color = color;
+        }
+    }
+
     // ======================== 构建文案 ========================
 
-    private static String[] buildLines(HintInfo info) {
-        final List<String> list = new ArrayList<>();
+    private static LineWithColor[] buildLines(HintInfo info) {
+        final List<LineWithColor> list = new ArrayList<>();
 
         // 状态行（始终显示）
-        list.add("已连接楼层轨道数：" + info.trackCount);
+        list.add(new LineWithColor(
+                TextHelper.translatable("hint.yte.connected_track_count", info.trackCount).getString(),
+                COLOR_NORMAL));
         if (info.buttonCount >= 0) {
-            list.add("已连接按钮数：" + info.buttonCount);
+            list.add(new LineWithColor(
+                    TextHelper.translatable("hint.yte.connected_button_count", info.buttonCount).getString(),
+                    COLOR_NORMAL));
         }
         if (info.lanternCount >= 0) {
-            list.add("已连接到站灯数：" + info.lanternCount);
+            list.add(new LineWithColor(
+                    TextHelper.translatable("hint.yte.connected_lantern_count", info.lanternCount).getString(),
+                    COLOR_NORMAL));
         }
 
         // 异常行
         if (info.hasAnyWarning()) {
-            list.add("⚠异常：");
+            list.add(new LineWithColor(
+                    TextHelper.translatable("hint.yte.warning_header").getString(),
+                    COLOR_HEADER));
             int idx = 1;
             if (info.hasTrackWarning) {
-                list.add("  " + idx + ".未连接楼层轨道");
+                list.add(new LineWithColor(
+                        TextHelper.translatable("hint.yte.unconnected_track", idx).getString(),
+                        COLOR_WARN));
                 idx++;
             }
             if (info.hasButtonWarning) {
-                list.add("  " + idx + ".未连接按钮");
+                list.add(new LineWithColor(
+                        TextHelper.translatable("hint.yte.unconnected_button", idx).getString(),
+                        COLOR_WARN));
             }
         }
 
-        return list.toArray(new String[0]);
-    }
-
-    private static int getLineColor(String line) {
-        if (line.startsWith("⚠异常")) return COLOR_HEADER;
-        if (line.contains("未连接")) return COLOR_WARN;
-        return COLOR_NORMAL;
+        return list.toArray(new LineWithColor[0]);
     }
 
     // ======================== 碰撞箱工具 ========================

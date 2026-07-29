@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class LiftPanelBase extends BlockExtension implements DirectionHelper, BlockWithEntity, IBlock {
+    public static final BooleanProperty UNLOCKED = BooleanProperty.of("unlocked");
     private final boolean isOdd;
 
     public LiftPanelBase(Boolean isOdd) {
@@ -58,6 +59,16 @@ public abstract class LiftPanelBase extends BlockExtension implements DirectionH
     @Override
     // 处理按钮的使用交互
     public ActionResult onUse2(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        // 手持刷子切换锁定
+        final ActionResult brushResult = IBlock.checkHoldingBrush(world, player, () -> {
+            final boolean unlocked = !IBlock.getStatePropertySafe(state, UNLOCKED);
+            world.setBlockState(pos, state.with(new Property<>(UNLOCKED.data), unlocked));
+            player.sendMessage(Text.cast(TextHelper.translatable(unlocked ? "hint.yte.unlocked" : "hint.yte.locked")), true);
+        });
+        if (brushResult == ActionResult.SUCCESS) {
+            return ActionResult.SUCCESS;
+        }
+
         // 如果玩家手持电梯连接器或移除器，允许进行其他操作
         if (player.isHolding(top.xfunny.mod.Items.YTE_LIFT_BUTTONS_LINK_CONNECTOR.get()) || player.isHolding(top.xfunny.mod.Items.YTE_LIFT_BUTTONS_LINK_REMOVER.get())) {
             return ActionResult.PASS;

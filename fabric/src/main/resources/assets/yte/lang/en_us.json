@@ -402,5 +402,13 @@
 
   "gui.yte.watermark": "The beta version does not represent the final quality.",
   "gui.yte.watermark_1": "Build %s.%s",
-  "gui.yte.hide_watermark": "Hide Test Watermark"
+  "gui.yte.hide_watermark": "Hide Test Watermark",
+  "hint.yte.connected_track_count": "Connected floor tracks: %d",
+  "hint.yte.connected_button_count": "Connected buttons: %d",
+  "hint.yte.connected_lantern_count": "Connected lanterns: %d",
+  "hint.yte.warning_header": "⚠ Warning:",
+  "hint.yte.unconnected_track": "  %d. Unconnected floor track",
+  "hint.yte.unconnected_button": "  %d. Unconnected button",
+  "hint.yte.unlocked": "Unlocked",
+  "hint.yte.locked": "Locked"
 }
