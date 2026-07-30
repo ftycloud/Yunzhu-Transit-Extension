@@ -33,7 +33,8 @@ public class RenderOtisGen3Button1 extends BlockEntityRenderer<OtisGen3Button1.B
     private static final int HOVER_COLOR = 0xAAFFFFFF;
     private static final int PRESSED_COLOR = 0xFFFFFFFF;
     private static final int DEFAULT_COLOR = 0x00FFFFFF;
-    private static final Identifier ARROW_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/otis_gen3_arrow.png");
+    private static final Identifier ARROW_TEXTURE_UP = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/otis_gen3_arrow.png");
+    private static final Identifier ARROW_TEXTURE_DOWN = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/otis_gen3_arrow_down.png");
     private static final Identifier BUTTON_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/otis_gen3_button_1.png");
     private static final Identifier LIGHT_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/otis_gen3_button_1_light.png");
     private static final Identifier LOGO = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/otis_gen3_button_1_light.png");
@@ -217,7 +218,7 @@ public class RenderOtisGen3Button1 extends BlockEntityRenderer<OtisGen3Button1.B
                 liftFloorDisplayView.setTextureId(String.format("otis_gen3_button_1_display_%d_%s", i, blockEntity.getPos2().asLong()));
                 liftFloorDisplayView.setWidth(1.4F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
-                liftFloorDisplayView.setMargin(0.125F / 16, -0.2F / 16, 0.25F / 16, 0);
+                liftFloorDisplayView.setMargin(0.165F / 16, -0.2F/16, 0.25F / 16, 0);
                 liftFloorDisplayView.setLetterSpacing(-3);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
@@ -225,13 +226,15 @@ public class RenderOtisGen3Button1 extends BlockEntityRenderer<OtisGen3Button1.B
                 final LiftArrowView liftArrowView = new LiftArrowView();
                 liftArrowView.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.AUTO);
                 liftArrowView.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
-                liftArrowView.setDimension(0.6F / 16,171,256);
-                liftArrowView.setMargin(1F /16, 4.27F / 16, 0, 0);
+                liftArrowView.setDimension(1F / 16,272,272);
+                liftArrowView.setMargin(.775F /16, 4.67F / 16, 0, 0);
                 //liftArrowView.setGravity(Gravity.END);
                 liftArrowView.setColor(0xFFFFFFFF);
-                liftArrowView.setTexture(ARROW_TEXTURE);
+                liftArrowView.setTexture(ARROW_TEXTURE_UP);
+                liftArrowView.setFlip(false,true);
                 if (direction == LiftDirection.DOWN) {
-                    liftArrowView.setFlip(true, false);
+                    liftArrowView.setTexture(ARROW_TEXTURE_DOWN);
+                    liftArrowView.setFlip(false,true);
                 }
 
                 final LinearLayout numberLayout = new LinearLayout(true);
