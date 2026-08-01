@@ -10,6 +10,7 @@ import org.mtr.mapping.mapper.TextHelper;
 import top.xfunny.mod.client.screen.base.BaseConfigScreen;
 import top.xfunny.mod.client.screen.widget.ContentItem;
 import top.xfunny.mod.client.screen.widget.CustomSignsManager;
+import top.xfunny.mod.client.screen.widget.MappedWidget;
 
 import java.util.function.Consumer;
 
@@ -79,7 +80,7 @@ public class SignSettingScreen extends BaseConfigScreen {
             }
 
             addChild(new ClickableWidget(chooseSignButton[i]));
-            ContentItem chooseSignItem = new ContentItem(TextHelper.translatable(displaySignId), chooseSignButton[i]);
+            ContentItem chooseSignItem = new ContentItem(TextHelper.translatable(displaySignId), new MappedWidget(chooseSignButton[i]));
             chooseSignItem.setIcon(SIGN_ICON);
             listViewWidget.add(chooseSignItem);
         }

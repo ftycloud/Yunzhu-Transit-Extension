@@ -11,18 +11,18 @@ import static top.xfunny.mod.client.screen.widget.ListViewWidget.ENTRY_PADDING;
 
 public class ContentItem extends BaseListItem {
     public final MutableText title;
-    public final ButtonWidgetExtension widget;
+    public final MappedWidget widget;
     private Identifier textureResource;
     private boolean hasIcon;
     private double hoverOpacity = 0;
 
-    public ContentItem(MutableText title, ButtonWidgetExtension widget, int height) {
+    public ContentItem(MutableText title, MappedWidget widget, int height) {
         super(height);
         this.title = title;
         this.widget = widget;
     }
 
-    public ContentItem(MutableText title, ButtonWidgetExtension widget) {
+    public ContentItem(MutableText title, MappedWidget widget) {
         this(title, widget, 26);
     }
 
@@ -42,9 +42,9 @@ public class ContentItem extends BaseListItem {
     @Override
     public void positionChanged(int entryX, int entryY) {
         if (widget != null) {
-            int offsetY = (height - widget.getHeight2()) / 2;
-            widget.setX2(entryX - widget.getWidth2());
-            widget.setY2(entryY + offsetY);
+            int offsetY = (height - widget.getHeight()) / 2;
+            widget.setX(entryX - widget.getWidth());
+            widget.setY(entryY + offsetY);
         }
     }
 
@@ -60,7 +60,7 @@ public class ContentItem extends BaseListItem {
             drawListEntryDescription(graphicsHolder, entryX, entryY);
 
         if (widget != null) {
-            widget.visible = widgetVisible;
+            widget.setVisible(widgetVisible);
             widget.render(graphicsHolder, mouseX, mouseY, tickDelta);
         }
     }

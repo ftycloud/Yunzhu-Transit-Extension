@@ -13,6 +13,7 @@ import top.xfunny.mod.Keys;
 import top.xfunny.mod.client.InitClient;
 import top.xfunny.mod.client.screen.base.BaseConfigScreen;
 import top.xfunny.mod.client.screen.widget.ContentItem;
+import top.xfunny.mod.client.screen.widget.MappedWidget;
 
 import static top.xfunny.mod.client.screen.RenderHelper.lineHeight;
 
@@ -60,8 +61,8 @@ public class ClientConfigScreen extends BaseConfigScreen {
     }
 
     public void addItemConfig() {
-        addChild(new ClickableWidget(hideTestWatermark));
-        ContentItem hideWatermark = new ContentItem(TextHelper.translatable("gui.yte.hide_watermark"), hideTestWatermark);
-        listViewWidget.add(hideWatermark);
+//        addChild(new ClickableWidget(hideTestWatermark));
+//        ContentItem hideWatermark = new ContentItem(TextHelper.translatable("gui.yte.hide_watermark"), hideTestWatermark);
+//        listViewWidget.add(hideWatermark);
     }
 }

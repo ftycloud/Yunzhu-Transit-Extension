@@ -7,6 +7,7 @@ import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.TextHelper;
 import top.xfunny.mod.client.screen.base.BaseConfigScreen;
 import top.xfunny.mod.client.screen.widget.ContentItem;
+import top.xfunny.mod.client.screen.widget.MappedWidget;
 
 public class GuangzhouRailwaySignScreen extends BaseConfigScreen {
     private final ButtonWidgetExtension signSelected;
@@ -46,7 +47,7 @@ public class GuangzhouRailwaySignScreen extends BaseConfigScreen {
     @Override
     public void addItemConfig() {
         addChild(new ClickableWidget(signSelected));
-        ContentItem chooseSignItem = new ContentItem(TextHelper.translatable(signId), signSelected);
+        ContentItem chooseSignItem = new ContentItem(TextHelper.translatable(signId), new MappedWidget(signSelected));
 
         if (signId != null) {
             chooseSignItem.setIcon(new Identifier("mtr", "textures/block/sign/" + signId + ".png"));
