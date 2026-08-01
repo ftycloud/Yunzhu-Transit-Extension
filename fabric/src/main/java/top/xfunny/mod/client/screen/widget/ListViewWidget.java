@@ -38,7 +38,7 @@ public class ListViewWidget extends ClickableWidgetExtension {
         refreshDisplay();
     }
 
-    public void add(MutableText text, ButtonWidgetExtension widget) {
+    public void add(MutableText text, MappedWidget widget) {
         add(new ContentItem(text, widget));
         refreshDisplay();
     }
