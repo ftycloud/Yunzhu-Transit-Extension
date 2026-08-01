@@ -2,230 +2,89 @@ package top.xfunny.mod.client.screen.widget;
 
 import org.mtr.mapping.mapper.*;
 
+import java.lang.reflect.Method;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class MappedWidget {
     private final Object widget;
+    // ponytail: 5 个 MTR 映射基类方法签名完全一致（getX2/setWidth2/setVisibleMapped/...），
+    // 反射 + 方法缓存替代 6 分支 instanceof 样板；方法缺失时静默返回默认值
+    private static final Map<String, Method> METHOD_CACHE = new ConcurrentHashMap<>();
 
     public MappedWidget(Object widget) {
-        if(!(widget instanceof MappedWidget || widget instanceof ButtonWidgetExtension || widget instanceof TextFieldWidgetExtension ||
-                widget instanceof CheckboxWidgetExtension || widget instanceof SliderWidgetExtension || widget instanceof ClickableWidgetExtension)) {
-            throw new IllegalArgumentException("");
+        while (widget instanceof MappedWidget) {
+            widget = ((MappedWidget) widget).widget;
         }
-
+        if (!(widget instanceof ButtonWidgetExtension || widget instanceof TextFieldWidgetExtension ||
+                widget instanceof CheckboxWidgetExtension || widget instanceof SliderWidgetExtension ||
+                widget instanceof ClickableWidgetExtension)) {
+            throw new IllegalArgumentException("Unsupported widget type: " + (widget == null ? "null" : widget.getClass().getName()));
+        }
         this.widget = widget;
     }
 
     public int getX() {
-        if(widget instanceof ButtonWidgetExtension) {
-            return ((ButtonWidgetExtension) widget).getX2();
-        }
-        if(widget instanceof TextFieldWidgetExtension) {
-            return ((TextFieldWidgetExtension) widget).getX2();
-        }
-        if(widget instanceof CheckboxWidgetExtension) {
-            return ((CheckboxWidgetExtension) widget).getX2();
-        }
-        if(widget instanceof SliderWidgetExtension) {
-            return ((SliderWidgetExtension) widget).getX2();
-        }
-        if(widget instanceof ClickableWidgetExtension) {
-            return ((ClickableWidgetExtension) widget).getX2();
-        }
-        if(widget instanceof MappedWidget) {
-            return ((MappedWidget) widget).getX();
-        }
-        return 0;
+        return getInt("getX2");
     }
 
     public int getY() {
-        if(widget instanceof ButtonWidgetExtension) {
-            return ((ButtonWidgetExtension) widget).getY2();
-        }
-        if(widget instanceof TextFieldWidgetExtension) {
-            return ((TextFieldWidgetExtension) widget).getY2();
-        }
-        if(widget instanceof CheckboxWidgetExtension) {
-            return ((CheckboxWidgetExtension) widget).getY2();
-        }
-        if(widget instanceof SliderWidgetExtension) {
-            return ((SliderWidgetExtension) widget).getY2();
-        }
-        if(widget instanceof ClickableWidgetExtension) {
-            return ((ClickableWidgetExtension) widget).getY2();
-        }
-        if(widget instanceof MappedWidget) {
-            return ((MappedWidget) widget).getY();
-        }
-        return 0;
+        return getInt("getY2");
     }
 
     public int getWidth() {
-        if(widget instanceof ButtonWidgetExtension) {
-            return ((ButtonWidgetExtension) widget).getWidth2();
-        }
-        if(widget instanceof TextFieldWidgetExtension) {
-            return ((TextFieldWidgetExtension) widget).getWidth2();
-        }
-        if(widget instanceof CheckboxWidgetExtension) {
-            return ((CheckboxWidgetExtension) widget).getWidth2();
-        }
-        if(widget instanceof SliderWidgetExtension) {
-            return ((SliderWidgetExtension) widget).getWidth2();
-        }
-        if(widget instanceof ClickableWidgetExtension) {
-            return ((ClickableWidgetExtension) widget).getWidth2();
-        }
-        if(widget instanceof MappedWidget) {
-            return ((MappedWidget) widget).getWidth();
-        }
-        return 0;
+        return getInt("getWidth2");
     }
 
     public int getHeight() {
-        if(widget instanceof ButtonWidgetExtension) {
-            return ((ButtonWidgetExtension) widget).getHeight2();
-        }
-        if(widget instanceof TextFieldWidgetExtension) {
-            return ((TextFieldWidgetExtension) widget).getHeight2();
-        }
-        if(widget instanceof CheckboxWidgetExtension) {
-            return ((CheckboxWidgetExtension) widget).getHeight2();
-        }
-        if(widget instanceof SliderWidgetExtension) {
-            return ((SliderWidgetExtension) widget).getHeight2();
-        }
-        if(widget instanceof ClickableWidgetExtension) {
-            return ((ClickableWidgetExtension) widget).getHeight2();
-        }
-        if(widget instanceof MappedWidget) {
-            return ((MappedWidget) widget).getHeight();
-        }
-        return 0;
+        return getInt("getHeight2");
     }
 
     public boolean getActive() {
-        if(widget instanceof ButtonWidgetExtension) {
-            return ((ButtonWidgetExtension) widget).getActiveMapped();
-        }
-        if(widget instanceof TextFieldWidgetExtension) {
-            return ((TextFieldWidgetExtension) widget).getActiveMapped();
-        }
-        if(widget instanceof CheckboxWidgetExtension) {
-            return ((CheckboxWidgetExtension) widget).getActiveMapped();
-        }
-        if(widget instanceof SliderWidgetExtension) {
-            return ((SliderWidgetExtension) widget).getActiveMapped();
-        }
-        if(widget instanceof ClickableWidgetExtension) {
-            return ((ClickableWidgetExtension) widget).getActiveMapped();
-        }
-        if(widget instanceof MappedWidget) {
-            return ((MappedWidget) widget).getActive();
-        }
-        return true;
+        final Object value = invoke("getActiveMapped");
+        return !(value instanceof Boolean) || (Boolean) value;
     }
 
     public void setWidth(int width) {
-        if(widget instanceof ButtonWidgetExtension) {
-            ((ButtonWidgetExtension) widget).setWidth2(width);
-        }
-        if(widget instanceof TextFieldWidgetExtension) {
-            ((TextFieldWidgetExtension) widget).setWidth2(width);
-        }
-        if(widget instanceof CheckboxWidgetExtension) {
-            ((CheckboxWidgetExtension) widget).setWidth2(width);
-        }
-        if(widget instanceof SliderWidgetExtension) {
-            ((SliderWidgetExtension) widget).setWidth2(width);
-        }
-        if(widget instanceof ClickableWidgetExtension) {
-            ((ClickableWidgetExtension) widget).setWidth2(width);
-        }
-        if(widget instanceof MappedWidget) {
-            ((MappedWidget) widget).setWidth(width);
-        }
+        invoke("setWidth2", new Class[]{int.class}, width);
     }
 
     public void setX(int newX) {
-        if(widget instanceof ButtonWidgetExtension) {
-            ((ButtonWidgetExtension) widget).setX2(newX);
-        }
-        if(widget instanceof TextFieldWidgetExtension) {
-            ((TextFieldWidgetExtension) widget).setX2(newX);
-        }
-        if(widget instanceof CheckboxWidgetExtension) {
-            ((CheckboxWidgetExtension) widget).setX2(newX);
-        }
-        if(widget instanceof SliderWidgetExtension) {
-            ((SliderWidgetExtension) widget).setX2(newX);
-        }
-        if(widget instanceof ClickableWidgetExtension) {
-            ((ClickableWidgetExtension) widget).setX2(newX);
-        }
-        if(widget instanceof MappedWidget) {
-            ((MappedWidget) widget).setX(newX);
-        }
+        invoke("setX2", new Class[]{int.class}, newX);
     }
 
     public void setY(int newY) {
-        if(widget instanceof ButtonWidgetExtension) {
-            ((ButtonWidgetExtension) widget).setY2(newY);
-        }
-        if(widget instanceof TextFieldWidgetExtension) {
-            ((TextFieldWidgetExtension) widget).setY2(newY);
-        }
-        if(widget instanceof CheckboxWidgetExtension) {
-            ((CheckboxWidgetExtension) widget).setY2(newY);
-        }
-        if(widget instanceof SliderWidgetExtension) {
-            ((SliderWidgetExtension) widget).setY2(newY);
-        }
-        if(widget instanceof ClickableWidgetExtension) {
-            ((ClickableWidgetExtension) widget).setY2(newY);
-        }
-        if(widget instanceof MappedWidget) {
-            ((MappedWidget) widget).setY(newY);
-        }
+        invoke("setY2", new Class[]{int.class}, newY);
     }
 
     public void render(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) {
-        if(widget instanceof ButtonWidgetExtension) {
-            ((ButtonWidgetExtension) widget).render(graphicsHolder, mouseX, mouseY, tickDelta);
-        }
-        if(widget instanceof TextFieldWidgetExtension) {
-            ((TextFieldWidgetExtension) widget).render(graphicsHolder, mouseX, mouseY, tickDelta);
-        }
-        if(widget instanceof CheckboxWidgetExtension) {
-            ((CheckboxWidgetExtension) widget).render(graphicsHolder, mouseX, mouseY, tickDelta);
-        }
-        if(widget instanceof SliderWidgetExtension) {
-            ((SliderWidgetExtension) widget).render(graphicsHolder, mouseX, mouseY, tickDelta);
-        }
-        if(widget instanceof ClickableWidgetExtension) {
-            ((ClickableWidgetExtension) widget).render(graphicsHolder, mouseX, mouseY, tickDelta);
-        }
-        if(widget instanceof MappedWidget) {
-            ((MappedWidget) widget).render(graphicsHolder, mouseX, mouseY, tickDelta);
-        }
+        invoke("render", new Class[]{GraphicsHolder.class, int.class, int.class, float.class}, graphicsHolder, mouseX, mouseY, tickDelta);
     }
 
     public void setVisible(boolean value) {
-        if(widget instanceof ButtonWidgetExtension) {
-            ((ButtonWidgetExtension) widget).setVisibleMapped(value);
+        invoke("setVisibleMapped", new Class[]{boolean.class}, value);
+    }
+
+    private int getInt(String name) {
+        final Object value = invoke(name);
+        return value instanceof Integer ? (Integer) value : 0;
+    }
+
+    private Object invoke(String name, Class<?>[] parameterTypes, Object... args) {
+        final Method method = METHOD_CACHE.computeIfAbsent(name, n -> {
+            try {
+                return widget.getClass().getMethod(n, parameterTypes);
+            } catch (NoSuchMethodException e) {
+                return null;
+            }
+        });
+        if (method == null) {
+            return null;
         }
-        if(widget instanceof TextFieldWidgetExtension) {
-            ((TextFieldWidgetExtension) widget).setVisibleMapped(value);
-        }
-        if(widget instanceof CheckboxWidgetExtension) {
-            ((CheckboxWidgetExtension) widget).setVisibleMapped(value);
-        }
-        if(widget instanceof SliderWidgetExtension) {
-            ((SliderWidgetExtension) widget).setVisibleMapped(value);
-        }
-        if(widget instanceof ClickableWidgetExtension) {
-            ((ClickableWidgetExtension) widget).setVisibleMapped(value);
-        }
-        if(widget instanceof MappedWidget) {
-            ((MappedWidget) widget).setVisible(value);
+        try {
+            return method.invoke(widget, args);
+        } catch (ReflectiveOperationException e) {
+            return null;
         }
     }
 }

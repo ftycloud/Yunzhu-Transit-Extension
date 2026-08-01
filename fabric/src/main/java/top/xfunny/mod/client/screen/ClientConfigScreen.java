@@ -17,6 +17,10 @@ import top.xfunny.mod.client.screen.widget.MappedWidget;
 
 import static top.xfunny.mod.client.screen.RenderHelper.lineHeight;
 
+/**
+ * @deprecated 半成品：无打开入口，addItemConfig 内容全部被注释（水印按钮从未添加）。
+ */
+@Deprecated
 public class ClientConfigScreen extends BaseConfigScreen {
     private static final int BUTTON_HEIGHT = lineHeight * 2;
     private static final int BUTTON_WIDTH = 60;

@@ -1,5 +1,6 @@
 package top.xfunny.mod.client.screen;
 
+import org.jetbrains.annotations.NotNull;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.CheckboxWidgetExtension;
 import org.mtr.mapping.mapper.GraphicsHolder;
@@ -13,6 +14,11 @@ import org.mtr.mod.generated.lang.TranslationProvider;
 import org.mtr.mod.packet.PacketUpdateLiftTrackFloorConfig;
 import top.xfunny.mod.block.EmptyFloor;
 
+/**
+ * @deprecated 保存链路断裂：发送的 PacketUpdateLiftTrackFloorConfig 不匹配 EmptyFloor 方块实体（服务端静默丢弃），
+ * 且 YTEClientPacketHelper 无 EmptyFloor 分支（无法打开）。待修复保存链路后启用。
+ */
+@Deprecated
 public class LiftEmptyFloorScreen extends ScreenExtension implements IGui {
 
     private static final MutableText TEXT_FLOOR_NUMBER = TranslationProvider.GUI_MTR_LIFT_FLOOR_NUMBER.getMutableText();
@@ -77,7 +83,7 @@ public class LiftEmptyFloorScreen extends ScreenExtension implements IGui {
     }
 
     @Override
-    public void render(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull GraphicsHolder graphicsHolder, int mouseX, int mouseY, float delta) {
         renderBackground(graphicsHolder);
         final int startX = (getWidthMapped() - textWidth - TEXT_PADDING - TEXT_FIELD_WIDTH) / 2;
         final int startY = (getHeightMapped() - SQUARE_SIZE * 3 - TEXT_FIELD_PADDING * 2) / 2;

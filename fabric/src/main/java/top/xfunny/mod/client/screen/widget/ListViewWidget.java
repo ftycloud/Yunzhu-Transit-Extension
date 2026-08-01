@@ -15,16 +15,14 @@ import java.util.List;
 public class ListViewWidget extends ClickableWidgetExtension {
     public static final int ENTRY_PADDING = 5;
     public static final int SCROLLBAR_WIDTH = 5;
-    private final List<BaseListItem> displayedEntryList = new ArrayList<>();
     private final List<BaseListItem> entryList = new ArrayList<>();
     protected double currentScroll = 0;
-    private final String searchTerm = "";
     private boolean scrollbarDragging = false;
+    private int totalEntryHeight = 0;
 
     public ListViewWidget() {
         super(0, 0, 0, 0);
     }
-
 
     public ListViewWidget(int x, int y, int width, int height) {
         super(x, y, width, height);
@@ -35,70 +33,59 @@ public class ListViewWidget extends ClickableWidgetExtension {
         setY2(y);
         setWidth2(width);
         setHeightMapped(height);
-        refreshDisplay();
+        setScroll(currentScroll);
     }
 
     public void add(MutableText text, MappedWidget widget) {
         add(new ContentItem(text, widget));
-        refreshDisplay();
     }
 
     public void add(BaseListItem listItem) {
+        // ponytail: 增量定位新增条目（O(1)），renderContent 每帧会再次修正滚动位置
+        listItem.positionChanged(getX2() + width - scrollbarWidth() - ENTRY_PADDING, getY2() + totalEntryHeight - (int) currentScroll);
         entryList.add(listItem);
-        refreshDisplay();
+        totalEntryHeight += listItem.height;
+        setScroll(currentScroll);
     }
 
     public void addCategory(MutableText text) {
-        entryList.add(new CategoryItem(text));
-        refreshDisplay();
+        add(new CategoryItem(text));
     }
 
     public void clear() {
         entryList.clear();
-        refreshDisplay();
-    }
-
-    public void refreshDisplay() {
-        displayedEntryList.addAll(entryList);
-        entryList.clear();
-        entryList.addAll(displayedEntryList);
-        displayedEntryList.clear();
-        updateItemPositions();
-        setScroll(currentScroll);
-    }
-
-    private void updateItemPositions() {
-        int incY = 0;
-
-        for (BaseListItem listItem : entryList) {
-            int entryX = getX2();
-            int entryY = getY2() + incY - (int) currentScroll;
-            listItem.positionChanged(entryX + width - ENTRY_PADDING, entryY);
-            incY += listItem.height;
-        }
+        totalEntryHeight = 0;
+        setScroll(0);
     }
 
     @Override
     public void render(@NotNull GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) {
         GuiHelper.drawRectangle(new GuiDrawing(graphicsHolder), getX2(), getY2(), width, height, 0x4C4C4C4C);
-        renderContent(graphicsHolder, mouseX, mouseY, tickDelta);
-//        super.render(graphicsHolder, mouseX, mouseY, tickDelta);
-        renderScrollBar(graphicsHolder, mouseX, mouseY, tickDelta);
+        // ponytail: vanilla 无 scissor 映射，经 GuiHelper 裁剪列表内容区（含滚动条）
+        GuiHelper.enableScissor(graphicsHolder, getX2(), getY2(), getX2() + width, getY2() + height);
+        try {
+            renderContent(graphicsHolder, mouseX, mouseY, tickDelta);
+            renderScrollBar(graphicsHolder, mouseX, mouseY, tickDelta);
+        } finally {
+            GuiHelper.disableScissor(graphicsHolder);
+        }
     }
 
     public void renderContent(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) {
         GuiDrawing guiDrawing = new GuiDrawing(graphicsHolder);
         int incY = 0;
+        int scrollbarWidth = scrollbarWidth();
+        int listItemWidth = width - scrollbarWidth;
 
         for (BaseListItem listItem : entryList) {
-            int scrollbarWidth = contentOverflowed() ? SCROLLBAR_WIDTH : 0;
-            int listItemWidth = width - scrollbarWidth;
-            int entryX = getX2();
             int entryY = getY2() + incY - (int) currentScroll;
-
-
-            listItem.draw(graphicsHolder, guiDrawing, entryX, entryY, listItemWidth, height, mouseX, mouseY, true, tickDelta);
-            listItem.positionChanged(entryX + listItemWidth - ENTRY_PADDING, entryY);
+            // ponytail: 内嵌控件先于本列表渲染、scissor 包不住，完全在可视区内才显示
+            boolean fullyVisible = entryY >= getY2() && entryY + listItem.height <= getY2() + height;
+            if (listItem instanceof ContentItem) {
+                ((ContentItem) listItem).widget.setVisible(fullyVisible);
+            }
+            listItem.draw(graphicsHolder, guiDrawing, getX2(), entryY, listItemWidth, listItem.height, mouseX, mouseY, fullyVisible, tickDelta);
+            listItem.positionChanged(getX2() + listItemWidth - ENTRY_PADDING, entryY);
             incY += listItem.height;
         }
     }
@@ -116,15 +103,45 @@ public class ListViewWidget extends ClickableWidgetExtension {
 
     @Override
     public boolean mouseClicked2(double mouseX, double mouseY, int button) {
-        scrollbarDragging = button == 0 && isScrollbarHover(mouseX, mouseY);
-        return true;
+        // ponytail: 命中检测必须自己写——映射层转发不做任何判断，无条件返回 true 会吞掉之后添加的所有控件点击
+        if (button == 0 && isScrollbarHover(mouseX, mouseY)) {
+            scrollbarDragging = true;
+            setScrollFromMouse(mouseY);
+        }
+        return isMouseOver2(mouseX, mouseY);
+    }
+
+    @Override
+    public boolean mouseDragged2(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+        if (scrollbarDragging) {
+            setScrollFromMouse(mouseY);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean mouseReleased2(double mouseX, double mouseY, int button) {
+        scrollbarDragging = false;
+        return false;
+    }
+
+    private void setScrollFromMouse(double mouseY) {
+        int entryHeight = totalEntryHeight;
+        int visibleHeight = getHeight2();
+        double scrollbarHeight = visibleHeight * ((double) visibleHeight / entryHeight);
+        double trackHeight = visibleHeight - scrollbarHeight;
+        if (trackHeight <= 0) {
+            return;
+        }
+        setScroll((mouseY - getY2()) / trackHeight * (entryHeight - visibleHeight));
     }
 
     public void renderScrollBar(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) {
         if (!contentOverflowed()) return;
 
         GuiDrawing guiDrawing = new GuiDrawing(graphicsHolder);
-        int entryHeight = getContentHeight();
+        int entryHeight = totalEntryHeight;
         int visibleHeight = getHeight2();
         // 计算滚动条滑块高度
         double scrollbarHeight = visibleHeight * ((double) visibleHeight / entryHeight);
@@ -134,24 +151,20 @@ public class ListViewWidget extends ClickableWidgetExtension {
         GuiHelper.drawRectangle(guiDrawing, getX2() + getWidth2() - SCROLLBAR_WIDTH, getY2() + yOffset, SCROLLBAR_WIDTH, scrollbarHeight, isScrollbarHover(mouseX, mouseY) ? 0xFFD1D1D1 : 0xFF9F9F9F);
     }
 
-    protected int getContentHeight() {
-        int entryHeight = 0;
-        for (BaseListItem listItem : entryList) {
-            entryHeight += listItem.height;
-        }
-        return entryHeight;
+    protected boolean contentOverflowed() {
+        return totalEntryHeight > getHeight2();
     }
 
-    protected boolean contentOverflowed() {
-        return getContentHeight() > getHeight2();
+    private int scrollbarWidth() {
+        return contentOverflowed() ? SCROLLBAR_WIDTH : 0;
     }
 
     private boolean isScrollbarHover(double mouseX, double mouseY) {
-        return mouseX >= getX2() + getWidth2() - SCROLLBAR_WIDTH && mouseY >= getY2() && mouseX < getX2() + getWidth2() && mouseY < getY2() + getContentHeight();
+        return mouseX >= getX2() + getWidth2() - SCROLLBAR_WIDTH && mouseY >= getY2() && mouseX < getX2() + getWidth2() && mouseY < getY2() + totalEntryHeight;
     }
 
     public void setScroll(double scroll) {
-        int maxScroll = Math.max(0, getContentHeight() - getHeight2());
+        int maxScroll = Math.max(0, totalEntryHeight - getHeight2());
         currentScroll = MathHelper.clamp(scroll, 0, maxScroll);
     }
 }

@@ -20,17 +20,15 @@ public abstract class Config {
     }
 
     public void readConfig() {
-        if (!Files.exists(configFilePath)) {
-            writeConfig();
-            readConfig();// 重新读取
-        } else {
+        if (Files.exists(configFilePath)) {
             try {
-                JsonObject jsonObject = new JsonParser().parse(String.join("", Files.readAllLines(configFilePath))).getAsJsonObject();
+                JsonObject jsonObject = JsonParser.parseString(String.join("", Files.readAllLines(configFilePath))).getAsJsonObject();
                 setTempConfigItems(jsonObject);
             } catch (Exception e) {
                 LOGGER.error("Failed to read config file: " + configFilePath, e);
-                writeConfig();
             }
+        } else {
+            writeConfig();
         }
     }
 

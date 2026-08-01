@@ -48,6 +48,8 @@ replay_*.log
 *.jfr
 /forge/src/main/java/top/xfunny/mixin/
 
-
-#ai
+# Agent
+.opencode
 .pi-subagents
+.claude
+.codex

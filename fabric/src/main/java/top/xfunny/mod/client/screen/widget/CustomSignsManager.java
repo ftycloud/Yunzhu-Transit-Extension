@@ -50,8 +50,7 @@ public class CustomSignsManager {
 
         ResourceManagerHelper.readAllResources(new Identifier("mtr", "mtr_custom_resources.json"), (inputStream) -> {
             try (InputStreamReader reader = new InputStreamReader(inputStream)) {
-                JsonParser parser = new JsonParser();
-                JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+                JsonObject jsonObject = JsonParser.parseReader(reader).getAsJsonObject();
                 JsonArray signsArray = jsonObject.getAsJsonArray("signs");
 
                 for (JsonElement signElement : signsArray) {
@@ -90,7 +89,10 @@ public class CustomSignsManager {
 
         defaultSigns = new ObjectArrayList<>(new LinkedHashSet<>(defaultSigns));
         allSigns.addAll(0, defaultSigns);
-        allSigns = new ObjectArrayList<>(new LinkedHashSet<>(allSigns));
+        // ponytail: 原地去重，保持 allSigns 引用稳定——SignSettingScreen 在 loader() 前已捕获该引用，换引用会导致首次打开空列表
+        final ObjectArrayList<String> uniqueSigns = new ObjectArrayList<>(new LinkedHashSet<>(allSigns));
+        allSigns.clear();
+        allSigns.addAll(uniqueSigns);
         Init.LOGGER.info("Found {} Icon Files", allSigns.size());
     }
 

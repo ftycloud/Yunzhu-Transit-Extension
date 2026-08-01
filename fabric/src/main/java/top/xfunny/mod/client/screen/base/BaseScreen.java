@@ -19,6 +19,7 @@ public abstract class BaseScreen extends ScreenExtension implements IGui {
 
     @Override
     public void onClose2() {
+        super.onClose2(); // vanilla Screen.onClose（setScreen(null)），补全 removed 关闭链
         MinecraftClient.getInstance().openScreen(previousScreen);
     }
 }
