@@ -43,9 +43,8 @@ public final class GuiHelper {
         }
     }
 
-    // ponytail: 全反射访问 MTR 未暴露的 drawContext（包私有字段），不直接 import vanilla 类：
-    // fabric 是 Yarn 名（DrawContext）、forge 是 Mojmap 名（GuiGraphics），且 1.19.2 及更早版本无 scissor API。
-    // 按运行时类型与方法名查找，任何一步失败即永久降级为无裁剪（与 MTR 原版行为一致）。
+    // 反射访问 MTR 未暴露的 drawContext：fabric 为 Yarn 名（DrawContext）、forge 为 Mojmap 名（GuiGraphics），
+    // 且 1.19.2 及更早版本无 scissor API。按运行时类型与方法名查找，失败即永久降级为无裁剪。
     public static void enableScissor(GraphicsHolder graphicsHolder, int x1, int y1, int x2, int y2) {
         final Object drawContext = getDrawContext(graphicsHolder);
         if (enableScissorMethod == null && !scissorUnavailable && drawContextField != null) {

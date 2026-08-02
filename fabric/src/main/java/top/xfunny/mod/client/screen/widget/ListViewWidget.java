@@ -40,7 +40,7 @@ public class ListViewWidget extends ClickableWidgetExtension {
     }
 
     public void add(BaseListItem listItem) {
-        // ponytail: 增量定位新增条目（O(1)），renderContent 每帧会再次修正滚动位置
+        // O(1) 增量定位，renderContent 每帧会再次修正滚动位置
         listItem.positionChanged(getX2() + width - scrollbarWidth() - ENTRY_PADDING, getY2() + totalEntryHeight - (int) currentScroll);
         entryList.add(listItem);
         totalEntryHeight += listItem.height;
@@ -60,7 +60,7 @@ public class ListViewWidget extends ClickableWidgetExtension {
     @Override
     public void render(@NotNull GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) {
         GuiHelper.drawRectangle(new GuiDrawing(graphicsHolder), getX2(), getY2(), width, height, 0x4C4C4C4C);
-        // ponytail: vanilla 无 scissor 映射，经 GuiHelper 裁剪列表内容区（含滚动条）
+        // vanilla 无 scissor 映射，经 GuiHelper 裁剪列表内容区（含滚动条）
         GuiHelper.enableScissor(graphicsHolder, getX2(), getY2(), getX2() + width, getY2() + height);
         try {
             renderContent(graphicsHolder, mouseX, mouseY, tickDelta);
@@ -78,7 +78,7 @@ public class ListViewWidget extends ClickableWidgetExtension {
 
         for (BaseListItem listItem : entryList) {
             int entryY = getY2() + incY - (int) currentScroll;
-            // ponytail: 内嵌控件先于本列表渲染、scissor 包不住，完全在可视区内才显示
+            // 内嵌控件先于本列表渲染、scissor 包不住，完全在可视区内才显示
             boolean fullyVisible = entryY >= getY2() && entryY + listItem.height <= getY2() + height;
             listItem.setWidgetVisible(fullyVisible);
             listItem.draw(graphicsHolder, guiDrawing, getX2(), entryY, listItemWidth, listItem.height, mouseX, mouseY, fullyVisible, tickDelta);
@@ -87,7 +87,6 @@ public class ListViewWidget extends ClickableWidgetExtension {
         }
     }
 
-    //TODO: 添加滚动
     @Override
     public boolean mouseScrolled2(double mouseX, double mouseY, double amount) {
         double oldScroll = currentScroll;
@@ -100,7 +99,7 @@ public class ListViewWidget extends ClickableWidgetExtension {
 
     @Override
     public boolean mouseClicked2(double mouseX, double mouseY, int button) {
-        // ponytail: 命中检测必须自己写——映射层转发不做任何判断，无条件返回 true 会吞掉之后添加的所有控件点击
+        // 映射层转发不做命中判断，无条件返回 true 会吞掉之后添加的所有控件点击
         if (button == 0 && isScrollbarHover(mouseX, mouseY)) {
             scrollbarDragging = true;
             setScrollFromMouse(mouseY);

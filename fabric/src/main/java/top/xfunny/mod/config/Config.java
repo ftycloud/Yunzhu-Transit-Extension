@@ -19,7 +19,7 @@ public abstract class Config {
         this.configFilePath = configFilePath;
     }
 
-    @SuppressWarnings("deprecation") // ponytail: gson 2.8.5（MC 1.16.5 内置）无静态 parse 方法，构造器在 2.11 才弃用
+    @SuppressWarnings("deprecation") // gson 2.8.5（MC 1.16.5 内置）无静态 parse 方法，构造器在 2.11 才弃用
     public void readConfig() {
         if (Files.exists(configFilePath)) {
             try {

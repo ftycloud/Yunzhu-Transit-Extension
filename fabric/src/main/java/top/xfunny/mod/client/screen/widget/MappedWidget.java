@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class MappedWidget {
     private final Object widget;
-    // ponytail: 5 个 MTR 映射基类方法签名完全一致（getX2/setWidth2/setVisibleMapped/...），
     // 反射 + 方法缓存替代 6 分支 instanceof 样板；方法缺失时静默返回默认值
     private static final Map<String, Method> METHOD_CACHE = new ConcurrentHashMap<>();
 

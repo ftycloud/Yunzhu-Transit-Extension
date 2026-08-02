@@ -6,7 +6,10 @@ import org.mtr.mapping.mapper.TextHelper;
 import top.xfunny.mod.client.screen.base.BaseConfigScreen;
 import top.xfunny.mod.client.screen.widget.ContentItem;
 import top.xfunny.mod.client.screen.widget.MappedWidget;
-
+/**
+ * @deprecated 半成品
+ */
+@Deprecated
 public class GuangzhouRailwaySignScreen extends BaseConfigScreen {
     private final ButtonWidgetExtension signSelected;
     protected String signId;
@@ -29,7 +32,7 @@ public class GuangzhouRailwaySignScreen extends BaseConfigScreen {
     @Override
     public void addItemConfig() {
         addChild(new ClickableWidget(signSelected));
-        // ponytail: signId 未选择时为 null，translatable(null) 渲染即崩，空文本兜底
+        // signId 未选择时为 null，translatable(null) 渲染即崩，空文本兜底
         ContentItem chooseSignItem = new ContentItem(signId == null ? TextHelper.literal("") : TextHelper.translatable(signId), new MappedWidget(signSelected));
 
         if (signId != null) {

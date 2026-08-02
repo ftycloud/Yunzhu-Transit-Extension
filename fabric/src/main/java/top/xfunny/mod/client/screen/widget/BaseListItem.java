@@ -18,7 +18,7 @@ public abstract class BaseListItem {
     public void draw(GraphicsHolder graphicsHolder, GuiDrawing guiDrawing, int entryX, int entryY, int width, int height, int mouseX, int mouseY, boolean widgetVisible, float tickDelta) {
     }
 
-    // ponytail: 内嵌控件可见性由条目自行管理（多态替代 ListViewWidget 的 instanceof 分发）
+    // 内嵌控件可见性由条目自行管理（多态替代 instanceof 分发）
     public void setWidgetVisible(boolean visible) {
     }
 

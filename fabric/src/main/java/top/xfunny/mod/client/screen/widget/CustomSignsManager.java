@@ -43,7 +43,7 @@ public class CustomSignsManager {
         NAFileNames.add("spit.png");
     }
 
-    @SuppressWarnings("deprecation") // ponytail: gson 2.8.5（MC 1.16.5 内置）无静态 parse 方法，构造器在 2.11 才弃用
+    @SuppressWarnings("deprecation") // gson 2.8.5（MC 1.16.5 内置）无静态 parse 方法，构造器在 2.11 才弃用
     public static void loader() {
         defaultSigns.clear();
         builtinFileNames.clear();
@@ -90,7 +90,7 @@ public class CustomSignsManager {
 
         defaultSigns = new ObjectArrayList<>(new LinkedHashSet<>(defaultSigns));
         allSigns.addAll(0, defaultSigns);
-        // ponytail: 原地去重，保持 allSigns 引用稳定——SignSettingScreen 在 loader() 前已捕获该引用，换引用会导致首次打开空列表
+        // 原地去重保持引用稳定，SignSettingScreen 已捕获该引用，换引用会导致首次打开空列表
         final ObjectArrayList<String> uniqueSigns = new ObjectArrayList<>(new LinkedHashSet<>(allSigns));
         allSigns.clear();
         allSigns.addAll(uniqueSigns);
