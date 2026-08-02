@@ -70,6 +70,10 @@ public class MappedWidget {
         return value instanceof Integer ? (Integer) value : 0;
     }
 
+    private Object invoke(String name) {
+        return invoke(name, new Class<?>[0]);
+    }
+
     private Object invoke(String name, Class<?>[] parameterTypes, Object... args) {
         final Method method = METHOD_CACHE.computeIfAbsent(name, n -> {
             try {
