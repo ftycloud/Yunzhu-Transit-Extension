@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 
 public final class GuiHelper {
     public static final int MAX_CONTENT_WIDTH = 400;
+    public static final int lineHeight = 9;
 
     private static Field drawContextField;
     private static Method enableScissorMethod;
@@ -21,6 +22,25 @@ public final class GuiHelper {
         guiDrawing.beginDrawingRectangle();
         guiDrawing.drawRectangle(x, y, x + width, y + height, color);
         guiDrawing.finishDrawingRectangle();
+    }
+
+    // 自 RenderHelper 迁入（原接口已删除）
+    public static void scaleToFit(GraphicsHolder graphicsHolder, int targetW, double maxW, boolean keepAspectRatio) {
+        scaleToFit(graphicsHolder, targetW, maxW, keepAspectRatio, 0);
+    }
+
+    public static void scaleToFit(GraphicsHolder graphicsHolder, double targetW, double maxW, boolean keepAspectRatio, double height) {
+        height = height / 2;
+        double scaleX = Math.min(1, maxW / targetW);
+        if (scaleX < 1) {
+            if (keepAspectRatio) {
+                graphicsHolder.translate(0, height / 2.0, 0);
+                graphicsHolder.scale((float) scaleX, (float) scaleX, (float) scaleX);
+                graphicsHolder.translate(0, -height / 2.0, 0);
+            } else {
+                graphicsHolder.scale((float) scaleX, 1, 1);
+            }
+        }
     }
 
     // ponytail: 全反射访问 MTR 未暴露的 drawContext（包私有字段），不直接 import vanilla 类：

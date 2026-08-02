@@ -3,7 +3,7 @@ package top.xfunny.mod.client.screen.base;
 import org.jetbrains.annotations.NotNull;
 import org.mtr.mapping.holder.MutableText;
 import org.mtr.mapping.mapper.GraphicsHolder;
-import top.xfunny.mod.client.screen.RenderHelper;
+import top.xfunny.mod.client.screen.GuiHelper;
 
 public abstract class TitledScreen extends BaseScreen {
     public static final int TEXT_PADDING = 10;
@@ -22,17 +22,17 @@ public abstract class TitledScreen extends BaseScreen {
         graphicsHolder.push();
         graphicsHolder.translate(width / 2.0, TEXT_PADDING, 0);
         graphicsHolder.scale(TITLE_SCALE, TITLE_SCALE, TITLE_SCALE);
-        RenderHelper.scaleToFit(graphicsHolder, GraphicsHolder.getTextWidth(titleText), width / (float) TITLE_SCALE, true);
+        GuiHelper.scaleToFit(graphicsHolder, GraphicsHolder.getTextWidth(titleText), width / (float) TITLE_SCALE, true);
         graphicsHolder.drawCenteredText(titleText, 0, 0, 0xFFFFFFFF);
         graphicsHolder.pop();
     }
 
     private void drawSubtitle(GraphicsHolder graphicsHolder) {
-        double titleHeight = (RenderHelper.lineHeight * TITLE_SCALE);
+        double titleHeight = (GuiHelper.lineHeight * TITLE_SCALE);
         MutableText subtitleText = getScreenSubtitle();
         graphicsHolder.push();
         graphicsHolder.translate(width / 2.0, (TEXT_PADDING * 1.5) + titleHeight, 0);
-        RenderHelper.scaleToFit(graphicsHolder, GraphicsHolder.getTextWidth(subtitleText), width, true);
+        GuiHelper.scaleToFit(graphicsHolder, GraphicsHolder.getTextWidth(subtitleText), width, true);
         graphicsHolder.drawCenteredText(subtitleText, 0, 0, 0xFFFFFFFF);
         graphicsHolder.pop();
     }

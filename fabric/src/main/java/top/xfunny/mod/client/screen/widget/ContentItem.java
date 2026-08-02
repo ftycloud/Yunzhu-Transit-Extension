@@ -2,7 +2,6 @@ package top.xfunny.mod.client.screen.widget;
 
 import org.mtr.mapping.holder.Identifier;
 import org.mtr.mapping.holder.MutableText;
-import org.mtr.mapping.mapper.ButtonWidgetExtension;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.GuiDrawing;
 import top.xfunny.mod.client.screen.GuiHelper;
@@ -37,6 +36,13 @@ public class ContentItem extends BaseListItem {
 
     public boolean hasIcon() {
         return hasIcon;
+    }
+
+    @Override
+    public void setWidgetVisible(boolean visible) {
+        if (widget != null) {
+            widget.setVisible(visible);
+        }
     }
 
     @Override

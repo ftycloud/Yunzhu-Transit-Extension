@@ -1,10 +1,8 @@
 package top.xfunny.mod.client.screen;
 
-import org.jetbrains.annotations.NotNull;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.ButtonWidgetExtension;
-import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.TextHelper;
 
 import top.xfunny.mod.client.screen.base.BaseConfigScreen;
@@ -29,23 +27,6 @@ public class SignSettingScreen extends BaseConfigScreen {
         CustomSignsManager.loader();
 
         chooseSignButton = new ButtonWidgetExtension[allSignIds.size()];
-    }
-
-    @Override
-    protected void init2() {
-        super.init2();
-    }
-
-    @Override
-    public void render(@NotNull GraphicsHolder graphicsHolder, int mouseX, int mouseY, float delta) {
-        renderBackground(graphicsHolder);
-
-        super.render(graphicsHolder, mouseX, mouseY, delta);
-    }
-
-    @Override
-    public void onClose2() {
-        super.onClose2();
     }
 
     private void drawSignItems() {

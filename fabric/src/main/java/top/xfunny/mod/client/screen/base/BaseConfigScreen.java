@@ -1,8 +1,10 @@
 package top.xfunny.mod.client.screen.base;
 
+import org.jetbrains.annotations.NotNull;
 import org.mtr.mapping.holder.BlockPos;
 import org.mtr.mapping.holder.ClickableWidget;
 import org.mtr.mapping.holder.MutableText;
+import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.TextHelper;
 import top.xfunny.mod.client.screen.widget.ListViewWidget;
 
@@ -30,6 +32,12 @@ public abstract class BaseConfigScreen extends TitledScreen {
 //        listViewWidget.active = false;
         addItemConfig();
         addChild(new ClickableWidget(listViewWidget));
+    }
+
+    @Override
+    public void render(@NotNull GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) {
+        renderBackground(graphicsHolder);
+        super.render(graphicsHolder, mouseX, mouseY, tickDelta);
     }
 
     public MutableText getScreenSubtitle() {

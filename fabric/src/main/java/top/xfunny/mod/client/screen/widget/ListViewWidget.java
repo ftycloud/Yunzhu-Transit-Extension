@@ -3,7 +3,6 @@ package top.xfunny.mod.client.screen.widget;
 import org.jetbrains.annotations.NotNull;
 import org.mtr.mapping.holder.MathHelper;
 import org.mtr.mapping.holder.MutableText;
-import org.mtr.mapping.mapper.ButtonWidgetExtension;
 import org.mtr.mapping.mapper.ClickableWidgetExtension;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.GuiDrawing;
@@ -81,9 +80,7 @@ public class ListViewWidget extends ClickableWidgetExtension {
             int entryY = getY2() + incY - (int) currentScroll;
             // ponytail: 内嵌控件先于本列表渲染、scissor 包不住，完全在可视区内才显示
             boolean fullyVisible = entryY >= getY2() && entryY + listItem.height <= getY2() + height;
-            if (listItem instanceof ContentItem) {
-                ((ContentItem) listItem).widget.setVisible(fullyVisible);
-            }
+            listItem.setWidgetVisible(fullyVisible);
             listItem.draw(graphicsHolder, guiDrawing, getX2(), entryY, listItemWidth, listItem.height, mouseX, mouseY, fullyVisible, tickDelta);
             listItem.positionChanged(getX2() + listItemWidth - ENTRY_PADDING, entryY);
             incY += listItem.height;
