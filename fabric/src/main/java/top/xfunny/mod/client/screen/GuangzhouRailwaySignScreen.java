@@ -1,13 +1,15 @@
 package top.xfunny.mod.client.screen;
 
-import org.jetbrains.annotations.NotNull;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.ButtonWidgetExtension;
-import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.TextHelper;
 import top.xfunny.mod.client.screen.base.BaseConfigScreen;
 import top.xfunny.mod.client.screen.widget.ContentItem;
-
+import top.xfunny.mod.client.screen.widget.MappedWidget;
+/**
+ * @deprecated 半成品
+ */
+@Deprecated
 public class GuangzhouRailwaySignScreen extends BaseConfigScreen {
     private final ButtonWidgetExtension signSelected;
     protected String signId;
@@ -23,30 +25,14 @@ public class GuangzhouRailwaySignScreen extends BaseConfigScreen {
                 ));
     }
 
-    @Override
-    protected void init2() {
-        super.init2();
-    }
-
-    @Override
-    public void render(@NotNull GraphicsHolder graphicsHolder, int mouseX, int mouseY, float delta) {
-        renderBackground(graphicsHolder);
-        super.render(graphicsHolder, mouseX, mouseY, delta);
-    }
-
-    @Override
-    public void onClose2() {
-        super.onClose2();
-    }
-
     public MutableText getScreenTitle() {
         return TextHelper.translatable("测试屏幕");
     }
 
     @Override
     public void addItemConfig() {
-        addChild(new ClickableWidget(signSelected));
-        ContentItem chooseSignItem = new ContentItem(TextHelper.translatable(signId), signSelected);
+        // signId 未选择时为 null，translatable(null) 渲染即崩，空文本兜底
+        ContentItem chooseSignItem = new ContentItem(signId == null ? TextHelper.literal("") : TextHelper.translatable(signId), new MappedWidget(signSelected));
 
         if (signId != null) {
             chooseSignItem.setIcon(new Identifier("mtr", "textures/block/sign/" + signId + ".png"));

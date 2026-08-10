@@ -43,6 +43,7 @@ public class CustomSignsManager {
         NAFileNames.add("spit.png");
     }
 
+    @SuppressWarnings("deprecation") // gson 2.8.5（MC 1.16.5 内置）无静态 parse 方法，构造器在 2.11 才弃用
     public static void loader() {
         defaultSigns.clear();
         builtinFileNames.clear();
@@ -50,8 +51,7 @@ public class CustomSignsManager {
 
         ResourceManagerHelper.readAllResources(new Identifier("mtr", "mtr_custom_resources.json"), (inputStream) -> {
             try (InputStreamReader reader = new InputStreamReader(inputStream)) {
-                JsonParser parser = new JsonParser();
-                JsonObject jsonObject = parser.parse(reader).getAsJsonObject();
+                JsonObject jsonObject = new JsonParser().parse(reader).getAsJsonObject();
                 JsonArray signsArray = jsonObject.getAsJsonArray("signs");
 
                 for (JsonElement signElement : signsArray) {
@@ -90,7 +90,10 @@ public class CustomSignsManager {
 
         defaultSigns = new ObjectArrayList<>(new LinkedHashSet<>(defaultSigns));
         allSigns.addAll(0, defaultSigns);
-        allSigns = new ObjectArrayList<>(new LinkedHashSet<>(allSigns));
+        // 原地去重保持引用稳定，SignSettingScreen 已捕获该引用，换引用会导致首次打开空列表
+        final ObjectArrayList<String> uniqueSigns = new ObjectArrayList<>(new LinkedHashSet<>(allSigns));
+        allSigns.clear();
+        allSigns.addAll(uniqueSigns);
         Init.LOGGER.info("Found {} Icon Files", allSigns.size());
     }
 

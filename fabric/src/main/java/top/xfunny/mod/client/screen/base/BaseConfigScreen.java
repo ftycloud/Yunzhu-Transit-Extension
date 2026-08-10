@@ -1,8 +1,10 @@
 package top.xfunny.mod.client.screen.base;
 
+import org.jetbrains.annotations.NotNull;
 import org.mtr.mapping.holder.BlockPos;
 import org.mtr.mapping.holder.ClickableWidget;
 import org.mtr.mapping.holder.MutableText;
+import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.TextHelper;
 import top.xfunny.mod.client.screen.widget.ListViewWidget;
 
@@ -28,11 +30,21 @@ public abstract class BaseConfigScreen extends TitledScreen {
         listViewWidget.clear();
         listViewWidget.setXYSize(startX, startY, contentWidth, listViewHeight);
 //        listViewWidget.active = false;
-        addItemConfig();
+        // 列表行内控件已不再作为 Screen child，由 ListViewWidget 统一渲染和分发点击，这里只需添加列表本身
         addChild(new ClickableWidget(listViewWidget));
+        addItemConfig();
+    }
+
+    @Override
+    public void render(@NotNull GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) {
+        renderBackground(graphicsHolder);
+        super.render(graphicsHolder, mouseX, mouseY, tickDelta);
     }
 
     public MutableText getScreenSubtitle() {
+        if (blockPos == null) {
+            return TextHelper.literal("");
+        }
         return TextHelper.translatable("gui.yte.subtitle", blockPos.getX(), blockPos.getY(), blockPos.getZ());
     }
 

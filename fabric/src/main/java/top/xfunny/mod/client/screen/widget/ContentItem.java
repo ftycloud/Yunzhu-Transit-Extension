@@ -2,7 +2,6 @@ package top.xfunny.mod.client.screen.widget;
 
 import org.mtr.mapping.holder.Identifier;
 import org.mtr.mapping.holder.MutableText;
-import org.mtr.mapping.mapper.ButtonWidgetExtension;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.GuiDrawing;
 import top.xfunny.mod.client.screen.GuiHelper;
@@ -11,18 +10,18 @@ import static top.xfunny.mod.client.screen.widget.ListViewWidget.ENTRY_PADDING;
 
 public class ContentItem extends BaseListItem {
     public final MutableText title;
-    public final ButtonWidgetExtension widget;
+    public final MappedWidget widget;
     private Identifier textureResource;
     private boolean hasIcon;
     private double hoverOpacity = 0;
 
-    public ContentItem(MutableText title, ButtonWidgetExtension widget, int height) {
+    public ContentItem(MutableText title, MappedWidget widget, int height) {
         super(height);
         this.title = title;
         this.widget = widget;
     }
 
-    public ContentItem(MutableText title, ButtonWidgetExtension widget) {
+    public ContentItem(MutableText title, MappedWidget widget) {
         this(title, widget, 26);
     }
 
@@ -40,11 +39,18 @@ public class ContentItem extends BaseListItem {
     }
 
     @Override
+    public void setWidgetVisible(boolean visible) {
+        if (widget != null) {
+            widget.setVisible(visible);
+        }
+    }
+
+    @Override
     public void positionChanged(int entryX, int entryY) {
         if (widget != null) {
-            int offsetY = (height - widget.getHeight2()) / 2;
-            widget.setX2(entryX - widget.getWidth2());
-            widget.setY2(entryY + offsetY);
+            int offsetY = (height - widget.getHeight()) / 2;
+            widget.setX(entryX - widget.getWidth());
+            widget.setY(entryY + offsetY);
         }
     }
 
@@ -60,8 +66,13 @@ public class ContentItem extends BaseListItem {
             drawListEntryDescription(graphicsHolder, entryX, entryY);
 
         if (widget != null) {
-            widget.visible = widgetVisible;
-            widget.render(graphicsHolder, mouseX, mouseY, tickDelta);
+            widget.setVisible(widgetVisible);
+            if (widgetVisible) {
+                // TODO: 控件不再作为 Screen child，手动 render 不会维护 hovered/focused 状态：
+                //       按钮悬停高亮消失，键盘 Tab/Enter/Space 也不可用（当前为 mouse-only）。
+                //       需要时在 MappedWidget 补 hover/focus 转发（渲染前按 bounds 计算并设置 hovered）。
+                widget.render(graphicsHolder, mouseX, mouseY, tickDelta);
+            }
         }
     }
 
@@ -82,6 +93,7 @@ public class ContentItem extends BaseListItem {
             graphicsHolder.translate(iconSize + ENTRY_PADDING, 0, 0);
         }
 
+        // TODO: 标题未限制可用宽度，长文本会画到右侧内嵌控件上；需要时按 (width - 图标 - 控件宽) 做 scaleToFit。
         graphicsHolder.drawText(title, 0, textY, 0xFFFFFFFF, true, GraphicsHolder.getDefaultLight());
         graphicsHolder.pop();
     }

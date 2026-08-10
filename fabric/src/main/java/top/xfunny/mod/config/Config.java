@@ -19,18 +19,17 @@ public abstract class Config {
         this.configFilePath = configFilePath;
     }
 
+    @SuppressWarnings("deprecation") // gson 2.8.5（MC 1.16.5 内置）无静态 parse 方法，构造器在 2.11 才弃用
     public void readConfig() {
-        if (!Files.exists(configFilePath)) {
-            writeConfig();
-            readConfig();// 重新读取
-        } else {
+        if (Files.exists(configFilePath)) {
             try {
                 JsonObject jsonObject = new JsonParser().parse(String.join("", Files.readAllLines(configFilePath))).getAsJsonObject();
                 setTempConfigItems(jsonObject);
             } catch (Exception e) {
                 LOGGER.error("Failed to read config file: " + configFilePath, e);
-                writeConfig();
             }
+        } else {
+            writeConfig();
         }
     }
 

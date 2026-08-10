@@ -1,21 +1,21 @@
 package top.xfunny.mod.client.screen;
 
-import org.jetbrains.annotations.NotNull;
 import org.mtr.mapping.holder.BlockPos;
 import org.mtr.mapping.holder.ButtonWidget;
-import org.mtr.mapping.holder.ClickableWidget;
 import org.mtr.mapping.holder.MutableText;
 import org.mtr.mapping.mapper.ButtonWidgetExtension;
-import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.TextHelper;
 import org.mtr.mod.generated.lang.TranslationProvider;
 import top.xfunny.mod.Keys;
 import top.xfunny.mod.client.InitClient;
 import top.xfunny.mod.client.screen.base.BaseConfigScreen;
-import top.xfunny.mod.client.screen.widget.ContentItem;
 
-import static top.xfunny.mod.client.screen.RenderHelper.lineHeight;
+import static top.xfunny.mod.client.screen.GuiHelper.lineHeight;
 
+/**
+ * @deprecated 半成品：无打开入口，addItemConfig 内容全部被注释（水印按钮从未添加）。
+ */
+@Deprecated
 public class ClientConfigScreen extends BaseConfigScreen {
     private static final int BUTTON_HEIGHT = lineHeight * 2;
     private static final int BUTTON_WIDTH = 60;
@@ -40,12 +40,6 @@ public class ClientConfigScreen extends BaseConfigScreen {
     }
 
     @Override
-    public void render(@NotNull GraphicsHolder graphicsHolder, int mouseX, int mouseY, float delta) {
-        renderBackground(graphicsHolder);
-        super.render(graphicsHolder, mouseX, mouseY, delta);
-    }
-
-    @Override
     public void onClose2() {
         super.onClose2();
         InitClient.getConfig().writeConfig();
@@ -60,8 +54,8 @@ public class ClientConfigScreen extends BaseConfigScreen {
     }
 
     public void addItemConfig() {
-        addChild(new ClickableWidget(hideTestWatermark));
-        ContentItem hideWatermark = new ContentItem(TextHelper.translatable("gui.yte.hide_watermark"), hideTestWatermark);
-        listViewWidget.add(hideWatermark);
+//        addChild(new ClickableWidget(hideTestWatermark));
+//        ContentItem hideWatermark = new ContentItem(TextHelper.translatable("gui.yte.hide_watermark"), hideTestWatermark);
+//        listViewWidget.add(hideWatermark);
     }
 }

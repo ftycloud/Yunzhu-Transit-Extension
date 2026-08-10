@@ -24,6 +24,9 @@ public class ClientConfig extends Config {
 
     @Override
     protected void setTempConfigItems(JsonObject jsonObject) {
-        this.hideTestWatermark = jsonObject.get("hideTestWatermark").getAsBoolean();
+        // 缺键保持默认值，避免 NPE 后整个配置被默认值覆盖
+        if (jsonObject.has("hideTestWatermark")) {
+            this.hideTestWatermark = jsonObject.get("hideTestWatermark").getAsBoolean();
+        }
     }
 }
