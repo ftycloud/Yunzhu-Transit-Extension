@@ -67,7 +67,12 @@ public class ContentItem extends BaseListItem {
 
         if (widget != null) {
             widget.setVisible(widgetVisible);
-            widget.render(graphicsHolder, mouseX, mouseY, tickDelta);
+            if (widgetVisible) {
+                // TODO: 控件不再作为 Screen child，手动 render 不会维护 hovered/focused 状态：
+                //       按钮悬停高亮消失，键盘 Tab/Enter/Space 也不可用（当前为 mouse-only）。
+                //       需要时在 MappedWidget 补 hover/focus 转发（渲染前按 bounds 计算并设置 hovered）。
+                widget.render(graphicsHolder, mouseX, mouseY, tickDelta);
+            }
         }
     }
 
@@ -88,6 +93,7 @@ public class ContentItem extends BaseListItem {
             graphicsHolder.translate(iconSize + ENTRY_PADDING, 0, 0);
         }
 
+        // TODO: 标题未限制可用宽度，长文本会画到右侧内嵌控件上；需要时按 (width - 图标 - 控件宽) 做 scaleToFit。
         graphicsHolder.drawText(title, 0, textY, 0xFFFFFFFF, true, GraphicsHolder.getDefaultLight());
         graphicsHolder.pop();
     }

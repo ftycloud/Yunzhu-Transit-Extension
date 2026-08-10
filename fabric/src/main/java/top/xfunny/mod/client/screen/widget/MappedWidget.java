@@ -1,93 +1,156 @@
 package top.xfunny.mod.client.screen.widget;
 
-import org.mtr.mapping.mapper.*;
-
-import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import org.mtr.mapping.mapper.ButtonWidgetExtension;
+import org.mtr.mapping.mapper.CheckboxWidgetExtension;
+import org.mtr.mapping.mapper.ClickableWidgetExtension;
+import org.mtr.mapping.mapper.GraphicsHolder;
+import org.mtr.mapping.mapper.SliderWidgetExtension;
+import org.mtr.mapping.mapper.TextFieldWidgetExtension;
 
 public class MappedWidget {
     private final Object widget;
-    // 反射 + 方法缓存替代 6 分支 instanceof 样板；方法缺失时静默返回默认值
-    private static final Map<String, Method> METHOD_CACHE = new ConcurrentHashMap<>();
+    private final Access access;
 
     public MappedWidget(Object widget) {
         while (widget instanceof MappedWidget) {
             widget = ((MappedWidget) widget).widget;
         }
-        if (!(widget instanceof ButtonWidgetExtension || widget instanceof TextFieldWidgetExtension ||
-                widget instanceof CheckboxWidgetExtension || widget instanceof SliderWidgetExtension ||
-                widget instanceof ClickableWidgetExtension)) {
+        if (widget instanceof ButtonWidgetExtension) {
+            final ButtonWidgetExtension cast = (ButtonWidgetExtension) widget;
+            this.access = new Access() {
+                @Override public int getX2() { return cast.getX2(); }
+                @Override public int getY2() { return cast.getY2(); }
+                @Override public void setX2(int x) { cast.setX2(x); }
+                @Override public void setY2(int y) { cast.setY2(y); }
+                @Override public int getWidth2() { return cast.getWidth2(); }
+                @Override public int getHeight2() { return cast.getHeight2(); }
+                @Override public void setWidth2(int width) { cast.setWidth2(width); }
+                @Override public boolean getActiveMapped() { return cast.getActiveMapped(); }
+                @Override public void setVisibleMapped(boolean visible) { cast.setVisibleMapped(visible); }
+                @Override public void render(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) { cast.render(graphicsHolder, mouseX, mouseY, tickDelta); }
+                @Override public boolean mouseClicked2(double mouseX, double mouseY, int button) { return cast.mouseClicked2(mouseX, mouseY, button); }
+            };
+        } else if (widget instanceof TextFieldWidgetExtension) {
+            final TextFieldWidgetExtension cast = (TextFieldWidgetExtension) widget;
+            this.access = new Access() {
+                @Override public int getX2() { return cast.getX2(); }
+                @Override public int getY2() { return cast.getY2(); }
+                @Override public void setX2(int x) { cast.setX2(x); }
+                @Override public void setY2(int y) { cast.setY2(y); }
+                @Override public int getWidth2() { return cast.getWidth2(); }
+                @Override public int getHeight2() { return cast.getHeight2(); }
+                @Override public void setWidth2(int width) { cast.setWidth2(width); }
+                @Override public boolean getActiveMapped() { return cast.getActiveMapped(); }
+                @Override public void setVisibleMapped(boolean visible) { cast.setVisibleMapped(visible); }
+                @Override public void render(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) { cast.render(graphicsHolder, mouseX, mouseY, tickDelta); }
+                @Override public boolean mouseClicked2(double mouseX, double mouseY, int button) { return cast.mouseClicked2(mouseX, mouseY, button); }
+            };
+        } else if (widget instanceof CheckboxWidgetExtension) {
+            final CheckboxWidgetExtension cast = (CheckboxWidgetExtension) widget;
+            this.access = new Access() {
+                @Override public int getX2() { return cast.getX2(); }
+                @Override public int getY2() { return cast.getY2(); }
+                @Override public void setX2(int x) { cast.setX2(x); }
+                @Override public void setY2(int y) { cast.setY2(y); }
+                @Override public int getWidth2() { return cast.getWidth2(); }
+                @Override public int getHeight2() { return cast.getHeight2(); }
+                @Override public void setWidth2(int width) { cast.setWidth2(width); }
+                @Override public boolean getActiveMapped() { return cast.getActiveMapped(); }
+                @Override public void setVisibleMapped(boolean visible) { cast.setVisibleMapped(visible); }
+                @Override public void render(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) { cast.render(graphicsHolder, mouseX, mouseY, tickDelta); }
+                @Override public boolean mouseClicked2(double mouseX, double mouseY, int button) { return cast.mouseClicked2(mouseX, mouseY, button); }
+            };
+        } else if (widget instanceof SliderWidgetExtension) {
+            final SliderWidgetExtension cast = (SliderWidgetExtension) widget;
+            this.access = new Access() {
+                @Override public int getX2() { return cast.getX2(); }
+                @Override public int getY2() { return cast.getY2(); }
+                @Override public void setX2(int x) { cast.setX2(x); }
+                @Override public void setY2(int y) { cast.setY2(y); }
+                @Override public int getWidth2() { return cast.getWidth2(); }
+                @Override public int getHeight2() { return cast.getHeight2(); }
+                @Override public void setWidth2(int width) { cast.setWidth2(width); }
+                @Override public boolean getActiveMapped() { return cast.getActiveMapped(); }
+                @Override public void setVisibleMapped(boolean visible) { cast.setVisibleMapped(visible); }
+                @Override public void render(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) { cast.render(graphicsHolder, mouseX, mouseY, tickDelta); }
+                @Override public boolean mouseClicked2(double mouseX, double mouseY, int button) { return cast.mouseClicked2(mouseX, mouseY, button); }
+            };
+        } else if (widget instanceof ClickableWidgetExtension) {
+            final ClickableWidgetExtension cast = (ClickableWidgetExtension) widget;
+            this.access = new Access() {
+                @Override public int getX2() { return cast.getX2(); }
+                @Override public int getY2() { return cast.getY2(); }
+                @Override public void setX2(int x) { cast.setX2(x); }
+                @Override public void setY2(int y) { cast.setY2(y); }
+                @Override public int getWidth2() { return cast.getWidth2(); }
+                @Override public int getHeight2() { return cast.getHeight2(); }
+                @Override public void setWidth2(int width) { cast.setWidth2(width); }
+                @Override public boolean getActiveMapped() { return cast.getActiveMapped(); }
+                @Override public void setVisibleMapped(boolean visible) { cast.setVisibleMapped(visible); }
+                @Override public void render(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) { cast.render(graphicsHolder, mouseX, mouseY, tickDelta); }
+                @Override public boolean mouseClicked2(double mouseX, double mouseY, int button) { return cast.mouseClicked2(mouseX, mouseY, button); }
+            };
+        } else {
             throw new IllegalArgumentException("Unsupported widget type: " + (widget == null ? "null" : widget.getClass().getName()));
         }
         this.widget = widget;
     }
 
     public int getX() {
-        return getInt("getX2");
+        return access.getX2();
     }
 
     public int getY() {
-        return getInt("getY2");
+        return access.getY2();
     }
 
     public int getWidth() {
-        return getInt("getWidth2");
+        return access.getWidth2();
     }
 
     public int getHeight() {
-        return getInt("getHeight2");
+        return access.getHeight2();
     }
 
     public boolean getActive() {
-        final Object value = invoke("getActiveMapped");
-        return !(value instanceof Boolean) || (Boolean) value;
+        return access.getActiveMapped();
     }
 
     public void setWidth(int width) {
-        invoke("setWidth2", new Class[]{int.class}, width);
+        access.setWidth2(width);
     }
 
     public void setX(int newX) {
-        invoke("setX2", new Class[]{int.class}, newX);
+        access.setX2(newX);
     }
 
     public void setY(int newY) {
-        invoke("setY2", new Class[]{int.class}, newY);
+        access.setY2(newY);
     }
 
     public void render(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta) {
-        invoke("render", new Class[]{GraphicsHolder.class, int.class, int.class, float.class}, graphicsHolder, mouseX, mouseY, tickDelta);
+        access.render(graphicsHolder, mouseX, mouseY, tickDelta);
     }
 
     public void setVisible(boolean value) {
-        invoke("setVisibleMapped", new Class[]{boolean.class}, value);
+        access.setVisibleMapped(value);
     }
 
-    private int getInt(String name) {
-        final Object value = invoke(name);
-        return value instanceof Integer ? (Integer) value : 0;
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        return access.mouseClicked2(mouseX, mouseY, button);
     }
 
-    private Object invoke(String name) {
-        return invoke(name, new Class<?>[0]);
-    }
-
-    private Object invoke(String name, Class<?>[] parameterTypes, Object... args) {
-        final Method method = METHOD_CACHE.computeIfAbsent(name, n -> {
-            try {
-                return widget.getClass().getMethod(n, parameterTypes);
-            } catch (NoSuchMethodException e) {
-                return null;
-            }
-        });
-        if (method == null) {
-            return null;
-        }
-        try {
-            return method.invoke(widget, args);
-        } catch (ReflectiveOperationException e) {
-            return null;
-        }
+    private interface Access {
+        int getX2();
+        int getY2();
+        void setX2(int x);
+        void setY2(int y);
+        int getWidth2();
+        int getHeight2();
+        void setWidth2(int width);
+        boolean getActiveMapped();
+        void setVisibleMapped(boolean visible);
+        void render(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float tickDelta);
+        boolean mouseClicked2(double mouseX, double mouseY, int button);
     }
 }

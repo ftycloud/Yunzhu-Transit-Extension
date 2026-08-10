@@ -2,6 +2,7 @@ package top.xfunny.mod.client.screen;
 
 import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.GuiDrawing;
+import org.mtr.mapping.mapper.ScreenExtension;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -14,8 +15,45 @@ public final class GuiHelper {
     private static Method enableScissorMethod;
     private static Method disableScissorMethod;
     private static boolean scissorUnavailable;
+    private static Method clearChildrenMethod;
+    private static boolean clearChildrenUnavailable;
 
     private GuiHelper() {
+    }
+
+    // MTR mapping 层没有调用 Screen.init() 清除 children，resize 时子控件会累积。
+    // 兼容 Fabric (Yarn: clearChildren) 和 Forge (Mojang: clearWidgets)。
+    public static void clearScreenChildren(ScreenExtension screen) {
+        if (screen == null) {
+            return;
+        }
+        if (clearChildrenMethod == null && !clearChildrenUnavailable) {
+            Class<?> clazz = screen.getClass();
+            while (clazz != null) {
+                try {
+                    clearChildrenMethod = clazz.getDeclaredMethod("clearChildren");
+                    break;
+                } catch (NoSuchMethodException e) {
+                    try {
+                        clearChildrenMethod = clazz.getDeclaredMethod("clearWidgets");
+                        break;
+                    } catch (NoSuchMethodException e2) {
+                        clazz = clazz.getSuperclass();
+                    }
+                }
+            }
+            if (clearChildrenMethod == null) {
+                clearChildrenUnavailable = true;
+            } else {
+                clearChildrenMethod.setAccessible(true);
+            }
+        }
+        if (clearChildrenMethod != null) {
+            try {
+                clearChildrenMethod.invoke(screen);
+            } catch (ReflectiveOperationException ignored) {
+            }
+        }
     }
 
     public static void drawRectangle(GuiDrawing guiDrawing, double x, double y, double width, double height, int color) {

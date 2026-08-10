@@ -31,7 +31,6 @@ public class GuangzhouRailwaySignScreen extends BaseConfigScreen {
 
     @Override
     public void addItemConfig() {
-        addChild(new ClickableWidget(signSelected));
         // signId 未选择时为 null，translatable(null) 渲染即崩，空文本兜底
         ContentItem chooseSignItem = new ContentItem(signId == null ? TextHelper.literal("") : TextHelper.translatable(signId), new MappedWidget(signSelected));
 

@@ -30,8 +30,9 @@ public abstract class BaseConfigScreen extends TitledScreen {
         listViewWidget.clear();
         listViewWidget.setXYSize(startX, startY, contentWidth, listViewHeight);
 //        listViewWidget.active = false;
-        addItemConfig();
+        // 列表行内控件已不再作为 Screen child，由 ListViewWidget 统一渲染和分发点击，这里只需添加列表本身
         addChild(new ClickableWidget(listViewWidget));
+        addItemConfig();
     }
 
     @Override
@@ -41,6 +42,9 @@ public abstract class BaseConfigScreen extends TitledScreen {
     }
 
     public MutableText getScreenSubtitle() {
+        if (blockPos == null) {
+            return TextHelper.literal("");
+        }
         return TextHelper.translatable("gui.yte.subtitle", blockPos.getX(), blockPos.getY(), blockPos.getZ());
     }
 

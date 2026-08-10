@@ -60,7 +60,6 @@ public class SignSettingScreen extends BaseConfigScreen {
                 listViewWidget.addCategory(TextHelper.translatable("gui.yte.extended_style"));
             }
 
-            addChild(new ClickableWidget(chooseSignButton[i]));
             ContentItem chooseSignItem = new ContentItem(TextHelper.translatable(displaySignId), new MappedWidget(chooseSignButton[i]));
             chooseSignItem.setIcon(SIGN_ICON);
             listViewWidget.add(chooseSignItem);
