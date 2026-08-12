@@ -81,6 +81,7 @@ tasks.register("setupFiles") {
 
     delete fileTree("src/main/java/top/xfunny/mod")
     delete fileTree("src/main/java/top/xfunny/mixin")
+    delete fileTree("src/main/java/top/xfunny/core")
     delete fileTree("src/main/resources/assets")
     delete fileTree("src/main/resources/data")
     delete fileTree("src/main/resources/yte.mixins.json")
@@ -95,6 +96,12 @@ tasks.register("setupFiles") {
         outputs.upToDateWhen { false }
         from "../fabric/src/main/java/top/xfunny/mixin"
         into "src/main/java/top/xfunny/mixin"
+    }
+
+    copy {
+        outputs.upToDateWhen { false }
+        from "../fabric/src/main/java/top/xfunny/core"
+        into "src/main/java/top/xfunny/core"
     }
 
     copy {

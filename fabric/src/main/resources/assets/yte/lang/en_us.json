@@ -410,5 +410,8 @@
   "hint.yte.unconnected_track": "  %d. Unconnected floor track",
   "hint.yte.unconnected_button": "  %d. Unconnected button",
   "hint.yte.unlocked": "Unlocked",
-  "hint.yte.locked": "Locked"
+  "hint.yte.locked": "Locked",
+
+  "gui.yte.lift_speed_value": "Speed: %.1f m/s",
+  "gui.yte.lift_acceleration_value": "Accel: %.1f m/s\u00B2"
 }

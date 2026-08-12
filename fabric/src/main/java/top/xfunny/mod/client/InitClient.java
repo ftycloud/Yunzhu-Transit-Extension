@@ -13,7 +13,9 @@ import top.xfunny.mod.client.render.*;
 import top.xfunny.mod.client.resource.FontList;
 import top.xfunny.mod.client.sound.SoundPlaybackManager;
 import top.xfunny.mod.config.ClientConfig;
+import top.xfunny.mod.config.YteLiftConfigStore;
 import top.xfunny.mod.item.YTEItemBlockClickingBase;
+import top.xfunny.mod.packet.YtePacketRequestData;
 
 
 public final class InitClient {
@@ -23,6 +25,10 @@ public final class InitClient {
     private static long gameMillis = 0;
 
     public static void init() {
+        // 重置 YTE 客户端数据
+        YteMinecraftClientData.reset();
+        YteLiftConfigStore.clear();
+
         initializeConfig();
 
         REGISTRY_CLIENT.registerBlockRenderType(RenderLayer.getCutout(), Blocks.SCHINDLER_QKS9_DOOR_1);
@@ -392,6 +398,8 @@ public final class InitClient {
 
         REGISTRY_CLIENT.eventRegistryClient.registerClientJoin(() -> {
             MinecraftClientData.reset();
+            YteMinecraftClientData.reset();
+            YteLiftConfigStore.clear();
             lastMillis = System.currentTimeMillis();
             gameMillis = 0;
 
@@ -399,6 +407,9 @@ public final class InitClient {
             FontList.instance.FontReload();
 
             SoundPlaybackManager.clearCache();
+
+            // 请求电梯速度配置
+            REGISTRY_CLIENT.sendPacketToServer(new YtePacketRequestData());
         });
 
         // TODO: 发布前请注释此行代码。
