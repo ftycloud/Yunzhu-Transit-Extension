@@ -407,7 +407,6 @@
   "hint.yte.unconnected_button": "  %d.未連接㩒掣",
   "hint.yte.unlocked": "已解鎖",
   "hint.yte.locked": "已鎖定",
-
   "gui.yte.lift_speed_value": "速率：%.1f m/s",
-  "gui.yte.lift_acceleration_value": "加速率：%.1f m/s\u00B2"
+  "gui.yte.lift_acceleration_value": "加速率：%.1f m/s²"
 }
