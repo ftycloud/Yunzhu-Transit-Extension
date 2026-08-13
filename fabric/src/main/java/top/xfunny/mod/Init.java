@@ -69,6 +69,7 @@ public final class Init implements Utilities {
         initSteps.put("MTR Packet", () -> {
             REGISTRY.setupPackets(new Identifier(MOD_ID, "packet"));
             REGISTRY.registerPacket(PacketYTEOpenBlockEntityScreen.class, PacketYTEOpenBlockEntityScreen::new);
+            REGISTRY.registerPacket(PacketUpdateLiftTrackMagneticVaneConfig.class, PacketUpdateLiftTrackMagneticVaneConfig::new);
             REGISTRY.registerPacket(PacketUpdatePATRS01RailwaySignConfig.class, PacketUpdatePATRS01RailwaySignConfig::new);
             REGISTRY.registerPacket(PacketLanternSoundInstruction.class, PacketLanternSoundInstruction::new);
             REGISTRY.registerPacket(PacketSyncLiftDestinationDispatchTerminal.class, PacketSyncLiftDestinationDispatchTerminal::new);
@@ -85,7 +86,7 @@ public final class Init implements Utilities {
             currentStep++;
         }
 
-        // 注册 YTE 数据体系生命周期
+        // 娉ㄥ唽 YTE 鏁版嵁浣撶郴鐢熷懡鍛ㄦ湡
         REGISTRY.eventRegistry.registerServerStarted(minecraftServer -> {
             Init.minecraftServer = minecraftServer;
             WORLD_ID_LIST.clear();

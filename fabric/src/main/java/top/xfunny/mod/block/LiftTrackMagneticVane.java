@@ -16,8 +16,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EmptyFloor extends BlockLiftTrackBase implements BlockWithEntity {
-    public EmptyFloor() {
+public class LiftTrackMagneticVane extends BlockLiftTrackBase implements BlockWithEntity {
+    public LiftTrackMagneticVane() {
         super();
     }
 
@@ -37,7 +37,7 @@ public class EmptyFloor extends BlockLiftTrackBase implements BlockWithEntity {
     @Nonnull
     @Override
     public BlockEntityExtension createBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new EmptyFloor.BlockEntity(blockPos, blockState);
+        return new LiftTrackMagneticVane.BlockEntity(blockPos, blockState);
     }
 
     @Override
@@ -70,27 +70,23 @@ public class EmptyFloor extends BlockLiftTrackBase implements BlockWithEntity {
 
         private static final String KEY_FLOOR_NUMBER = "floor_number";
         private static final String KEY_FLOOR_DESCRIPTION = "floor_description";
-        private static final String KEY_SHOULD_DING = "should_ding";
         private String floorNumber = "EZ";
         private String floorDescription = "";
-        private boolean shouldDing;
 
         public BlockEntity(BlockPos pos, BlockState state) {
-            super(BlockEntityTypes.LIFT_TRACK_EMPTY_FLOOR.get(), pos, state);
+            super(BlockEntityTypes.LIFT_TRACK_MAGNETIC_VANE.get(), pos, state);
         }
 
         @Override
         public void readCompoundTag(CompoundTag compoundTag) {
             floorNumber = compoundTag.getString(KEY_FLOOR_NUMBER);
             floorDescription = compoundTag.getString(KEY_FLOOR_DESCRIPTION);
-            shouldDing = compoundTag.getBoolean(KEY_SHOULD_DING);
         }
 
         @Override
         public void writeCompoundTag(CompoundTag compoundTag) {
             compoundTag.putString(KEY_FLOOR_NUMBER, floorNumber);
             compoundTag.putString(KEY_FLOOR_DESCRIPTION, floorDescription);
-            compoundTag.putBoolean(KEY_SHOULD_DING, shouldDing);
         }
 
         public void setData(String floorNumber, String floorDescription) {
@@ -106,6 +102,6 @@ public class EmptyFloor extends BlockLiftTrackBase implements BlockWithEntity {
         public String getFloorDescription() {
             return floorDescription;
         }
+
     }
 }
-

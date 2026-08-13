@@ -411,5 +411,6 @@
   "gui.yte.lift_acceleration_value": "加速率：%.1f m/s²",
   "gui.yte.lift_ado_distance": "提前開門距離（格）",
   "gui.yte.lift_levelling_distance": "平層距離（格）",
-  "gui.yte.lift_levelling_speed": "平層速度（m/s）"
+  "gui.yte.lift_levelling_speed": "平層速度（m/s）",
+  "block.yte.lift_track_magnetic_vane": "電梯快速區間隔磁板"
 }

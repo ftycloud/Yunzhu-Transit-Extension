@@ -6,6 +6,7 @@ import org.mtr.mapping.mapper.ItemExtension;
 import org.mtr.mapping.mapper.TextHelper;
 import org.mtr.mod.block.BlockLiftTrackBase;
 import org.mtr.mod.block.BlockLiftTrackFloor;
+import top.xfunny.mod.block.LiftTrackMagneticVane;
 
 import javax.annotation.Nonnull;
 
@@ -52,6 +53,9 @@ public class FloorAutoSetter extends ItemExtension implements DirectionHelper {
                 floorNumber2 = "1";
             }
             ding = ((BlockLiftTrackFloor.BlockEntity) floorEntity.data).getShouldDing();
+        } else if (floorEntity != null && floorEntity.data instanceof LiftTrackMagneticVane.BlockEntity) {
+            String checkFloorNumber = ((LiftTrackMagneticVane.BlockEntity) floorEntity.data).getFloorNumber();
+            floorNumber2 = checkFloorNumber != null && !checkFloorNumber.isEmpty() ? checkFloorNumber : "1";
         }
 
         // 判断初始楼层是否为整数
@@ -62,6 +66,11 @@ public class FloorAutoSetter extends ItemExtension implements DirectionHelper {
         while (floorNumber2.matches("\\d+")) {
             if (world.getBlockState(pos).getBlock().data instanceof BlockLiftTrackBase) {
                 final BlockEntity currentEntity = world.getBlockEntity(pos);
+
+                if (currentEntity != null && currentEntity.data instanceof LiftTrackMagneticVane.BlockEntity) {
+                    ((LiftTrackMagneticVane.BlockEntity) currentEntity.data).setData(String.valueOf(floorNumber), "");
+                    floorCount++;
+                }
 
                 // 1. 如果当前位置是楼层，设置数据并增加成功计数
                 if (currentEntity != null && currentEntity.data instanceof BlockLiftTrackFloor.BlockEntity) {
@@ -89,7 +98,7 @@ public class FloorAutoSetter extends ItemExtension implements DirectionHelper {
                 }
 
                 // 4. [修复核心] 如果下一个位置是楼层，说明即将进入新楼层，编号+1
-                if (world.getBlockState(pos).getBlock().data instanceof BlockLiftTrackFloor) {
+                if (isNumberedTrack(world.getBlockState(pos).getBlock())) {
                     floorNumber++;
                 }
 
@@ -104,8 +113,12 @@ public class FloorAutoSetter extends ItemExtension implements DirectionHelper {
         }
     }
 
+    private static boolean isNumberedTrack(Block block) {
+        return block.data instanceof BlockLiftTrackFloor || block.data instanceof LiftTrackMagneticVane;
+    }
+
     protected boolean clickCondition(ItemUsageContext context) {
         final Block block = context.getWorld().getBlockState(context.getBlockPos()).getBlock();
-        return block.data instanceof BlockLiftTrackFloor;
+        return isNumberedTrack(block);
     }
 }

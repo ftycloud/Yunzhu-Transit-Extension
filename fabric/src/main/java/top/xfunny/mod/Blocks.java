@@ -363,7 +363,7 @@ public class Blocks {
     public static final BlockRegistryObject PAT_RS01_RAILWAY_SIGN_MIDDLE;
     public static final BlockRegistryObject PAT_RS01_RAILWAY_SIGN_POLE;
 
-    public static final BlockRegistryObject LIFT_TRACK_EMPTY_FLOOR;
+    public static final BlockRegistryObject LIFT_TRACK_MAGNETIC_VANE;
 
     public static final BlockRegistryObject HITACHI_B85_DOOR_1;
     public static final BlockRegistryObject KONE_M_DOOR_1;
@@ -399,7 +399,7 @@ public class Blocks {
         PAT_RS01_RAILWAY_SIGN_MIDDLE = Init.REGISTRY.registerBlock(new Identifier(Init.MOD_ID, "pat_rs01_railway_sign_middle"), () -> new Block(new PATRS01RailwaySign(0, false)));
         PAT_RS01_RAILWAY_SIGN_POLE = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "pat_rs01_railway_sign_pole"), () -> new Block(new PATRS01RailwaySignPole(createDefaultBlockSettings(false))), CreativeModeTabs.YTE_RAILWAY_FACILITIES);
 
-        LIFT_TRACK_EMPTY_FLOOR = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "lift_track_empty_floor"), () -> new Block(new EmptyFloor()));
+        LIFT_TRACK_MAGNETIC_VANE = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "lift_track_magnetic_vane"), () -> new Block(new LiftTrackMagneticVane()), CreativeModeTabs.YTE_LIFT_FIXTURES);
 
         HITACHI_B85_DOOR_1 = Init.REGISTRY.registerBlock(new Identifier(Init.MOD_ID, "hitachi_b85_door_1"), () -> new Block(new HitachiB85Door1()));
         KONE_M_DOOR_1 = Init.REGISTRY.registerBlock(new Identifier(Init.MOD_ID, "kone_m_door_1"), () -> new Block(new KoneMDoor1()));

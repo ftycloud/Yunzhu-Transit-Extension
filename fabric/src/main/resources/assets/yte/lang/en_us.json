@@ -356,7 +356,7 @@
   "tooltip.hitachi_display_bx_scl_c6": "Display: BX-SCL-C6",
   "tooltip.hitachi_display_bx_scl_c5": "Display: BX-SCL-C5",
   "tooltip.hitachi_display_hip_31": "Display: HIP-31",
-  "tooltip.hitachi_display_hip_31_2": "Display：HIP-31-2",
+  "tooltip.hitachi_display_hip_31_2": "Display锛欻IP-31-2",
   "tooltip.hitachi_display_hip_32": "Display: HIP-32",
   "tooltip.hitachi_display_hip_43": "Display: HIP-43",
   "tooltip.hitachi_display_hip_43_a": "Display: HIP-43-A",
@@ -376,8 +376,8 @@
   "tooltip.shanghai_mitsubishi_display_zlhh-110ag01": "Display: ZLHH-110AG01",
   "tooltip.shanghai_mitsubishi_display_zlhh-110dg01": "Display: ZLHH-110DG01",
   "tooltip.shanghai_mitsubishi_display_zlhh-101ag02": "Display: ZLHH-101AG02",
-  "tooltip.shanghai_mitsubishi_button_a11": "Button：A11",
-  "tooltip.shanghai_mitsubishi_button_a12": "Button：A12",
+  "tooltip.shanghai_mitsubishi_button_a11": "Button锛欰11",
+  "tooltip.shanghai_mitsubishi_button_a12": "Button锛欰12",
   "tooltip.warning_block_testing": "!!!Warning: This block is under development and not recommended to use.",
   "tooltip.thyssenkrupp_te_gl1_button_1": "Display: MS5-E 2.1",
   "tooltip.id_card.access": "Access Permission: %d",
@@ -406,7 +406,7 @@
   "hint.yte.connected_track_count": "Connected floor tracks: %d",
   "hint.yte.connected_button_count": "Connected buttons: %d",
   "hint.yte.connected_lantern_count": "Connected lanterns: %d",
-  "hint.yte.warning_header": "⚠ Warning:",
+  "hint.yte.warning_header": "鈿?Warning:",
   "hint.yte.unconnected_track": "  %d. Unconnected floor track",
   "hint.yte.unconnected_button": "  %d. Unconnected button",
   "hint.yte.unlocked": "Unlocked",
@@ -416,5 +416,6 @@
   "gui.yte.lift_acceleration_value": "Accel: %.1f m/s\u00B2",
   "gui.yte.lift_ado_distance": "ADO distance (blocks)",
   "gui.yte.lift_levelling_distance": "Levelling distance (blocks)",
-  "gui.yte.lift_levelling_speed": "Levelling speed (m/s)"
+  "gui.yte.lift_levelling_speed": "Levelling speed (m/s)",
+  "block.yte.lift_track_magnetic_vane": "Lift Express-Zone Magnetic Vane"
 }

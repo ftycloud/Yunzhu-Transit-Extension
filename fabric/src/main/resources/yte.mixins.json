@@ -18,6 +18,7 @@
     "MixinDynamicTextureCache",
     "MixinRenderLiftButtons",
     "MixinRenderLiftPanel",
+    "MixinRenderLifts",
     "MixinLiftCustomizationScreen"
   ],
   "server": [],

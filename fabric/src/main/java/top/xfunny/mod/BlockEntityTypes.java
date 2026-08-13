@@ -357,7 +357,7 @@ public class BlockEntityTypes {
     public static final BlockEntityTypeRegistryObject<PATRS01RailwaySign.BlockEntity> PAT_RS01_RAILWAY_SIGN_7_EVEN;
     public static final BlockEntityTypeRegistryObject<PATRS01RailwaySign.BlockEntity> PAT_RS01_RAILWAY_SIGN_7_ODD;
 
-    public static final BlockEntityTypeRegistryObject<EmptyFloor.BlockEntity> LIFT_TRACK_EMPTY_FLOOR;
+    public static final BlockEntityTypeRegistryObject<LiftTrackMagneticVane.BlockEntity> LIFT_TRACK_MAGNETIC_VANE;
 
 
     static {
@@ -708,7 +708,7 @@ public class BlockEntityTypes {
         PAT_RS01_RAILWAY_SIGN_7_EVEN = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "pat_rs01_railway_sign_7_even"), (pos, state) -> new PATRS01RailwaySign.BlockEntity(7, false, pos, state), Blocks.PAT_RS01_RAILWAY_SIGN_7_EVEN::get);
         PAT_RS01_RAILWAY_SIGN_7_ODD = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "pat_rs01_railway_sign_7_odd"), (pos, state) -> new PATRS01RailwaySign.BlockEntity(7, true, pos, state), Blocks.PAT_RS01_RAILWAY_SIGN_7_ODD::get);
 
-        LIFT_TRACK_EMPTY_FLOOR = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "lift_track_empty_floor"), EmptyFloor.BlockEntity::new, Blocks.LIFT_TRACK_EMPTY_FLOOR::get);
+        LIFT_TRACK_MAGNETIC_VANE = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "lift_track_magnetic_vane"), LiftTrackMagneticVane.BlockEntity::new, Blocks.LIFT_TRACK_MAGNETIC_VANE::get);
 
     }
 
