@@ -408,5 +408,8 @@
   "hint.yte.unlocked": "已解锁",
   "hint.yte.locked": "已锁定",
   "gui.yte.lift_speed_value": "速度：%.1f m/s",
-  "gui.yte.lift_acceleration_value": "加速度：%.1f m/s²"
+  "gui.yte.lift_acceleration_value": "加速度：%.1f m/s²",
+  "gui.yte.lift_ado_distance": "提前开门距离（格）",
+  "gui.yte.lift_levelling_distance": "平层距离（格）",
+  "gui.yte.lift_levelling_speed": "平层速度（m/s）"
 }

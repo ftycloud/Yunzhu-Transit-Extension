@@ -30,6 +30,8 @@ public final class Init implements Utilities {
     public static int HAS_UPDATE = -1;
 
     private static YteMain yteMain;
+    @Nullable
+    private static MinecraftServer minecraftServer;
     private static long lastSavedMillis;
     private static final ObjectArrayList<String> WORLD_ID_LIST = new ObjectArrayList<>();
     public static final int AUTOSAVE_INTERVAL = 30000;
@@ -73,6 +75,7 @@ public final class Init implements Utilities {
             // YTE Lift Speed/Acceleration packets
             REGISTRY.registerPacket(YtePacketRequestData.class, YtePacketRequestData::new);
             REGISTRY.registerPacket(YtePacketUpdateData.class, YtePacketUpdateData::new);
+            REGISTRY.registerPacket(PacketLiftAdoStart.class, PacketLiftAdoStart::new);
         });
 
         int currentStep = 1;
@@ -84,6 +87,7 @@ public final class Init implements Utilities {
 
         // 注册 YTE 数据体系生命周期
         REGISTRY.eventRegistry.registerServerStarted(minecraftServer -> {
+            Init.minecraftServer = minecraftServer;
             WORLD_ID_LIST.clear();
             MinecraftServerHelper.iterateWorlds(minecraftServer, serverWorld ->
                     WORLD_ID_LIST.add(getWorldId(new World(serverWorld.data))));
@@ -112,6 +116,7 @@ public final class Init implements Utilities {
         });
 
         REGISTRY.eventRegistry.registerServerStopping(minecraftServer -> {
+            Init.minecraftServer = null;
             if (yteMain != null) {
                 yteMain.stop();
             }
@@ -119,6 +124,13 @@ public final class Init implements Utilities {
 
         LOGGER.info("Yunzhu Transit Extension initialized successfully in {} ms.", System.currentTimeMillis() - startTime);
         REGISTRY.init();
+    }
+
+    public static void sendLiftAdoStart(long liftId, long stoppingCoolDown) {
+        if (minecraftServer != null) {
+            MinecraftServerHelper.iteratePlayers(minecraftServer, player ->
+                    REGISTRY.sendPacketToClient(player, new PacketLiftAdoStart(liftId, stoppingCoolDown)));
+        }
     }
 
     public static Position blockPosToPosition(BlockPos blockPos) {
@@ -156,4 +168,3 @@ public final class Init implements Utilities {
         LOGGER.error(message, e);
     }
 }
-

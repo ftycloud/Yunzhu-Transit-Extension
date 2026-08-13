@@ -199,10 +199,10 @@ public class RenderMitsubishiNexWayButton2LCD1 extends BlockEntityRenderer<Mitsu
                         0xFFFFFFFF);
                 //liftFloorDisplayView.setDisplayLength(2, 0.05F);
                 liftFloorDisplayView.setTextureId("mitsubishi_nexway_button_2_lcd_1_display");
-                liftFloorDisplayView.setWidth(1.5F / 16);
+                liftFloorDisplayView.setWidth(1.18F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
-                liftFloorDisplayView.setMargin(0.025F / 16, -0.45F / 16, 0, 0);
+                liftFloorDisplayView.setMargin(0.012F, -0.45F / 16, 0.01F, 0); //0.025F / 16, -0.45F / 16, 0, 0
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
                 if (liftFloorDisplayView.getTextLength() >= 3) {
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);

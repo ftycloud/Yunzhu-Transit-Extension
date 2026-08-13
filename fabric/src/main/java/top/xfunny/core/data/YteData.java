@@ -14,7 +14,8 @@ public abstract class YteData {
             liftConfigs.forEach(config -> {
                 liftConfigIdMap.put(config.getId(), config);
                 top.xfunny.mod.config.YteLiftConfigStore.put(
-                        config.getId(), config.getSpeed(), config.getAcceleration());
+                        config.getId(), config.getSpeed(), config.getAcceleration(), config.getAdoDistance(),
+                        config.getLevellingDistance(), config.getLevellingSpeed());
             });
         } catch (Exception e) {
             YteCoreLogger.error("YteData sync error", e);
