@@ -86,7 +86,7 @@ public final class Init implements Utilities {
             currentStep++;
         }
 
-        // 娉ㄥ唽 YTE 鏁版嵁浣撶郴鐢熷懡鍛ㄦ湡
+        // 注册 YTE 数据体系生命周期
         REGISTRY.eventRegistry.registerServerStarted(minecraftServer -> {
             Init.minecraftServer = minecraftServer;
             WORLD_ID_LIST.clear();
